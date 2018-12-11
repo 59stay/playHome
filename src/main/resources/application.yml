@@ -1,0 +1,33 @@
+server:
+  port: 86
+  context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_play_house
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  thymeleaf:
+    cache: false
+
+    
+lucenePath: C://lucene
+
+articleImageFilePath: D://articleImages/
+
+userImageFilePath: D://userImages/
+
+#lucenePath: /home/lucene
+
+#articleImageFilePath: /home/articleImages/
+
+#userImageFilePath: /home/userImages/

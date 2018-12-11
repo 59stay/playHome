@@ -1,0 +1,16 @@
+<meta charset="UTF-8"></meta>
+<div id="link">
+	<div class="data_list_link">
+		<div class="data_list_title">
+			<img src="/static/images/link_icon.png" /> <span class="head">友情链接</span>
+		</div>
+		<div class="data_link">
+			<ul >
+				<li th:each="friendshipLink:${application.friendshipLinkList}"><a target="_blank" th:href="${friendshipLink.linkAddress}"
+					th:title="${friendshipLink.linkName}"> <span th:text="${friendshipLink.linkName}"></span>
+				</a></li>
+				
+			</ul>
+		</div>
+	</div>
+</div>

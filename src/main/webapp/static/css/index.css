@@ -1,0 +1,103 @@
+
+.w1170{
+	width: 1170px;
+	margin: 0px auto;
+	overflow: hidden;
+}
+.pLeft{
+	width: 860px;
+	float: left;
+}
+
+.pRight{
+	width: 300px;
+	float: right;
+}
+
+/*电影资源列表区域样式*/
+.data_list_resources{
+	border: 1px solid #E5E5E5;
+	padding: 5px;
+	background-color: #FDFDFD;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+.data_list_resources .data_list_title{
+	font-size: 15px;
+	padding-left:10px;
+	border-bottom: 1px solid #E5E5E5;
+	padding-bottom: 10px;
+	padding-top: 5px;
+}
+
+.data_list_resources .imageDatas{
+	height: 440px;
+}
+.data_list_resources .imageDatas .imageUl{
+    padding:30px 0px 0px 30px;
+}
+
+.data_list_resources .datas .imageUl li{
+	float: left;
+	margin-right: 25px;
+	margin-left: 15px;
+}
+
+.data_list_resources .datas .imageUl .imageLi {
+	height: 200px;
+}
+
+.data_list_resources .datas .imageUl .imageLi p{
+	overflow: hidden;
+	text-align: center;
+	padding-top: 15px;
+}
+
+
+
+
+
+
+/*友情链接区样式*/
+.data_list_link{
+	height:125px;
+	border: 1px solid #E5E5E5;
+	padding: 5px;
+	background-color: #FDFDFD;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+.data_list_link .data_list_title{
+	font-size: 15px;
+	padding-left:10px;
+	border-bottom: 1px solid #E5E5E5;
+	padding-bottom: 10px;
+	padding-top: 5px;
+}
+
+.data_list_link .data_link{
+	padding-top: 10px;
+	padding-left: 5px;
+	height: 60px;
+}
+
+.data_list_link .data_link ul li{
+	float:left;
+	padding-left:10px;
+	line-height: 25px;
+}
+
+
+/*免责申明区样式*/
+.foot{
+	padding-bottom: 20px;
+}
+
+.sInfo{
+	text-align: center;
+	padding-bottom: 5px;
+}
+
+
