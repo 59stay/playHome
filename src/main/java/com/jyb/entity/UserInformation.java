@@ -21,10 +21,6 @@ public class UserInformation {
 	@GeneratedValue
 	private Integer userId;  // id
 	
-	@NotEmpty(message="请输入用账号！")
-	@Column(length=50)
-	private String userAccount; // 账号
-	
 	@Column(length=50)
 	private String userName; // 用户名称
 	
@@ -32,8 +28,9 @@ public class UserInformation {
 	@Column(length=50)
 	private String userPassword; // 密码
 	
+	@NotEmpty(message="请输入确认密码！")
 	@Column(length=50)
-	private String cipherValue; // 用户密码显示值
+	private String userConfirmPassword; // 确认密码
 	
 	@Column(length=100)
 	private String userHead; // 用户头像
@@ -71,13 +68,6 @@ public class UserInformation {
 		this.userId = userId;
 	}
 
-	public String getUserAccount() {
-		return userAccount;
-	}
-
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
-	}
 
 	public String getUserName() {
 		return userName;
@@ -95,13 +85,6 @@ public class UserInformation {
 		this.userPassword = userPassword;
 	}
 
-	public String getCipherValue() {
-		return cipherValue;
-	}
-
-	public void setCipherValue(String cipherValue) {
-		this.cipherValue = cipherValue;
-	}
 
 	public String getUserHead() {
 		return userHead;
@@ -184,24 +167,6 @@ public class UserInformation {
 	public void setUserIntegral(Integer userIntegral) {
 		this.userIntegral = userIntegral;
 	}
-
-	@Override
-	public String toString() {
-		return "UserInformation [userId=" + userId + ", userAccount=" + userAccount + ", userName=" + userName
-				+ ", userPassword=" + userPassword + ", cipherValue=" + cipherValue + ", userHead=" + userHead
-				+ ", email=" + email + ", userPhoneNumber=" + userPhoneNumber + ", userIdcard=" + userIdcard
-				+ ", accountStatus=" + accountStatus + ", userRole=" + userRole + ", remarks=" + remarks
-				+ ", userIntegral=" + userIntegral + ", userCreationTime=" + userCreationTime + ", hostIp=" + hostIp
-				+ ", getUserId()=" + getUserId() + ", getUserAccount()=" + getUserAccount() + ", getUserName()="
-				+ getUserName() + ", getUserPassword()=" + getUserPassword() + ", getCipherValue()=" + getCipherValue()
-				+ ", getUserHead()=" + getUserHead() + ", getEmail()=" + getEmail() + ", getUserPhoneNumber()="
-				+ getUserPhoneNumber() + ", getUserIdcard()=" + getUserIdcard() + ", getAccountStatus()="
-				+ getAccountStatus() + ", getUserRole()=" + getUserRole() + ", getRemarks()=" + getRemarks()
-				+ ", getUserCreationTime()=" + getUserCreationTime() + ", getHostIp()=" + getHostIp()
-				+ ", getUserIntegral()=" + getUserIntegral() + ", getClass()=" + getClass() + ", hashCode()="
-				+ hashCode() + ", toString()=" + super.toString() + "]";
-	}
-	
 
 
 
