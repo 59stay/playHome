@@ -7,7 +7,7 @@
 
 <style type="text/css">
 .div_one{
-  margin: 10px; 0px; 0px; 10px;
+  margin: 10px 0px 0px 10px;
 }
 </style>
 <script src="/static/js/jquery.js"></script>
@@ -17,40 +17,40 @@
 		var form = layui.form;
 		var layer = layui.layer;
 	});
-	
+
 	function submitData(){
 		 if($("#userName").val().trim()==""){
 			  $("#error_div").text("请输入用户名");
 			  $("#userName").focus();
 			  return false;
 		  }
-		  
+
 		  if($("#password").val().trim()==""){
 			  $("#error_div").text("请输入密码");
 			  $("#password").focus();
 			  return false;
 		  }
-		  
+
 		  if($("#confirmPassword").val().trim()==""){
 			  $("#error_div").text("请输入确认密码");
 			  $("#confirmPassword").focus();
 			  return false;
 		  }
-		  
+
 		  if($("#password").val().length< 6 || $("#confirmPassword").val().length< 6  ){
 			  $("#error_div").text("密码的长度必须6-30位");
 			  $("#password").focus();
 			  return false;
-			  
+
 		  }
-		  
+
 		  if($("#password").val().trim() != $("#confirmPassword").val().trim()){
 			  $("#error_div").text("两次密码输入的密码不相同");
 			  $("#password").focus();
 			  return false;
-			  
+
 		  }
-		  
+
 		  if($("#email").val().trim()==""){
 			  $("#error_div").text("请输入邮箱");
 			  $("#email").focus();
@@ -61,7 +61,7 @@
 			  $("#error_div").text("请输入正确的邮箱地址");
 			  $("#email").focus();
 			  return false;
-		  } 
+		  }
 		  //设置防止重复提交注册
 		  var index = layer.load(0, {
 			  shade: [0.1,'#fff'] //0.1透明度的白色背景
@@ -77,9 +77,9 @@
 				  alert("注册失败！");
 			  }
 		  },"json");
-		  
+
 	}
-	
+
 </script>
 
 </head>
@@ -88,31 +88,31 @@
 	<div style="padding: 20px">
 		<form name="myForm" class="layui-form" action="">
 	     <div class="div_one">
-	      <input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" maxlength="30"  class="layui-input" style="padding-left: 33px;"/> 
+	      <input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" maxlength="30"  class="layui-input" style="padding-left: 33px;"/>
 	        <i class="layui-icon  layui-icon-username" style="position: absolute;top:40px;left: 40px;" ></i>
 	     </div>
-	    
+
 	    <div class="div_one">
-	      <input type="password" id="password" name="password"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30" /> 
+	      <input type="password" id="password" name="password"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30" />
 	       <i class="layui-icon layui-icon-password" style="position: absolute;top:88px;left: 40px;" ></i>
 	    </div>
-	    
+
 	     <div class="div_one">
-	      <input type="password" id="confirmPassword" name="confirmPassword"  placeholder="请输入确认密码" class="layui-input" style="padding-left: 33px;" maxlength="30" /> 
+	      <input type="password" id="confirmPassword" name="confirmPassword"  placeholder="请输入确认密码" class="layui-input" style="padding-left: 33px;" maxlength="30" />
 	       <i class="layui-icon layui-icon-password" style="position: absolute;top:136px;left: 40px;" ></i>
 	     </div>
-	     
-	    <div class="div_one">  
-	      <input type="text" id="email" name="email"  placeholder="请输入邮箱" class="layui-input" style="padding-left: 33px;" maxlength="30" /> 
-	       <i class="layui-icon layui-icon-release" style="position: absolute;top:184px;left: 40px;" ></i> 
+
+	    <div class="div_one">
+	      <input type="text" id="email" name="email"  placeholder="请输入邮箱" class="layui-input" style="padding-left: 33px;" maxlength="30" />
+	       <i class="layui-icon layui-icon-release" style="position: absolute;top:184px;left: 40px;" ></i>
 	    </div>
-	    
+
 		   <div style="width: 340px; margin-left: 10px;">
 	          <button id="register_button" class="layui-btn layui-btn-fluid"  onclick="submitData();return false;">注 册</button>
 	          <div id="error_div" style="margin:5px 0px 5px 0px; color:#ff0000; text-align: center;"> </div>
 	       </div>
 	  </form>
 	</div>
-	
+
 </body>
 </html>
