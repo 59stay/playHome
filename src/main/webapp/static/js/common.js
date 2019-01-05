@@ -17,6 +17,12 @@ function showRegister(){
 		  content: '/userClient/userRegister.html' //iframe的url
 		}); 
 }
+/**
+ * 刷新父页面
+ */
+function reloadPage(){
+	window.location.reload();
+}
 
 
 /**图片等比例缩放*/

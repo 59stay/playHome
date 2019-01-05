@@ -34,7 +34,7 @@ public class GameInformationController {
 		    request.getSession().setAttribute("tMenu", "t_0");
 		    GameInformation gameIndfo  = new GameInformation();
 	    	gameIndfo.setAuditStatus(1);
-	    	List<GameInformation> indexGameInformationList = gameInformationService.list(gameIndfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
+	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameIndfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
 	    	Long total = gameInformationService.getCount(gameIndfo);
 	    	ModelAndView mv = new ModelAndView();
 	    	mv.addObject("indexGameInformationList", indexGameInformationList);
@@ -63,7 +63,7 @@ public class GameInformationController {
 	        request.getSession().setAttribute("tMenu","t_"+gameTypeId);
 		}
 	
-    	List<GameInformation> indexGameInformationList = gameInformationService.list(gameInfo, page, 20,Sort.Direction.DESC, "gameCreationTime");
+    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameInfo, page, 20,Sort.Direction.DESC, "gameCreationTime");
     	Long total = gameInformationService.getCount(gameInfo);
     	
     	StringBuffer param=new StringBuffer();

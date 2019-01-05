@@ -16,10 +16,10 @@ public interface GameInformationService  {
    * @param properties
    * @return
    */
-  public List<GameInformation>  list(GameInformation gameInfo,Integer page,Integer pageSize,Direction direction,String...properties);
+  public List<GameInformation>  listPage(GameInformation gameInfo,Integer page,Integer pageSize,Direction direction,String...properties);
   
   /**
-   * 根据条件查询所有的游戏记录信息
+   * 根据条件查询所有游戏总记录数
    * @param gameInfo
    * @return
    */

@@ -25,7 +25,7 @@ public class GameInformationServiceImpl implements GameInformationService {
 	private GameInformationRepository gameInformationRepository;
 	
 	@Override
-	public List<GameInformation> list(GameInformation gameInfo, Integer page, Integer pageSize, Direction direction,
+	public List<GameInformation> listPage(GameInformation gameInfo, Integer page, Integer pageSize, Direction direction,
 			String... properties) {
 		// TODO Auto-generated method stub
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);

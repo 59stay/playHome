@@ -13,7 +13,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateSerializer;
-
+/**
+ * 用户信息实体类
+ * @author jyb
+ *
+ */
 @Entity
 @Table(name="user_information")
 public class UserInformation {
@@ -21,23 +25,20 @@ public class UserInformation {
 	@GeneratedValue
 	private Integer userId;  // id
 	
-	@Column(length=50)
+	@Column(length=30)
+	@NotEmpty(message="请输入用户名称！")
 	private String userName; // 用户名称
 	
 	@NotEmpty(message="请输入密码！")
-	@Column(length=50)
+	@Column(length=100)
 	private String userPassword; // 密码
-	
-	@NotEmpty(message="请输入确认密码！")
-	@Column(length=50)
-	private String userConfirmPassword; // 确认密码
 	
 	@Column(length=100)
 	private String userHead; // 用户头像
 	
 	@Email(message="邮箱地址格式有误！")
 	@NotEmpty(message="请输入邮箱地址！")
-	@Column(length=50)
+	@Column(length=30)
 	private String email; // 验证邮箱地址
 	
 	@Column(length=11)
@@ -46,14 +47,14 @@ public class UserInformation {
 	@Column(length=30)
 	private String userIdcard; // 用户身份证号
 	
-	private Integer accountStatus; // 账号状态 0表示可用 1表示禁用 （默认为0）
+	private Integer accountStatus=0; // 账号状态 0表示可用 1表示禁用 （默认为0）
 	
-	private Integer userRole; // 用户角色    0表示管理员 1表示普通用户  2表示vip
+	private Integer userRole=1; // 用户角色    0表示管理员 1表示普通用户  2表示vip
 	
 	@Column(length=100)
 	private String remarks; // 备注
 	
-    private Integer userIntegral;//用户积分
+    private Integer userIntegral=0;//用户积分
 	
 	private Date userCreationTime; // 创建时间
 	

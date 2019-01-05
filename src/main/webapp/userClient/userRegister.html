@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
-<title>用户登录页面</title>
+<title>用户注册页面</title>
 <link rel="stylesheet" href="/static/layui/css/layui.css"></link>
 
 <style type="text/css">
@@ -66,15 +66,15 @@
 		  var index = layer.load(0, {
 			  shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
-		  $("#sbtn").attr('disabled',true);
-		  $.post("/user/register",{userName:$("#userName").val().trim(),password:$("#password").val().trim(),email:$("#email").val().trim()},function(result){
+		  $("#register_button").attr('disabled',true);
+		  $.post("/userInformation/register",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#email").val().trim()},function(result){
 			  layer.close(index);//关闭弹出层
-			  $("#sbtn").attr('disabled',false);//使注册按钮能点击
+			  $("#register_button").attr('disabled',false);//使注册按钮能点击
 			  if(result.success){
 				  alert("恭喜您，注册成功！");
-				  parent.reloadPage();
+				  parent.reloadPage();//刷新父页面（index.html）
 			  }else{
-				  alert("注册失败！");
+				  $("#error_div").text(result.errorInfo);
 			  }
 		  },"json");
 
@@ -93,7 +93,7 @@
 	     </div>
 
 	    <div class="div_one">
-	      <input type="password" id="password" name="password"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30" />
+	      <input type="password" id="password" name="userPassword"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30" />
 	       <i class="layui-icon layui-icon-password" style="position: absolute;top:88px;left: 40px;" ></i>
 	    </div>
 
@@ -107,7 +107,7 @@
 	       <i class="layui-icon layui-icon-release" style="position: absolute;top:184px;left: 40px;" ></i>
 	    </div>
 
-		   <div style="width: 340px; margin-left: 10px;">
+		   <div class="div_one"  style="width: 350px; margin-left: 10px;">
 	          <button id="register_button" class="layui-btn layui-btn-fluid"  onclick="submitData();return false;">注 册</button>
 	          <div id="error_div" style="margin:5px 0px 5px 0px; color:#ff0000; text-align: center;"> </div>
 	       </div>

@@ -6,7 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-public class indexController {
+public class IndexController {
 	/**
 	 * 网站根目录请求
 	 * @return

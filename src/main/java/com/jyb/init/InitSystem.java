@@ -43,7 +43,7 @@ public class InitSystem implements ServletContextListener,ApplicationContextAwar
 		FriendshipLinkService friendshipLinkService=(FriendshipLinkService) applicationContext.getBean("friendshipLinkService");
 		GameInformationService gameInformationService = (GameInformationService)applicationContext.getBean("gameInformationService");
 		DataDictionaryService  dataDictionaryService = (DataDictionaryService)applicationContext.getBean("dataDictionaryService");
-		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.list(null, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
+		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.listPage(null, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
 		List<FriendshipLink> friendshipLinkList=friendshipLinkService.listAll(Sort.Direction.ASC, "linkId");
 		DataDictionary gameDataDictionary = new DataDictionary();
 		gameDataDictionary.setDictionaryType(2);

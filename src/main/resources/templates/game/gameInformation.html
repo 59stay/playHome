@@ -132,9 +132,7 @@ layui.use([ 'element','form' ], function() {
 						<li th:each="gameBrowseFrequency,iterStat:${application.gameBrowseFrequencyList}">
 							<em th:text="${iterStat.index}+1" ></em> 
 							<a  style="margin-left: 10px;" target="_blank" th:href="'/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}"
-							th:title="${gameBrowseFrequency.gameName}"
-							th:text="${gameBrowseFrequency.gameName}">
-							</a>
+							th:title="${gameBrowseFrequency.gameName}" th:text="${gameBrowseFrequency.gameName}"> </a>
 						</li>
 					</ul>
 				</div>
