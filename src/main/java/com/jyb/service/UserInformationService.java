@@ -8,21 +8,20 @@ public interface UserInformationService {
      * @param userInformation
      */
 	public void save(UserInformation userInformation);
-	
+
 	/**
 	 * 验证用户名是否重复
 	 * @param userName
-	 * @param email
 	 * @return
 	 */
 	public UserInformation checkUserName(String userName);
-	
+
 	/**
 	 * 验证邮箱是否重复
 	 * @param email
 	 * @return
 	 */
 	public UserInformation checkEmail(String email);
-	
-	
+
+
 }

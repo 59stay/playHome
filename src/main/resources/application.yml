@@ -1,5 +1,5 @@
 server:
-  port: 86
+  port: 89
   context-path: /
   tomcat:
     uri-encoding: UTF-8
@@ -19,7 +19,7 @@ spring:
   thymeleaf:
     cache: false
 
-    
+
 lucenePath: C://lucene
 
 articleImageFilePath: D://articleImages/
