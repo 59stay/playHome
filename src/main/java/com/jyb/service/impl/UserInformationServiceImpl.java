@@ -19,15 +19,15 @@ public class UserInformationServiceImpl implements UserInformationService {
 	}
 
 	@Override
-	public UserInformation checkUserName(String userName) {
+	public UserInformation findByUserName(String userName) {
 		// TODO Auto-generated method stub
-		return userInformationRepositroy.checkUserName(userName);
+		return userInformationRepositroy.findByUserName(userName);
 	}
 
 	@Override
-	public UserInformation checkEmail(String email) {
+	public UserInformation findByEmail(String email) {
 		// TODO Auto-generated method stub
-		return userInformationRepositroy.checkEmail(email);
+		return userInformationRepositroy.findByEmail(email);
 	}
 
 	

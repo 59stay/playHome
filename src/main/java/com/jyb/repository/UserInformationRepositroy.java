@@ -13,7 +13,7 @@ public interface UserInformationRepositroy extends JpaRepository<UserInformation
      * @return
      */
 	@Query(value="select * from user_information where user_name=?1",nativeQuery=true)
-	public UserInformation checkUserName(String userName);
+	public UserInformation findByUserName(String userName);
     
     /**
      * 根据验证获取用户对象
@@ -21,6 +21,6 @@ public interface UserInformationRepositroy extends JpaRepository<UserInformation
      * @return
      */
     @Query(value="select * from user_information where email=?1",nativeQuery=true)
-    public UserInformation checkEmail(String email);
+    public UserInformation findByEmail(String email);
     
 }

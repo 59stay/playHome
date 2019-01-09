@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.jyb.controller;
+package com.jyb.controller.user;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ import com.jyb.util.PageUtil;
  * @since 1.0.0
  */
 @Controller
-@RequestMapping("userMessage")
+@RequestMapping("user/userMessage")
 public class UserMessageController {
 
 	@Autowired
@@ -61,8 +61,8 @@ public class UserMessageController {
              Long total = userMessageService.getCount();
          	 mv.addObject("userMessageList", userMessageList);
          	 mv.addObject("total", total);
-         	 mv.addObject("pageCode",PageUtil.getPagination("/userMessage/list",total, 1,10,""));
-             mv.setViewName("messageBoard/userMessage");
+         	 mv.addObject("pageCode",PageUtil.getPagination("/user/userMessage/list",total, 1,10,""));
+             mv.setViewName("user/messageBoard/userMessage");
              return mv;
     }
     
@@ -72,14 +72,14 @@ public class UserMessageController {
 	  * @return
 	  */
 	@RequestMapping("list/{page}")
-	public ModelAndView list(@PathVariable(value="page",required=false) Integer page,HttpServletRequest request){
+	public ModelAndView list(@PathVariable(value="page",	required=false) Integer page,HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
      	List<UserMessage> userMessageList = userMessageService.listPage(page,10,Sort.Direction.DESC, "messageCreationTime");
       	Long total = userMessageService.getCount();
 		mv.addObject("userMessageList", userMessageList);
 		mv.addObject("total", total);
-     	mv.addObject("pageCode",PageUtil.getPagination("/userMessage/list",total,page,10,""));
-   	    mv.setViewName("messageBoard/userMessage");
+     	mv.addObject("pageCode",PageUtil.getPagination("/user/userMessage/list",total,page,10,""));
+   	    mv.setViewName("user/messageBoard/userMessage");
 		return mv;
 	}
 	

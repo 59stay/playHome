@@ -25,7 +25,7 @@
     	 var messageInformation = $(".layui-textarea").val();
     	 layer.msg(messageInformation);
     	  if(messageInformation){
-    		  $.post("/userMessage/save",{
+    		  $.post("/user/userMessage/save",{
     			  messageInformation:messageInformation
     			  },
     			  function(result){
@@ -41,29 +41,13 @@
     	  }
     }
     </script>
-
-    <script type="text/html" id="laytplCont">
-        <div class="cont">
-            <div class="img">
-                {{#  if(d.avatar){ }}
-                <img src="{{d.avatar}}" alt=""> </img>
-                {{#  } else { }}
-                <img src="/static/images/header.png" alt=""> </img>
-                {{# } }}
-            </div>
-            <div class="text">
-                <p class="tit"><span class="name">{{d.name}}</span><span class="data">2018/06/06</span></p>
-                <p class="ct">{{d.cont}}</p>
-            </div>
-        </div>
-    </script>
 </head>
 
 <body>
 <!-- 导航区 -->
 <div class="w1170" style="padding-bottom: 10px; overflow: visible;" th:include="common/head::#head"></div>
 
-<!-- 滚动条 -->
+<!-- 内容展示区-->
 <div class="w1170">
     <div class="content whisper-content leacots-content">
                 <div class="item-box">

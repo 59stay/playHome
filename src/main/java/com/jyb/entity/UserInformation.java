@@ -47,14 +47,14 @@ public class UserInformation {
 	@Column(length=30)
 	private String userIdcard; // 用户身份证号
 	
-	private Integer accountStatus=0; // 账号状态 0表示可用 1表示禁用 （默认为0）
+	private Integer accountStatus; // 账号状态 0表示可用 1表示禁用 （默认为0）
 	
-	private Integer userRole=1; // 用户角色    0表示管理员 1表示普通用户  2表示vip
+	private Integer userRole; // 用户角色    0表示管理员 1表示普通用户  2表示vip
 	
 	@Column(length=100)
 	private String remarks; // 备注
 	
-    private Integer userIntegral=0;//用户积分
+    private Integer userIntegral;//用户积分
 	
 	private Date userCreationTime; // 创建时间
 	
@@ -167,6 +167,15 @@ public class UserInformation {
 
 	public void setUserIntegral(Integer userIntegral) {
 		this.userIntegral = userIntegral;
+	}
+
+	@Override
+	public String toString() {
+		return "UserInformation [userId=" + userId + ", userName=" + userName + ", userPassword=" + userPassword
+				+ ", userHead=" + userHead + ", email=" + email + ", userPhoneNumber=" + userPhoneNumber
+				+ ", userIdcard=" + userIdcard + ", accountStatus=" + accountStatus + ", userRole=" + userRole
+				+ ", remarks=" + remarks + ", userIntegral=" + userIntegral + ", userCreationTime=" + userCreationTime
+				+ ", hostIp=" + hostIp + "]";
 	}
 
 

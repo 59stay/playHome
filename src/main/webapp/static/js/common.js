@@ -4,7 +4,7 @@ function showLogin(){
 	  type: 2,  //layer提供5种层类型，可传入的值有：0（信息框，默认）、1（页面层）、2（ifream层）、3（加载层）、4（tips层）若你采用layer.open({type: 1})方式调用，则type为必填项（信息框除外）
 	  title: '用户登录',
 	  area: ['300px', '400px'],
-	  content: '/userClient/userLogin.html' //iframe的url
+	  content: '/user/userLogin.html' //iframe的url
 	}); 
 }
 
@@ -14,7 +14,7 @@ function showRegister(){
 		  type: 2,
 		  title: '用户注册',
 		  area: ['400px', '560px'],
-		  content: '/userClient/userRegister.html' //iframe的url
+		  content: '/user/userRegister.html' //iframe的url
 		}); 
 }
 /**

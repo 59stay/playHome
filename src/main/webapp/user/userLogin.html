@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>用户登录页面</title>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script>
+	 layui.use(['form','layer'], function(){
+		 var form = layui.form;
+		 var layer = layui.layer;		
+	 });
+	 
+	function submitData(){
+		
+		 if($("#userName").val().trim()=="" ){
+			 document.getElementById("username_div").style.visibility="visible";
+			  $("#userName").focus();
+			  return false;
+		  }else if($("#userName").val().trim().length< 3){
+			  document.getElementById("username_div").style.visibility="visible";
+			  $("#userName").focus();
+			  return false;
+		  }else if($("#password").val().trim()=="" ){
+			  document.getElementById("password_div").style.visibility="visible";
+			  $("#password").focus();
+			  return false;
+		  }else if($("#password").val().trim().length< 6 ){
+			  document.getElementById("password_div").style.visibility="visible";
+			  $("#password").focus();
+			  return false; 
+		  }else{
+			  var index = layer.load(1, {
+				  shade: [0.1,'#fff'] //0.1透明度的白色背景
+				});
+			   $("#login_button").attr('disabled',true); 
+	           $.post("/user/userInformation/login",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim() },function(result){
+	        	  layer.close(index);
+	 			  $("#login_button").attr('disabled',false);
+	        	   if(result.success){
+				      parent.reloadPage();
+				  }else{
+					  layer.msg(a.errorInfo); 
+				  } 
+			  },"json");
+			   
+		  }
+		  
+		
+
+       
+          
+          
+	}
+</script>
+</head>
+
+<body>
+<div style="padding: 20px">
+	<form name="myForm" class="layui-form" action="">
+		<input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" class="layui-input" style="padding-left: 33px;" maxlength="10"/>
+		<i class="layui-icon  layui-icon-username" style="position: absolute;top:30px;left: 30px;" ></i>
+		<div id="username_div" style="margin: 5px 0px 5px 45px; visibility: hidden ; color:#ff0000  ">用户名为必填，长度3-10位</div>
+
+		<input type="password" id="password" name="password"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30"/>
+		<i class="layui-icon layui-icon-password" style="position: absolute;top:98px;left: 30px;" ></i>
+		<div id="password_div" style="margin:5px 0px 5px 45px; visibility: hidden; color:#ff0000 ">密码为必填，长度6-30</div>
+
+		<div style="width: 260px;">
+		   <button id="login_button" class="layui-btn layui-btn-fluid"  onclick="submitData();return false;">登 录</button>
+        </div>
+		<div style="margin:10px 0px 0px 200px;">
+			<a href="#">忘记密码</a>
+		</div>
+
+	</form>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.jyb.controller;
+package com.jyb.controller.user;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.jyb.service.GameInformationService;
 import com.jyb.util.PageUtil;
 
 @Controller
-@RequestMapping("gameInformation")
+@RequestMapping("user/gameInformation")
 public class GameInformationController {
     
 	@Autowired
@@ -38,9 +38,9 @@ public class GameInformationController {
 	    	Long total = gameInformationService.getCount(gameIndfo);
 	    	ModelAndView mv = new ModelAndView();
 	    	mv.addObject("indexGameInformationList", indexGameInformationList);
-	    	mv.addObject("pageCode",PageUtil.getPagination("/gameInformation/list",total, 1,20, ""));
+	    	mv.addObject("pageCode",PageUtil.getPagination("/user/gameInformation/list",total, 1,20, ""));
 	    	mv.addObject("title","宅着玩资源网站 - 宅游戏");
-	    	mv.setViewName("game/gameInformation");
+	    	mv.setViewName("user/game/gameInformation");
 	    	return mv;
 	 }
 	
@@ -71,8 +71,8 @@ public class GameInformationController {
 			param.append("?gameTypeId="+gameTypeId);
 		}
 		mv.addObject("indexGameInformationList", indexGameInformationList);
-    	mv.addObject("pageCode",PageUtil.getPagination("/gameInformation/list",total,page,20,param.toString()));
-    	mv.setViewName("game/gameInformation");
+    	mv.addObject("pageCode",PageUtil.getPagination("/user/gameInformation/list",total,page,20,param.toString()));
+    	mv.setViewName("user/game/gameInformation");
 		return mv;
 	}
 	
@@ -82,7 +82,7 @@ public class GameInformationController {
 		GameInformation gameInformation = gameInformationService.getId(id);
 		mv.addObject("gameInformation",gameInformation);
 		mv.addObject("title", "宅着玩资源网站 - 宅游戏 - "+gameInformation.getGameTitle());
-	    mv.setViewName("game/gameDetails");
+	    mv.setViewName("user/game/gameDetails");
 		return mv;
 	}
 	

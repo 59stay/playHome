@@ -1,10 +1,11 @@
-package com.jyb.controller;
+package com.jyb.controller.user;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,34 @@ import com.jyb.util.MD5Util;
  *
  */
 @Controller
-@RequestMapping("userInformation")
+@RequestMapping("user/userInformation")
 public class UserInformationController {
 	
 	@Autowired
 	private UserInformationService userInformationService;
 	
+	/**
+	 * 用户登录
+	 * @param userInformation
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("login")
+	@ResponseBody
+	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpSession session){
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(userInformation!=null ){
+			if(userInformation.getUserName().equals("jyb")){
+				UserInformation sessionUserInformation = userInformationService.findByUserName(userInformation.getUserName());
+				session.setAttribute("sessionUserInformation", sessionUserInformation);
+				map.put("success",true);
+			}else{
+				map.put("success",false);
+				map.put("errorInfo","登录失败，账号或者密码错误");
+			}
+		}
+		return map;
+	}
 	/**
 	 * 用户注册
 	 * @param userInformation
@@ -44,10 +67,10 @@ public class UserInformationController {
 		if(bindingResult.hasErrors()){
 			map.put("success",false);
 			map.put("errorInfo",bindingResult.getFieldError().getDefaultMessage());
-		}else if(userInformationService.checkUserName(userInformation.getUserName())!=null){
+		}else if(userInformationService.findByUserName(userInformation.getUserName())!=null){
 			map.put("success",false);
 			map.put("errorInfo","用户名已存在，请更换");
-		}else if(userInformationService.checkEmail(userInformation.getEmail())!=null){
+		}else if(userInformationService.findByEmail(userInformation.getEmail())!=null){
 			map.put("success",false);
 			map.put("errorInfo","邮箱已存在，请更换");
 		}else{

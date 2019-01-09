@@ -14,14 +14,14 @@ public interface UserInformationService {
 	 * @param userName
 	 * @return
 	 */
-	public UserInformation checkUserName(String userName);
+	public UserInformation findByUserName(String userName);
 
 	/**
 	 * 验证邮箱是否重复
 	 * @param email
 	 * @return
 	 */
-	public UserInformation checkEmail(String email);
+	public UserInformation findByEmail(String email);
 
 
 }

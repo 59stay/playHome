@@ -1,8 +1,9 @@
+<!-- 头部菜单栏 -->
 <meta charset="UTF-8"></meta>
 <div id="head">
 <ul class="layui-nav" lay-filter="">
 			<li class="layui-nav-item"><a href="/">首页</a></li>
-			<li class="layui-nav-item"><a href="/gameInformation/index">宅游戏</a></li>
+			<li class="layui-nav-item"><a href="/user/gameInformation/index">宅游戏</a></li>
 			<li class="layui-nav-item"><a
 				href="http://blog.java1234.com/blog/articles/427.html"
 				target="_blank">宅电影</a></li>
@@ -13,12 +14,32 @@
 				href="http://blog.java1234.com/blog/articles/428.html"
 				target="_blank">宅软件</a></li>
 			<li class="layui-nav-item"><a
-				href="/userMessage/index" >留言板</a></li>
+				href="/user/userMessage/index" >留言板</a></li>
 			<li class="layui-nav-item"><a
 				href="http://www.java1234.com/javaxuexiluxiantu.html"
 				target="_blank">关于我们</a></li>
-			<li class="layui-nav-item" style="float: right;"><a    onclick="showRegister();return false;" style="padding-left: 8px;padding-right: 8px;  cursor:pointer;" target="_blank">注册</a></li>
-			<li class="layui-nav-item" style="float: right;"><a    onclick="showLogin();return false;" style="padding-left: 8px;padding-right: 8px; cursor:pointer;"   target="_blank">登录</a></li>
+			<li class="layui-nav-item" style="float: right;"
+				th:if="${session.sessionUserInformation!=null}"><a href="/toUserCenterPage"><img
+					th:src="${session.sessionUserInformation.userHead}"
+					class='layui-nav-img' th:text="${session.sessionUserInformation.userName}"></img></a>
+				<dl class="layui-nav-child">
+					<dd>
+						<a onclick="showModifyPassword()">修改密码</a>
+					</dd>
+					<dd>
+						<a onclick="showModifyUserImage()">修改头像</a>
+					</dd>
+					<dd>
+						<a href="/logout">安全退出</a>
+					</dd>
+				</dl></li>
+
+			<li class="layui-nav-item" style="float: right;"
+				th:if="${session.sessionUserInformation!=null}"><a href="/user/personalCenter">个人中心<span
+					class="layui-badge-dot"></span></a></li>
+		    <li th:if="${session.sessionUserInformation==null}"  class="layui-nav-item" style="float: right;"><a    onclick="showRegister();return false;" style="padding-left: 8px;padding-right: 8px;  cursor:pointer;" target="_blank">注册</a></li>
+			<li th:if="${session.sessionUserInformation==null}"  class="layui-nav-item" style="float: right;"><a    onclick="showLogin();return false;" style="padding-left: 8px;padding-right: 8px; cursor:pointer;"   target="_blank">登录</a></li>	
+			
 		</ul>
 </div>
 

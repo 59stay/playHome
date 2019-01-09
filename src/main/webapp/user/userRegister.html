@@ -24,7 +24,11 @@
 			  $("#userName").focus();
 			  return false;
 		  }
-
+		  if($("#userName").val().trim().length< 3 ){
+			  $("#error_div").text("用户名的长度必须3-10位"); 
+			  $("#userName").focus();
+			  return false;
+		  }
 		  if($("#password").val().trim()==""){
 			  $("#error_div").text("请输入密码");
 			  $("#password").focus();
@@ -37,7 +41,7 @@
 			  return false;
 		  }
 
-		  if($("#password").val().length< 6 || $("#confirmPassword").val().length< 6  ){
+		  if($("#password").val().trim().length< 6|| $("#confirmPassword").val().trim().length< 6  ){
 			  $("#error_div").text("密码的长度必须6-30位");
 			  $("#password").focus();
 			  return false;
@@ -67,11 +71,14 @@
 			  shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
 		  $("#register_button").attr('disabled',true);
-		  $.post("/userInformation/register",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#email").val().trim()},function(result){
+		  $.post("/user/userInformation/register",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#email").val().trim()},function(result){
 			  layer.close(index);//关闭弹出层
 			  $("#register_button").attr('disabled',false);//使注册按钮能点击
 			  if(result.success){
-				  layer.msg('恭喜您，注册成功！'); 
+				  layer.close(index);
+				  $("#register_button").attr('disabled',false);
+				  alert("注册成功");
+				 // layer.msg('恭喜您，注册成功！'); 
 				  parent.reloadPage();//刷新父页面（index.html）
 			  }else{
 				  $("#error_div").text(result.errorInfo);
@@ -88,7 +95,7 @@
 	<div style="padding: 20px">
 		<form name="myForm" class="layui-form" action="">
 	     <div class="div_one">
-	      <input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" maxlength="30"  class="layui-input" style="padding-left: 33px;"/>
+	      <input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" maxlength="10"  class="layui-input" style="padding-left: 33px;"/>
 	        <i class="layui-icon  layui-icon-username" style="position: absolute;top:40px;left: 40px;" ></i>
 	     </div>
 

@@ -70,11 +70,11 @@ layui.use(['carousel', 'form'], function(){
 			<div class="data_list_resources">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-game"></i> <span class="head">游戏资源列表</span>
-					<a style="margin-left:970px;"  href="/gameInformation/index"><span class="head">更多...</span></a>
+					<a style="margin-left:970px;"  href="user/gameInformation/index"><span class="head">更多...</span></a>
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
 						</a></li>
@@ -90,11 +90,11 @@ layui.use(['carousel', 'form'], function(){
 			<div class="data_list_resources">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-video"></i> <span class="head">电影资源列表</span>
-					<a style="margin-left:970px;"  href="/gameInformation/index"><span class="head">更多...</span></a>
+					<a style="margin-left:970px;"  href="user/gameInformation/index"><span class="head">更多...</span></a>
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
 						</a></li>
@@ -110,11 +110,11 @@ layui.use(['carousel', 'form'], function(){
 			<div class="data_list_resources">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-read"></i> <span class="head">书籍资源列表</span>
-					<a style="margin-left:970px;"  href="/gameInformation/index"><span class="head">更多...</span></a>
+					<a style="margin-left:970px;"  href="user/gameInformation/index"><span class="head">更多...</span></a>
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
 						</a></li>
@@ -127,11 +127,11 @@ layui.use(['carousel', 'form'], function(){
 			<div class="data_list_resources">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-component"></i> <span class="head">软件资源列表</span>
-					<a style="margin-left:970px;"  href="/gameInformation/index"><span class="head">更多...</span></a>
+					<a style="margin-left:970px;"  href="user/gameInformation/index"><span class="head">更多...</span></a>
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}"></p>
 						</a></li>
