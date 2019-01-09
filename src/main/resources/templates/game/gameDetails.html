@@ -35,7 +35,7 @@
 	    		<div class="title" th:text="${gameInformation.gameTitle}">帖子标题</div>
 		    	<div class="info">
 		    		 <font th:text="${gameInformation.userInformation.userName}">用户昵称</font>&nbsp;&nbsp;
-		    		分享于&nbsp;&nbsp;<font th:text="${gameInformation.gameCreationTime}">分享时间</font>
+		    		分享于&nbsp;&nbsp;<font th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}">分享时间</font>
 		    		&nbsp;&nbsp;查看次数：&nbsp;<font th:text="${gameInformation.gameBrowseFrequency}">-1</font>&nbsp;次
 		    		&nbsp;&nbsp;所需：<font color="red" th:text="${gameInformation.integral}">-1</font>&nbsp;积分
 		    	</div>

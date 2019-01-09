@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,8 +37,8 @@ public class UserInformationController {
 	 * @param bindingResult
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping("register")
+	@ResponseBody
 	public Map<String,Object> registerUserInformation(@Valid UserInformation userInformation,BindingResult bindingResult,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(bindingResult.hasErrors()){

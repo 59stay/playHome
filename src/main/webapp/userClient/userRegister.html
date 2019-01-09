@@ -71,7 +71,7 @@
 			  layer.close(index);//关闭弹出层
 			  $("#register_button").attr('disabled',false);//使注册按钮能点击
 			  if(result.success){
-				  alert("恭喜您，注册成功！");
+				  layer.msg('恭喜您，注册成功！'); 
 				  parent.reloadPage();//刷新父页面（index.html）
 			  }else{
 				  $("#error_div").text(result.errorInfo);
