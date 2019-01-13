@@ -38,27 +38,27 @@ public class GameInformation {
 
 	private Integer gameBrowseFrequency; // 游戏浏览次数
 
-
 	@Column(length = 200)
 	private String gamePicture;// 游戏图片
 
-	private Integer gameSoftware;// 游戏下载方式(1百度云盘 2迅雷下载 3其他)
 
 	@Column(length = 200)
-	private String gameDownloadAddress;// 游戏下载地址
+	private String gameDownloadAddress1;// 游戏下载地址-百度云
 	
 	@Column(length = 100)
-	private String linkPwd; //资源链接密码
+	private String linkPwd; //资源链接密码-百度云
+	
+	@Column(length = 200)
+	private String gameDownloadAddress2;// 游戏下载地址-迅雷
 
 	@Column(length = 500)
 	private String remarks;// 备注
 
 	private Date gameCreationTime;// 创建时间
 
-	
 	@ManyToOne
 	@JoinColumn(name="gameTypeId")
-	private DataDictionary dataDictionary; // 所属类别(5单机游戏 6网络游戏 7手游)
+	private DataDictionary dataDictionary; // 所属类别(5单机游戏 6网络游戏 7手游) 游戏类为A
 	
 	
 	private Integer integral;// 积分
@@ -120,20 +120,21 @@ public class GameInformation {
 		this.gamePicture = gamePicture;
 	}
 
-	public Integer getGameSoftware() {
-		return gameSoftware;
+
+	public String getGameDownloadAddress1() {
+		return gameDownloadAddress1;
 	}
 
-	public void setGameSoftware(Integer gameSoftware) {
-		this.gameSoftware = gameSoftware;
+	public void setGameDownloadAddress1(String gameDownloadAddress1) {
+		this.gameDownloadAddress1 = gameDownloadAddress1;
 	}
 
-	public String getGameDownloadAddress() {
-		return gameDownloadAddress;
+	public String getGameDownloadAddress2() {
+		return gameDownloadAddress2;
 	}
 
-	public void setGameDownloadAddress(String gameDownloadAddress) {
-		this.gameDownloadAddress = gameDownloadAddress;
+	public void setGameDownloadAddress2(String gameDownloadAddress2) {
+		this.gameDownloadAddress2 = gameDownloadAddress2;
 	}
 
 	public String getRemarks() {
@@ -214,5 +215,28 @@ public class GameInformation {
 	public void setGameTitle(String gameTitle) {
 		this.gameTitle = gameTitle;
 	}
+
+	@Override
+	public String toString() {
+		return "GameInformation [gameId=" + gameId + ", gameName=" + gameName + ", gameTitle=" + gameTitle
+				+ ", gameDescribe=" + gameDescribe + ", gameDownloadFrequency=" + gameDownloadFrequency
+				+ ", gameBrowseFrequency=" + gameBrowseFrequency + ", gamePicture=" + gamePicture
+				+ ", gameDownloadAddress1=" + gameDownloadAddress1 + ", linkPwd=" + linkPwd + ", gameDownloadAddress2="
+				+ gameDownloadAddress2 + ", remarks=" + remarks + ", gameCreationTime=" + gameCreationTime
+				+ ", dataDictionary=" + dataDictionary + ", integral=" + integral + ", auditStatus=" + auditStatus
+				+ ", auditDate=" + auditDate + ", userInformation=" + userInformation + ", getGameId()=" + getGameId()
+				+ ", getGameName()=" + getGameName() + ", getGameDescribe()=" + getGameDescribe()
+				+ ", getGameDownloadFrequency()=" + getGameDownloadFrequency() + ", getGameBrowseFrequency()="
+				+ getGameBrowseFrequency() + ", getGamePicture()=" + getGamePicture() + ", getGameDownloadAddress1()="
+				+ getGameDownloadAddress1() + ", getGameDownloadAddress2()=" + getGameDownloadAddress2()
+				+ ", getRemarks()=" + getRemarks() + ", getGameCreationTime()=" + getGameCreationTime()
+				+ ", getIntegral()=" + getIntegral() + ", getAuditStatus()=" + getAuditStatus() + ", getAuditDate()="
+				+ getAuditDate() + ", getUserInformation()=" + getUserInformation() + ", getLinkPwd()=" + getLinkPwd()
+				+ ", getDataDictionary()=" + getDataDictionary() + ", getGameTitle()=" + getGameTitle()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
+	}
+	
+	
 
 }

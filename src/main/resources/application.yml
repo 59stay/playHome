@@ -22,7 +22,7 @@ spring:
 
 lucenePath: C://lucene
 
-articleImageFilePath: D://articleImages/
+gameContentImageFilePath: D://phImage/gameContentImage/
 
 userImageFilePath: D://userImages/
 

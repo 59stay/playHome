@@ -1,0 +1,97 @@
+<meta charset="UTF-8"/>
+<div id="rrPage">
+   	<fieldset class="layui-elem-field layui-field-title">
+	  <legend>发布游戏资源</legend>
+	</fieldset>
+    <div>
+      	<div style="padding-left: 10px">
+      		<form class="layui-form" action="/user/article/add" method="post">
+      			<div class="layui-form-item">
+      			<label class="layui-input-block">
+      				发帖规范，利于seo，必看&nbsp;&nbsp;<a href="http://blog.java1234.com/blog/articles/418.html" target="_blank"><font color="red">发帖规范</font></a>
+      			</label>
+      			</div>
+      			<!-- <div class="layui-upload">
+      			   <label class="layui-form-label">游戏封面：</label>
+				  <button type="button" class="layui-btn" id="test1">上传图片</button>
+				  <div class="layui-upload-list">
+				    <img class="layui-upload-img" id="demo1"></img>
+				    <p id="demoText"></p>
+				  </div>
+				</div>   -->
+      			<div class="layui-form-item">
+				    <label class="layui-form-label">游戏名称：</label>
+				    <div class="layui-input-block">
+				      <input type="text" id="game_name" name="gameName" lay-verify="required" autocomplete="off" placeholder="请输入游戏名称" class="layui-input" maxlength="15"/>
+				    </div>
+				 </div>
+      			<div class="layui-form-item">
+				    <label class="layui-form-label">游戏标题：</label>
+				    <div class="layui-input-block">
+				      <input type="text" id="game_title" name="gameTitle" lay-verify="required" autocomplete="off" placeholder="请输入游戏标题" class="layui-input"  maxlength="50"/>
+				    </div>
+				 </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">积分设置：</label>
+				    <div class="layui-input-inline" >
+				      <select id="points" name="integral" lay-verify="required">
+				        <option value="">请选择积分</option>
+				        <option value="1">1个积分</option>
+				        <option value="2">2个积分</option>
+				        <option value="3">3个积分</option>
+				        <option value="4">4个积分</option>
+				        <option value="5">5个积分</option>
+				        <option value="6">6个积分</option>
+				        <option value="7">7个积分</option>
+				        <option value="8">8个积分</option>
+				        <option value="9">9个积分</option>
+				        <option value="10">10个积分</option>
+				      </select>
+				    </div>
+				  </div>
+				 
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">游戏类别：</label>
+				    <div class="layui-input-inline">
+				      <select id="arcTypeId" name="arcType.id" lay-verify="required">
+				        <option value="">请选择游戏类别</option>
+				        <option th:each="gameDataDictionary:${application.gameDataDictionaryList}" th:value="${gameDataDictionary.dictionaryId}" th:text="${gameDataDictionary.dictionaryName}"></option>
+				      </select>
+				    </div>
+				  </div>
+				  <div class="layui-form-item">
+				    <label class="layui-form-label">游戏描述：</label>
+				    <div class="layui-input-block">
+				    	<textarea id="content" name="gameDescribe" style="display: none;" ></textarea>
+				    </div>
+				 </div>
+				 <div class="layui-form-item"   >
+				   <div class="layui-inline">
+				      <label class="layui-form-label" >分享资源一：</label>
+				      <div class="layui-input-inline" style="width: 500px">
+				        <input type="text" id="game_download_address1" name="gameDownloadAddress1" lay-verify="url" autocomplete="off" placeholder="请输入百度云分享地址" class="layui-input" />
+				      </div>
+				      <div class="layui-input-inline" style="width: 100px">
+				        <input type="text" id="link_pwd" name="linkPwd" autocomplete="off" placeholder="请输入密码" class="layui-input"/>
+				      </div>
+				    </div>
+				 </div>
+				 
+				 <div class="layui-form-item">
+				   <div class="layui-inline">
+				      <label class="layui-form-label" >分享资源二：</label>
+				      <div class="layui-input-inline" style="width: 500px">
+				        <input type="text" id="game_download_address2" name="gameDownloadAddress2" lay-verify="url" autocomplete="off" placeholder="请输入迅雷分享地址" class="layui-input" />
+				      </div>
+				    </div>
+				 </div>
+				 
+				  <div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <button class="layui-btn" lay-submit="" lay-filter="gameSubmit">立即提交</button>
+				    </div>
+				  </div>
+	      		</form>
+	      	</div>
+	    </div>
+</div>

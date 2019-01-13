@@ -1,21 +1,29 @@
 package com.jyb.controller.user;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
 import com.jyb.init.InitSystem;
 import com.jyb.service.GameInformationService;
+import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
 
 @Controller
@@ -24,6 +32,10 @@ public class GameInformationController {
     
 	@Autowired
 	private GameInformationService gameInformationService;
+	
+	@Value("${gameContentImageFilePath}")
+	private String gameContentImageFilePath;
+	
 	
 	/**
 	 * 游戏主页面
@@ -76,6 +88,7 @@ public class GameInformationController {
 		return mv;
 	}
 	
+	
 	@RequestMapping("listDetails/{id}")
 	public ModelAndView listDetails(@PathVariable("id") Integer id){
 		ModelAndView mv = new ModelAndView();
@@ -85,6 +98,37 @@ public class GameInformationController {
 	    mv.setViewName("user/game/gameDetails");
 		return mv;
 	}
+
+	
+	
+	/**
+	 * Layui编辑器图片上传处理
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/uploadImage")
+	public Map<String,Object> uploadImage(MultipartFile file)throws Exception{
+		Map<String,Object> map=new HashMap<String,Object>();
+		if(!file.isEmpty()){
+			// 获取文件名
+			String fileName = file.getOriginalFilename();
+			// 获取文件的后缀名
+			String suffixName = fileName.substring(fileName.lastIndexOf("."));
+			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameContentImageFilePath+DateUtil.getCurrentDatePath()+newFileName));
+			map.put("code", 0);
+			map.put("msg", "上传成功");
+			Map<String,Object> map2=new HashMap<String,Object>();
+			map2.put("title", fileName);
+			map2.put("src", "/layuiGameImage/"+DateUtil.getCurrentDatePath()+newFileName);
+			map.put("data", map2);
+		}
+		return map;
+	}
+	
+	
 	
 	
 }

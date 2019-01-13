@@ -15,8 +15,9 @@ public class DataDictionary {
 
 	@Column(length = 30)
 	private String dictionaryName;// 字典名称
-
-	private Integer dictionaryType; // 字典类型 (1游戏 2电影)
+	
+	@Column(length = 30)
+	private String dictionaryType; // 字典类型 (A游戏 B电影)
 
 	private Integer dictionarySort; // 字典排序
 
@@ -36,11 +37,11 @@ public class DataDictionary {
 		this.dictionaryName = dictionaryName;
 	}
 
-	public Integer getDictionaryType() {
+	public String getDictionaryType() {
 		return dictionaryType;
 	}
 
-	public void setDictionaryType(Integer dictionaryType) {
+	public void setDictionaryType(String dictionaryType) {
 		this.dictionaryType = dictionaryType;
 	}
 
@@ -57,5 +58,7 @@ public class DataDictionary {
 		return "DataDictionary [dictionaryId=" + dictionaryId + ", dictionaryName=" + dictionaryName
 				+ ", dictionaryType=" + dictionaryType + ", dictionarySort=" + dictionarySort + "]";
 	}
+
+ 
 
 }

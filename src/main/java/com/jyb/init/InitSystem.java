@@ -46,7 +46,7 @@ public class InitSystem implements ServletContextListener,ApplicationContextAwar
 		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.listPage(null, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
 		List<FriendshipLink> friendshipLinkList=friendshipLinkService.listAll(Sort.Direction.ASC, "linkId");
 		DataDictionary gameDataDictionary = new DataDictionary();
-		gameDataDictionary.setDictionaryType(2);
+		gameDataDictionary.setDictionaryType("A");
 		List<DataDictionary> gameDataDictionaryList = dataDictionaryService.listAll(gameDataDictionary, Sort.Direction.ASC, "dictionarySort");
 		for (DataDictionary gddl : gameDataDictionaryList) {
 			dataDictionaryMap.put(gddl.getDictionaryId(),gddl);
