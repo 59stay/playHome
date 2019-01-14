@@ -29,7 +29,7 @@ public class PersonalCenterController {
     @RequestMapping("/toReleaseResource")
     public ModelAndView toPublishArticlePage(){
     	ModelAndView mav=new ModelAndView();
-    	mav.setViewName("user/personalCenter/releaseResource");
+    	mav.setViewName("user/personalCenter/publishingResources");
         return mav;
     }
     

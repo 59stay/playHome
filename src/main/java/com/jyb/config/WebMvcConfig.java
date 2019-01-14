@@ -14,7 +14,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	//游戏内容回显图片
-	registry.addResourceHandler("/layuiGameImage/**").addResourceLocations("file:D:\\phImage\\gameContentImage\\");
+	registry.addResourceHandler("/gameContentImage/**").addResourceLocations("file:D:\\phImage\\gameContentImage\\");
+	registry.addResourceHandler("/gameCoverImage/**").addResourceLocations("file:D:\\phImage\\gameCoverImage\\");
   }
  
 }

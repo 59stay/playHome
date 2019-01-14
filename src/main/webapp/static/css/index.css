@@ -43,15 +43,16 @@
 	height: 200px;
 }
 
+.data_list_resources .datas .imageUl .imageLi img{
+    width: 120px;
+    height: 150px;
+}
+
 .data_list_resources .datas .imageUl .imageLi p{
 	overflow: hidden;
 	text-align: center;
 	padding-top: 15px;
 }
-
-
-
-
 
 
 /*友情链接区样式*/

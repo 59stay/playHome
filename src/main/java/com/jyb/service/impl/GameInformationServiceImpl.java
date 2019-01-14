@@ -77,4 +77,10 @@ public class GameInformationServiceImpl implements GameInformationService {
 		return gameInformationRepository.getOne(id);
 	}
 
+	@Override
+	public void save(GameInformation gameInfo) {
+		// TODO Auto-generated method stub
+		gameInformationRepository.save(gameInfo);
+	}
+
 }

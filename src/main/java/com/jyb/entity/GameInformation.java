@@ -39,7 +39,7 @@ public class GameInformation {
 	private Integer gameBrowseFrequency; // 游戏浏览次数
 
 	@Column(length = 200)
-	private String gamePicture;// 游戏图片
+	private String gamePicture;// 游戏封面
 
 
 	@Column(length = 200)

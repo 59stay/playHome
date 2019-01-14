@@ -32,5 +32,11 @@ public interface GameInformationService  {
    */
   public GameInformation getId(Integer id);
   
+  /**
+   * 添加或者修改游戏信息
+   * @param gameInfo
+   */
+  public void save(GameInformation gameInfo);
+  
   
 }

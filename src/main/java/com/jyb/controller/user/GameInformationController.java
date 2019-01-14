@@ -1,11 +1,13 @@
 package com.jyb.controller.user;
 
 import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.UserInformation;
 import com.jyb.init.InitSystem;
 import com.jyb.service.GameInformationService;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
+import com.jyb.util.StringUtil;
 
 @Controller
 @RequestMapping("user/gameInformation")
@@ -35,6 +39,10 @@ public class GameInformationController {
 	
 	@Value("${gameContentImageFilePath}")
 	private String gameContentImageFilePath;
+	
+
+	@Value("${gameCoverImageFilePath}")
+	private String gameCoverImageFilePath;
 	
 	
 	/**
@@ -98,8 +106,33 @@ public class GameInformationController {
 	    mv.setViewName("user/game/gameDetails");
 		return mv;
 	}
-
-	
+    /**
+     * 游戏封面图片上传处理
+     * @param file
+     * @param session
+     * @return
+     * @throws Exception
+     */
+	@ResponseBody
+	@RequestMapping("/uploadCoverImage")
+	public Map<String,Object> uploadCoverImage(MultipartFile file)throws Exception{
+		Map<String,Object> map=new HashMap<String,Object>();
+		if(!file.isEmpty()){
+			// 获取文件名
+			String fileName = file.getOriginalFilename();
+			// 获取文件的后缀名
+			String suffixName = fileName.substring(fileName.lastIndexOf("."));
+			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameCoverImageFilePath+DateUtil.getCurrentDatePath()+newFileName));
+			map.put("code", 0);
+			map.put("msg", "上传成功");
+			Map<String,Object> map2=new HashMap<String,Object>();
+			map2.put("title", newFileName);
+			map2.put("src", "/gameCoverImage/"+DateUtil.getCurrentDatePath()+newFileName);
+			map.put("data", map2);
+		}
+		return map;
+	}
 	
 	/**
 	 * Layui编辑器图片上传处理
@@ -108,8 +141,8 @@ public class GameInformationController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping("/uploadImage")
-	public Map<String,Object> uploadImage(MultipartFile file)throws Exception{
+	@RequestMapping("/uploadContentImage")
+	public Map<String,Object> uploadContentImage(MultipartFile file)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
 		if(!file.isEmpty()){
 			// 获取文件名
@@ -121,13 +154,28 @@ public class GameInformationController {
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
-			map2.put("title", fileName);
-			map2.put("src", "/layuiGameImage/"+DateUtil.getCurrentDatePath()+newFileName);
+			map2.put("title", newFileName);
+			map2.put("src", "/gameContentImage/"+DateUtil.getCurrentDatePath()+newFileName);
 			map.put("data", map2);
 		}
 		return map;
 	}
 	
+	@RequestMapping("/add")
+	public ModelAndView addGameInformation(GameInformation gameInfo,HttpSession session){
+		UserInformation userInformation =(UserInformation) session.getAttribute("sessionUserInformation");
+		userInformation.getUserId();
+		gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
+		gameInfo.setGameDownloadFrequency(StringUtil.randomInteger());
+		gameInfo.setGameCreationTime(new Date());
+		gameInfo.setAuditStatus(0);
+		gameInfo.setUserInformation(userInformation);
+		gameInformationService.save(gameInfo);
+		ModelAndView mav=new ModelAndView();
+    	mav.addObject("title", "发布游戏成功页面");
+    	mav.setViewName("user/userTemplate/showSuccess");
+		return mav;
+	}
 	
 	
 	

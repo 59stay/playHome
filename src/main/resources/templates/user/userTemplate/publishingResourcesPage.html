@@ -5,21 +5,27 @@
 	</fieldset>
     <div>
       	<div style="padding-left: 10px">
-      		<form class="layui-form" action="/user/article/add" method="post">
+      		<form class="layui-form" action="/user/gameInformation/add" method="post">
       			<div class="layui-form-item">
       			<label class="layui-input-block">
       				发帖规范，利于seo，必看&nbsp;&nbsp;<a href="http://blog.java1234.com/blog/articles/418.html" target="_blank"><font color="red">发帖规范</font></a>
       			</label>
       			</div>
-      			<!-- <div class="layui-upload">
-      			   <label class="layui-form-label">游戏封面：</label>
-				  <button type="button" class="layui-btn" id="test1">上传图片</button>
-				  <div class="layui-upload-list">
-				    <img class="layui-upload-img" id="demo1"></img>
-				    <p id="demoText"></p>
-				  </div>
-				</div>   -->
-      			<div class="layui-form-item">
+      			
+				<div class="layui-form-item">
+				<input id="game_picture" type="hidden" value="" name="gamePicture"></input>
+						<div class="layui-upload-list" style="float: left;">
+						<label class="layui-form-label">游戏封面：</label>
+						 <img class="layui-upload-img" id="uploadImage" ></img>
+							<p id="demoText"></p>
+						</div>
+						<div class="layui-upload" style="float: left; margin-top: 10px;">
+							<button type="button" class="layui-btn" id="uploadGameBtn">上传图片</button>
+							<div class="layui-inline layui-word-aux">封面大小限制60KB</div>
+						</div>
+				</div>
+
+				<div class="layui-form-item">
 				    <label class="layui-form-label">游戏名称：</label>
 				    <div class="layui-input-block">
 				      <input type="text" id="game_name" name="gameName" lay-verify="required" autocomplete="off" placeholder="请输入游戏名称" class="layui-input" maxlength="15"/>

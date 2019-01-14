@@ -21,9 +21,12 @@ spring:
 
 
 lucenePath: C://lucene
-
+# 游戏封面图片路径
+gameCoverImageFilePath: D://phImage/gameCoverImage/
+# 游戏内容图片路径
 gameContentImageFilePath: D://phImage/gameContentImage/
 
+# 用户头像路径
 userImageFilePath: D://userImages/
 
 #lucenePath: /home/lucene

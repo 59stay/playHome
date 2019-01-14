@@ -12,21 +12,54 @@ margin-left:120px;
 .layui-form-label {
 width: 90px;
 }
+.layui-upload-img{width:180px; height: 230px; margin: 0 10px 10px 0;}
+
 </style>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
-	/*<![CDATA[*/  
-	layui.use(['element','form','layedit'], function(){
+/*<![CDATA[*/  
+	layui.use(['element','form','layedit','upload'], function(){
 	//  document.getElementById("d1").className='layui-this'
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-		  var $ = layui.jquery; // 使用jquery
+		  var $ = layui.jquery,upload = layui.upload;
 		  var layedit=layui.layedit;
+		  
+		  //普通图片上传
+		  var uploadInst = upload.render({
+		     elem: '#uploadGameBtn'
+		    ,url: '/user/gameInformation/uploadCoverImage'
+		    ,size: 60 //限制文件大小，单位 KB
+		    ,before: function(obj){
+		      //预读本地文件示例，不支持ie8
+		      obj.preview(function(index, file, result){
+		        $('#uploadImage').attr('src', result); //图片链接（base64）
+		      });
+		    }
+		    ,done: function(res){
+		      //如果上传失败
+		      if(res.code > 0){
+		        return layer.msg('上传失败');
+		      }else{
+		    	  $("#game_picture").attr("value",res.data.src);//图片路径
+		      }
+		      //上传成功
+		    }
+		    ,error: function(){
+		      //演示失败状态，并实现重传
+		      var demoText = $('#demoText');
+		      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+		      demoText.find('.demo-reload').on('click', function(){
+		        uploadInst.upload();
+		      });
+		    }
+		  });
+		  
 		  var index=layedit.build('content',{
 			  uploadImage:{
-				  url:'/user/gameInformation/uploadImage',
+				  url:'/user/gameInformation/uploadContentImage',
 				  type:'post'
 			  }
 		  });
@@ -41,14 +74,8 @@ width: 90px;
 			$("#content").val(content);
 		    return true;
 		  });
-		  
-		
-	});
-
-	
-	/*]]>*/
-	
-	
+	   });
+/*]]>*/
 	
 </script>
 </head>
@@ -59,7 +86,7 @@ width: 90px;
 <div class="w1170">
 <div style="float: left;width: 200px" th:include="common/personalCenterMenu::#pcMenu">
     </div>
-    <div style="float: right;width: 960px" th:include="user/userTemplate/releaseResourcePage::#rrPage">
+    <div style="float: right;width: 960px" th:include="user/userTemplate/publishingResourcesPage::#rrPage">
     </div>
 </div>
 </body>
