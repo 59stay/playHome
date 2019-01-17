@@ -173,7 +173,7 @@ public class GameInformationController {
 		gameInformationService.save(gameInfo);
 		ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "发布游戏成功页面");
-    	mav.setViewName("user/userTemplate/showSuccess");
+    	mav.setViewName("user/game/publishGameSuccess");
 		return mav;
 	}
 	

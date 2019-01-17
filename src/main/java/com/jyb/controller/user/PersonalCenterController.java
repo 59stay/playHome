@@ -23,13 +23,13 @@ public class PersonalCenterController {
     }
     
     /**
-	 * 用户中心-发布资源
+	 * 用户中心-发布游戏资源
 	 * @return
 	 */
     @RequestMapping("/toReleaseResource")
     public ModelAndView toPublishArticlePage(){
     	ModelAndView mav=new ModelAndView();
-    	mav.setViewName("user/personalCenter/publishingResources");
+    	mav.setViewName("user/game/publishGameResources");
         return mav;
     }
     

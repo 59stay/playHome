@@ -1,0 +1,66 @@
+<!-- 个人中心-首页右功能菜单 -->
+<meta charset="UTF-8" />
+<div id="lm">
+	<!-- 	<ul class="layui-nav layui-nav-tree layui-inline"  style="margin-right: 10px;">
+	  <li class="layui-nav-item layui-nav-itemed">
+	    <a href="javascript:;">功能菜单</a>
+	    <dl class="layui-nav-child">
+	      <dd><a href="/personalCenter/toReleaseResource">发布资源</a></dd>
+	      <dd><a href="/user/article/toArticleManagePage">资源管理</a></dd>
+	      <dd><a href="/user/article/toUnUsefulArticleManagePage" >失效资源管理<span class="layui-badge" id="unUsefulArticleCount" th:if="${session.unUsefulArticleCount!=0}"  th:text="${session.unUsefulArticleCount}"></span></a></dd>
+	      <dd><a href="/user/comment/toCommentManagePage">评论管理</a></dd>
+	      <dd><a href="/user/userDownload/list/1">已下载资源</a></dd>
+	      <dd><a href="/user/message/list/1">系统消息</a></dd>
+	    </dl>
+	  </li>
+	</ul> -->
+	<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo"
+		style="margin-right: 10px;">
+			<li  class="layui-nav-item" style="font-size: 20px; text-align: center;" > 功能菜单 </li>
+	</ul>
+	<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" 
+		style="margin-right: 10px;">
+		<li class="layui-nav-item  "><a
+			href="javascript:;">发布资源 </a>
+			<dl class="layui-nav-child">
+				<dd id="d1">
+					 <a href="/personalCenter/toReleaseResource">游戏资源</a>
+				</dd>
+				<dd>
+					<a href="javascript:;">电影资源</a>
+				</dd>
+				<dd>
+					<a href="javascript:;">书籍资源</a>
+				</dd>
+			</dl></li>
+		<li class="layui-nav-item"><a href="javascript:;">资源管理</a>
+			<dl class="layui-nav-child">
+				<dd>
+					<a href="">游戏资源列表</a>
+				</dd>
+				<dd>
+					<a href="">电影资源列表</a>
+				</dd>
+				<dd>
+					<a href="">书籍资源列表</a>
+				</dd>
+			</dl></li>
+		<li class="layui-nav-item"><a href="javascript:;">失效资源管理</a>
+			<dl class="layui-nav-child">
+				<dd>
+					<a href="">失效游戏链接</a>
+				</dd>
+				<dd>
+					<a href="">失效电影链接</a>
+				</dd>
+				<dd>
+					<a href="">失效书籍链接</a>
+				</dd>
+			</dl></li>
+		
+		
+		<li class="layui-nav-item"><a href="">评论管理</a></li>
+		<li class="layui-nav-item"><a href="">已下载资源</a></li>
+		<li class="layui-nav-item"><a href="">系统消息</a></li>
+	</ul>
+</div>
