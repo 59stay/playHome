@@ -59,7 +59,7 @@
 				  <div class="layui-form-item">
 				    <label class="layui-form-label">游戏类别：</label>
 				    <div class="layui-input-inline">
-				      <select id="arcTypeId" name="arcType.id" lay-verify="required">
+				      <select   name="dataDictionary.dictionaryId" lay-verify="required">
 				        <option value="">请选择游戏类别</option>
 				        <option th:each="gameDataDictionary:${application.gameDataDictionaryList}" th:value="${gameDataDictionary.dictionaryId}" th:text="${gameDataDictionary.dictionaryName}"></option>
 				      </select>

@@ -63,7 +63,10 @@ public class GameInformation {
 	
 	private Integer integral;// 积分
 
-	private Integer auditStatus;// 审核状态 （0待审核 1审核通过 2审核未通过）
+	private Integer auditStatus;// 审核状态 （1待审核 2审核通过 3审核未通过）
+	
+	@Column(length = 200)
+    private String reason;// 审核未通过原因
 
 	private Date auditDate;// 审核日期
 
@@ -216,6 +219,16 @@ public class GameInformation {
 		this.gameTitle = gameTitle;
 	}
 
+	
+	
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	@Override
 	public String toString() {
 		return "GameInformation [gameId=" + gameId + ", gameName=" + gameName + ", gameTitle=" + gameTitle
@@ -224,19 +237,8 @@ public class GameInformation {
 				+ ", gameDownloadAddress1=" + gameDownloadAddress1 + ", linkPwd=" + linkPwd + ", gameDownloadAddress2="
 				+ gameDownloadAddress2 + ", remarks=" + remarks + ", gameCreationTime=" + gameCreationTime
 				+ ", dataDictionary=" + dataDictionary + ", integral=" + integral + ", auditStatus=" + auditStatus
-				+ ", auditDate=" + auditDate + ", userInformation=" + userInformation + ", getGameId()=" + getGameId()
-				+ ", getGameName()=" + getGameName() + ", getGameDescribe()=" + getGameDescribe()
-				+ ", getGameDownloadFrequency()=" + getGameDownloadFrequency() + ", getGameBrowseFrequency()="
-				+ getGameBrowseFrequency() + ", getGamePicture()=" + getGamePicture() + ", getGameDownloadAddress1()="
-				+ getGameDownloadAddress1() + ", getGameDownloadAddress2()=" + getGameDownloadAddress2()
-				+ ", getRemarks()=" + getRemarks() + ", getGameCreationTime()=" + getGameCreationTime()
-				+ ", getIntegral()=" + getIntegral() + ", getAuditStatus()=" + getAuditStatus() + ", getAuditDate()="
-				+ getAuditDate() + ", getUserInformation()=" + getUserInformation() + ", getLinkPwd()=" + getLinkPwd()
-				+ ", getDataDictionary()=" + getDataDictionary() + ", getGameTitle()=" + getGameTitle()
-				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
-				+ "]";
+				+ ", reason=" + reason + ", auditDate=" + auditDate + ", userInformation=" + userInformation + "]";
 	}
-	
-	
+
 
 }

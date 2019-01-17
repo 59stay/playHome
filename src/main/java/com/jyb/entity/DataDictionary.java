@@ -14,10 +14,10 @@ public class DataDictionary {
 	private Integer dictionaryId; // 主键id
 
 	@Column(length = 30)
-	private String dictionaryName;// 字典名称
+	private String dictionaryName;// 字典名称类型
 	
 	@Column(length = 30)
-	private String dictionaryType; // 字典类型 (A游戏 B电影)
+	private String dictionaryType; // 字典大类型 (A游戏 B电影)
 
 	private Integer dictionarySort; // 字典排序
 

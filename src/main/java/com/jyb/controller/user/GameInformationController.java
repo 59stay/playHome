@@ -53,7 +53,7 @@ public class GameInformationController {
 	 public ModelAndView index(HttpServletRequest request){
 		    request.getSession().setAttribute("tMenu", "t_0");
 		    GameInformation gameIndfo  = new GameInformation();
-	    	gameIndfo.setAuditStatus(1);
+	    	gameIndfo.setAuditStatus(2);//显示审核通过的
 	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameIndfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
 	    	Long total = gameInformationService.getCount(gameIndfo);
 	    	ModelAndView mv = new ModelAndView();
@@ -73,7 +73,7 @@ public class GameInformationController {
 	public ModelAndView list(@RequestParam(value="gameTypeId",required=false)Integer gameTypeId,@PathVariable(value="page",required=false) Integer page,HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
 		GameInformation gameInfo = new GameInformation();
-		gameInfo.setAuditStatus(1);
+		gameInfo.setAuditStatus(2);
 		if(gameTypeId==null){
 			mv.addObject("title","宅着玩资源网站 - 宅游戏 - 第"+page+"页");
 		}else{
@@ -160,7 +160,12 @@ public class GameInformationController {
 		}
 		return map;
 	}
-	
+	/**
+	 * 用户发布游戏信息
+	 * @param gameInfo
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/add")
 	public ModelAndView addGameInformation(GameInformation gameInfo,HttpSession session){
 		UserInformation userInformation =(UserInformation) session.getAttribute("sessionUserInformation");
@@ -176,6 +181,72 @@ public class GameInformationController {
     	mav.setViewName("user/game/publishGameSuccess");
 		return mav;
 	}
+	
+	
+	/**
+	 * 用户修改游戏信息
+	 * @param article
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/update")
+	public ModelAndView update(GameInformation gameInfo)throws Exception{
+	    GameInformation gameInformation=gameInformationService.getId(gameInfo.getGameId());
+	    gameInformation.setGameName(gameInfo.getGameName());
+	    gameInformation.setGameTitle(gameInfo.getGameTitle());
+	    gameInformation.setGamePicture(gameInfo.getGamePicture());
+	    gameInformation.setGameDescribe(gameInfo.getGameDescribe());
+	    gameInformation.setGameDownloadAddress1(gameInfo.getGameDownloadAddress1());
+	    gameInformation.setLinkPwd(gameInfo.getLinkPwd());
+	    gameInformation.setGameDownloadAddress2(gameInfo.getGameDownloadAddress2());
+	    gameInformation.setDataDictionary(gameInfo.getDataDictionary());
+	    if(gameInformation.getAuditStatus()==3){
+	      gameInformation.setAuditStatus(1);	
+	    }
+	    gameInformationService.save(gameInformation);
+		ModelAndView mav=new ModelAndView();
+    	mav.addObject("title", "修改游戏成功页面");
+    	mav.setViewName("user/game/modifyGameSuccess");
+        return mav;
+	}
+	
+	/**
+	 * 根据条件分页查询用户发布的游戏资源信息
+	 * @param s_gameInformation
+	 * @param page
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/userGameList")
+	public Map<String,Object> list(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
+		Map<String, Object> resultMap = new HashMap<>();
+		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		s_gameInformation.setUserInformation(userInformation);
+		List<GameInformation> articleList=gameInformationService.listPage(s_gameInformation, page, limit,Sort.Direction.DESC,"gameCreationTime");
+		Long count=gameInformationService.getCount(s_gameInformation);
+		resultMap.put("code", 0);
+		resultMap.put("count", count);
+		resultMap.put("data", articleList);
+		return resultMap;
+	}
+
+	/**
+	 * 根据id删除帖子
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/delete")
+	public Map<String,Object> delete(Integer id)throws Exception{
+		Map<String, Object> resultMap = new HashMap<>();
+		gameInformationService.delete(id);
+		resultMap.put("success", true);
+		return resultMap;
+	}
+
 	
 	
 	

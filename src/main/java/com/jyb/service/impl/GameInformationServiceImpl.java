@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.jyb.entity.GameInformation;
 import com.jyb.repository.GameInformationRepository;
 import com.jyb.service.GameInformationService;
+import com.jyb.util.StringUtil;
 
 @Service("gameInformationService")
 public class GameInformationServiceImpl implements GameInformationService {
@@ -35,6 +36,12 @@ public class GameInformationServiceImpl implements GameInformationService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(gameInfo!=null){
+					if(gameInfo.getUserInformation()!=null && StringUtil.isNotEmpty(gameInfo.getUserInformation().getUserName())){
+						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+gameInfo.getUserInformation().getUserName()+"%"));
+					}
+					if(StringUtil.isNotEmpty(gameInfo.getGameName())){
+						predicate.getExpressions().add(cb.like(root.get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
+					}
 					if(gameInfo.getAuditStatus()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("auditStatus"), gameInfo.getAuditStatus()));
 					}
@@ -42,7 +49,6 @@ public class GameInformationServiceImpl implements GameInformationService {
 						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("dictionaryId"),gameInfo.getDataDictionary().getDictionaryId() ));
 					}	
 				}
-				
 				return predicate;
 			}
 		},pageable);
@@ -58,12 +64,18 @@ public class GameInformationServiceImpl implements GameInformationService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(gameInfo!=null){
+					if(gameInfo.getUserInformation()!=null && StringUtil.isNotEmpty(gameInfo.getUserInformation().getUserName())){
+						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+gameInfo.getUserInformation().getUserName()+"%"));
+					}
 					if(gameInfo.getAuditStatus()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("auditStatus"), gameInfo.getAuditStatus()));
 					}
-				}
-				if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getDictionaryId()!=null ){
-					predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("dictionaryId"),gameInfo.getDataDictionary().getDictionaryId() ));
+					if(StringUtil.isNotEmpty(gameInfo.getGameName())){
+						predicate.getExpressions().add(cb.like(root.get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
+					}
+					if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getDictionaryId()!=null ){
+						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("dictionaryId"),gameInfo.getDataDictionary().getDictionaryId() ));
+					}
 				}
 				return predicate;
 			}
@@ -81,6 +93,12 @@ public class GameInformationServiceImpl implements GameInformationService {
 	public void save(GameInformation gameInfo) {
 		// TODO Auto-generated method stub
 		gameInformationRepository.save(gameInfo);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		gameInformationRepository.delete(id);
 	}
 
 }

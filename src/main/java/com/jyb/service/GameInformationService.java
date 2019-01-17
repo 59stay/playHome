@@ -38,5 +38,11 @@ public interface GameInformationService  {
    */
   public void save(GameInformation gameInfo);
   
+  /**
+   * 删除游戏信息
+   * @param id
+   */
+  public void delete(Integer id);
+  
   
 }
