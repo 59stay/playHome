@@ -220,7 +220,7 @@ public class GameInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/userGameList")
-	public Map<String,Object> list(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
+	public Map<String,Object> userGame(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
 		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
 		s_gameInformation.setUserInformation(userInformation);

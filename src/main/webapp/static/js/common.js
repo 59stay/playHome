@@ -18,6 +18,19 @@ function showRegister(){
 		}); 
 }
 /**
+ * 修改失效资源链接
+ * @param id
+ */
+function modifyLink(id){
+	layer.open({
+		  type: 2,
+		  title: '修复资源分享链接',
+		  area: ['700px', '260px'],
+		  content: '/user/common/modifyShareLink.html?id='+id //iframe的url
+		});
+}
+
+/**
  * 刷新父页面
  */
 function reloadPage(){

@@ -66,6 +66,16 @@ public class PersonalCenterController {
         return mav;
     }
     
-    
+    /**
+     * 个人中心-失效链接管理
+     * @return
+     */
+    @RequestMapping("/toInvalidLinkManagement")
+    public ModelAndView toInvalidLinkManagement(){
+    	ModelAndView mav=new ModelAndView();
+    	mav.addObject("title", "失效链接信息管理页面");
+    	mav.setViewName("user/personalCenter/InvalidLinkManagement");
+        return mav;
+    }
 	
 }

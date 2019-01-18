@@ -49,7 +49,7 @@ public class GameInformation {
 	private String linkPwd; //资源链接密码-百度云
 	
 	@Column(length = 200)
-	private String gameDownloadAddress2;// 游戏下载地址-迅雷
+	private String gameDownloadAddress2;// 游戏下载地址-其他地址
 
 	@Column(length = 500)
 	private String remarks;// 备注
@@ -69,10 +69,14 @@ public class GameInformation {
     private String reason;// 审核未通过原因
 
 	private Date auditDate;// 审核日期
+	
+	private boolean isUseful=true; // 资源链接是否有效 true 有效 false 无效 默认有效
 
 	@ManyToOne
 	@JoinColumn(name = "foreignKeyUserId")
 	private UserInformation userInformation;// 所属用户
+	
+	
 
 	public Integer getGameId() {
 		return gameId;
@@ -201,8 +205,6 @@ public class GameInformation {
 		this.linkPwd = linkPwd;
 	}
 
-
-
 	public DataDictionary getDataDictionary() {
 		return dataDictionary;
 	}
@@ -218,8 +220,6 @@ public class GameInformation {
 	public void setGameTitle(String gameTitle) {
 		this.gameTitle = gameTitle;
 	}
-
-	
 	
 	public String getReason() {
 		return reason;
@@ -227,6 +227,14 @@ public class GameInformation {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public boolean isUseful() {
+		return isUseful;
+	}
+
+	public void setUseful(boolean isUseful) {
+		this.isUseful = isUseful;
 	}
 
 	@Override
@@ -237,8 +245,11 @@ public class GameInformation {
 				+ ", gameDownloadAddress1=" + gameDownloadAddress1 + ", linkPwd=" + linkPwd + ", gameDownloadAddress2="
 				+ gameDownloadAddress2 + ", remarks=" + remarks + ", gameCreationTime=" + gameCreationTime
 				+ ", dataDictionary=" + dataDictionary + ", integral=" + integral + ", auditStatus=" + auditStatus
-				+ ", reason=" + reason + ", auditDate=" + auditDate + ", userInformation=" + userInformation + "]";
+				+ ", reason=" + reason + ", auditDate=" + auditDate + ", isUseful=" + isUseful + ", userInformation="
+				+ userInformation + "]";
 	}
+
+
 
 
 }

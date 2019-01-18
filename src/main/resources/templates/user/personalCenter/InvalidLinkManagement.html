@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title th:text="${title}+'-宅着玩'"></title>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<link rel="stylesheet" href="/static/css/personalCenter.css" />
+<style type="text/css">
+.layui-input-block{
+margin-left:120px;
+}
+.layui-form-label {
+width: 90px;
+}
+.layui-upload-img{width:180px; height: 230px; margin: 0 10px 10px 0;}
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/common.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/  
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  table = layui.table;
+		  table.render({
+			    elem: '#InvalidLinkListTable'
+			    ,limits:[10,20,30]
+			    ,url:'/user/invalidLink/userInvalidLinkList'
+		    	,where:{
+		    		useful:false
+				}
+			    ,cols: [[
+			       {type:'numbers',width:40}
+			      ,{field:'invalidName',  title: '资源名称' }
+			      ,{field:'largeCategory',  title: '资源类别',templet:formatLargeCategory}
+			      ,{field:'creationTime', width:180, title: '发布日期', sort: true,align:'center'}
+			      ,{field:'action', width:150, title: '操作',align:'center',templet:formatAction}
+			    ]]
+			    ,page: true
+			  });
+         });
+         
+   function formatLargeCategory(data){
+		if(data.largeCategory=="A"){
+			return "游戏类";
+		}else if(data.largeCategory=="B"){
+			return "电影类";
+		}else if(data.largeCategory=="C"){
+			return "书籍类";
+		}else{
+			return "软件类";
+		}
+	}
+   function formatAction(data){
+		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyLink("+data.id+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
+	}
+   
+  
+/*]]>*/
+	
+</script>
+</head>
+
+
+<body>
+<div class="w1170" style="padding-bottom: 10px; overflow: visible;" th:include="common/head::#head"></div>
+<div class="w1170">
+		<div style="float: left; width: 200px"
+			th:include="user/personalCenter/leftMenu::#lm"></div>
+		 <div style="float: right; width: 970px"
+			th:include="user/personalCenter/page/InvalidLinkManagementPage::#ilmPage">
+		</div>
+	</div>
+</body>
+</html>
