@@ -10,12 +10,20 @@
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
 	/*<![CDATA[*/
-	layui.use([ 'element' ], function() {
+	layui.use([ 'element','laypage','form' ], function() {
 		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		var tMenu = [[${session.tMenu}]];
 		$("#"+tMenu).css("color","red");
 	});
-
+	function submitData(){
+		var userReviews=$("#reviewsInformation").val();
+		$.post("/user/userReviews/add",{"resourcesId":[[${gameInformation.gameId}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
+			if(result.success){
+				$("#reviewsInformation").val("");
+				layer.msg("评论成功，稍后显示！");
+			}
+		},"json");
+	}
 	/*]]>*/
 </script>
 </head>
@@ -27,27 +35,58 @@
 	<div class="w1170">
 		<div class="pLeft">
 			<div class="data_list_resources">
-					<div class="data_list_title">
-    			<i class="layui-icon layui-icon-app"></i>
-				<span class="head">帖子信息</span>
-    		</div>
-	    	<div class="article">
-	    		<div class="title" th:text="${gameInformation.gameTitle}">帖子标题</div>
-		    	<div class="info">
-		    		 <font th:text="${gameInformation.userInformation.userName}">用户昵称</font>&nbsp;&nbsp;
-		    		分享于&nbsp;&nbsp;<font th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}">分享时间</font>
-		    		&nbsp;&nbsp;查看次数：&nbsp;<font th:text="${gameInformation.gameBrowseFrequency}">-1</font>&nbsp;次
-		    		&nbsp;&nbsp;所需：<font color="red" th:text="${gameInformation.integral}">-1</font>&nbsp;积分
-		    	</div>
-		    	<div align="center">
-		    		<div class="bshare-custom"><div class="bsPromo bsPromo2"></div><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
-		    	</div>
-		    	<div class="downloadBtn">
-	    			<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
-	    			<button class="layui-btn layui-btn-radius" onclick="vipDownload()" style="background-color: red">&nbsp;&nbsp;VIP免积分下载&nbsp;&nbsp;</button>
-	    		</div> 
-	    		<div id="content" class="content" th:utext="${gameInformation.gameDescribe}"></div> 
-	    	</div>
+				<div class="data_list_title">
+					<i class="layui-icon layui-icon-app"></i> <span class="head">帖子信息</span>
+				</div>
+				<div class="article">
+					<div class="title" th:text="${gameInformation.gameTitle}">帖子标题</div>
+					<div class="info">
+						<font th:text="${gameInformation.userInformation.userName}">用户昵称</font>&nbsp;&nbsp;
+						分享于&nbsp;&nbsp;<font
+							th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}">分享时间</font>
+						&nbsp;&nbsp;查看次数：&nbsp;<font
+							th:text="${gameInformation.gameBrowseFrequency}">-1</font>&nbsp;次
+						&nbsp;&nbsp;所需：<font color="red"
+							th:text="${gameInformation.integral}">-1</font>&nbsp;积分
+					</div>
+					<div align="center">
+						<div class="bshare-custom">
+							<div class="bsPromo bsPromo2"></div>
+							<a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博"
+								class="bshare-sinaminiblog"></a><a title="分享到人人网"
+								class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a
+								title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台"
+								class="bshare-more bshare-more-icon more-style-addthis"></a><span
+								class="BSHARE_COUNT bshare-share-count" style="float: none;">0</span>
+						</div>
+						<script type="text/javascript" charset="utf-8"
+							src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
+						<script type="text/javascript" charset="utf-8"
+							src="http://static.bshare.cn/b/bshareC0.js"></script>
+					</div>
+					<div class="downloadBtn">
+						<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
+						<button class="layui-btn layui-btn-radius" onclick="vipDownload()"
+							style="background-color: red">&nbsp;&nbsp;VIP免积分下载&nbsp;&nbsp;</button>
+					</div>
+					<div id="content" class="content"
+						th:utext="${gameInformation.gameDescribe}"></div>
+				</div>
+			</div>
+           <!-- 用户评论区 -->
+			<div class="data_list_resources" style="margin-top: 10px">
+				<div class="data_list_title">
+					<i class="layui-icon layui-icon-dialogue"></i> <span class="head">评论信息</span>&nbsp;&nbsp;<font
+						style="color: #999;" ></font>
+				</div>
+				<div  class="userReviews">
+					<textarea id="reviewsInformation" placeholder="请输入评论信息"
+						class="layui-textarea"></textarea>
+					<button class="layui-btn layui-btn-radius  layui-btn-sm"
+						onclick="submitData()">&nbsp;&nbsp;提交评论&nbsp;&nbsp;</button>
+				</div>
+				<div id="commentList" class="commentList"></div>
+				<div id="articlePage" class="articlePage"></div>
 			</div>
 		</div>
 		

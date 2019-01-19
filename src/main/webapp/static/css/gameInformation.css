@@ -174,7 +174,16 @@ color: #fff;
 	text-decoration: none;
     color: #ff6600;
 }
+.userReviews{
+	margin: 10px;
+	margin-bottom: 40px;
+}
 
+.userReviews button{
+	margin-top:8px;
+	margin-right:5px;
+	float: right;
+}
 /*友情链接区样式*/
 .data_list_link{
 	height:125px;

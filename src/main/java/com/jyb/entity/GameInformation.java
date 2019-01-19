@@ -60,6 +60,7 @@ public class GameInformation {
 	@JoinColumn(name="gameTypeId")
 	private DataDictionary dataDictionary; // 所属类别(5单机游戏 6网络游戏 7手游) 游戏类为A
 	
+	private String  largeCategory;//所属大类别 
 	
 	private Integer integral;// 积分
 
@@ -237,6 +238,14 @@ public class GameInformation {
 		this.isUseful = isUseful;
 	}
 
+	public String getLargeCategory() {
+		return largeCategory;
+	}
+
+	public void setLargeCategory(String largeCategory) {
+		this.largeCategory = largeCategory;
+	}
+
 	@Override
 	public String toString() {
 		return "GameInformation [gameId=" + gameId + ", gameName=" + gameName + ", gameTitle=" + gameTitle
@@ -244,10 +253,13 @@ public class GameInformation {
 				+ ", gameBrowseFrequency=" + gameBrowseFrequency + ", gamePicture=" + gamePicture
 				+ ", gameDownloadAddress1=" + gameDownloadAddress1 + ", linkPwd=" + linkPwd + ", gameDownloadAddress2="
 				+ gameDownloadAddress2 + ", remarks=" + remarks + ", gameCreationTime=" + gameCreationTime
-				+ ", dataDictionary=" + dataDictionary + ", integral=" + integral + ", auditStatus=" + auditStatus
-				+ ", reason=" + reason + ", auditDate=" + auditDate + ", isUseful=" + isUseful + ", userInformation="
-				+ userInformation + "]";
+				+ ", dataDictionary=" + dataDictionary + ", largeCategory=" + largeCategory + ", integral=" + integral
+				+ ", auditStatus=" + auditStatus + ", reason=" + reason + ", auditDate=" + auditDate + ", isUseful="
+				+ isUseful + ", userInformation=" + userInformation + "]";
 	}
+	
+	
+
 
 
 
