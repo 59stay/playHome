@@ -24,8 +24,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.UserInformation;
+import com.jyb.entity.UserReviews;
 import com.jyb.init.InitSystem;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.UserReviewsService;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
 import com.jyb.util.StringUtil;
@@ -36,6 +38,9 @@ public class GameInformationController {
     
 	@Autowired
 	private GameInformationService gameInformationService;
+	
+	@Autowired
+	private UserReviewsService userReviewsService;
 	
 	@Value("${gameContentImageFilePath}")
 	private String gameContentImageFilePath;
@@ -101,6 +106,10 @@ public class GameInformationController {
 	public ModelAndView listDetails(@PathVariable("id") Integer id){
 		ModelAndView mv = new ModelAndView();
 		GameInformation gameInformation = gameInformationService.getId(id);
+		UserReviews ur=new UserReviews();
+		ur.setLargeCategory(gameInformation.getLargeCategory());
+		ur.setResourcesId(gameInformation.getGameId());
+    	mv.addObject("userReviewsCount", userReviewsService.getCount(ur));
 		mv.addObject("gameInformation",gameInformation);
 		mv.addObject("title", "宅着玩资源网站 - 宅游戏 - "+gameInformation.getGameTitle());
 	    mv.setViewName("user/game/gameDetails");

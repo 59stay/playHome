@@ -11,6 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jyb.util.CustomDateSerializer;
+import com.jyb.util.CustomDateTimeSerializer;
 /**
  * 实体类-用户评论
  * @author jyb
@@ -32,7 +36,6 @@ public class UserReviews {
 	
 	private Integer resourcesId;  //资源Id
 	
-	@Temporal(TemporalType.TIMESTAMP) 
     private Date reviewsTime;  //评论时间
     
     @Column(length=500)
@@ -62,7 +65,8 @@ public class UserReviews {
 	public void setLargeCategory(String largeCategory) {
 		this.largeCategory = largeCategory;
 	}
-
+	
+	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getReviewsTime() {
 		return reviewsTime;
 	}

@@ -118,7 +118,7 @@
 	padding-bottom: 10px;
 	padding-right: 20px;
 }
-
+/*评论区样式*/
 .data_list_resources .article .content{
 	padding:10px;
     margin-top: 20px;
@@ -126,6 +126,52 @@
     padding-top: 50px;
 }
 
+
+.left_img img{
+	width: 40px;
+	height: 40px;
+}
+
+.userReviewsList{
+	margin: 10px;
+}
+
+.userReviewsList  .comment{
+	margin-top:20px;
+	padding-bottom: 5px;
+	border-bottom: 1px #eee dashed;
+}
+
+.comment .left_img{
+	float: left;
+}
+
+.comment .right .top a{
+	font-weight: 700;
+	
+}
+
+.comment .right .time{
+	color: #999;
+    margin: 12px 30px 0;
+    font-size: 12px;
+}
+
+.comment .right .bottom{
+	padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.userReviews{
+	margin: 10px;
+	margin-bottom: 40px;
+}
+
+.userReviews button{
+	margin-top:8px;
+	margin-right:5px;
+	float: right;
+}
 /*资源列表区样式*/
 .data_list{
 	border: 1px solid #E5E5E5;
@@ -174,16 +220,7 @@ color: #fff;
 	text-decoration: none;
     color: #ff6600;
 }
-.userReviews{
-	margin: 10px;
-	margin-bottom: 40px;
-}
 
-.userReviews button{
-	margin-top:8px;
-	margin-right:5px;
-	float: right;
-}
 /*友情链接区样式*/
 .data_list_link{
 	height:125px;

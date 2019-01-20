@@ -11,16 +11,50 @@
 <script th:inline="javascript">
 	/*<![CDATA[*/
 	layui.use([ 'element','laypage','form' ], function() {
-		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-		var tMenu = [[${session.tMenu}]];
-		$("#"+tMenu).css("color","red");
-	});
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  var $ = layui.jquery; // 使用jquery
+		  var laypage = layui.laypage;
+		  var tMenu=[[${session.tMenu}]];
+		  $("#"+tMenu).css("color","red");
+
+			  //调用分页
+			  laypage.render({
+			     elem: 'articlePage'
+			    ,limit:6
+			    ,count: [[${userReviewsCount}]]
+			    ,jump: function(obj){
+			      $("#userReviewsList").empty();
+			      $.post("/user/userReviews/list",{"resourcesId":[[${gameInformation.gameId}]],"largeCategory":[[${gameInformation.largeCategory}]],"page":obj.curr},function(result){
+					  var rows=result;
+					  if(rows.length==0){
+						  $("#userReviewsList").html("<p align='center'>暂无评论</p>");
+					  }
+					  for(var i=0;i<rows.length;i++){
+						  var row=rows[i];
+						  $("#userReviewsList").append("<div class='comment'>"+
+								  "<div class='left_img'>"+
+									  "<img src='"+row.userInformation.userHead+"' class='layui-nav-img'/>"+
+									  "</div>"+
+									  "<div class='right'>"+
+										  "<dt class='top'>"+
+										  row.userInformation.userName+
+										  "<span class='time'>"+row.reviewsTime+"</span>"+
+										  "</dt>"+
+										  "<dd class='bottom'>"+row.reviewsContent+"</dd>"+
+									  "</div>"+
+								  "</div>");
+					  }
+				  },"json");
+			    }
+			  });
+ });
 	function submitData(){
 		var userReviews=$("#reviewsInformation").val();
 		$.post("/user/userReviews/add",{"resourcesId":[[${gameInformation.gameId}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
 			if(result.success){
 				$("#reviewsInformation").val("");
-				layer.msg("评论成功，稍后显示！");
+				 window.location.reload();
+				//layer.msg("评论成功，稍后显示！");
 			}
 		},"json");
 	}
@@ -85,8 +119,8 @@
 					<button class="layui-btn layui-btn-radius  layui-btn-sm"
 						onclick="submitData()">&nbsp;&nbsp;提交评论&nbsp;&nbsp;</button>
 				</div>
-				<div id="commentList" class="commentList"></div>
-				<div id="articlePage" class="articlePage"></div>
+				<div id="userReviewsList" class="userReviewsList"></div>
+				<div id="articlePage" class="articlePage"  align="center"></div>
 			</div>
 		</div>
 		
