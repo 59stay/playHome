@@ -9,89 +9,80 @@
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
-/*<![CDATA[*/
-layui.use([ 'element','laypage','form' ], function() {
-	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-	  var $ = layui.jquery; // 使用jquery
-	  var laypage = layui.laypage;
-	  var tMenu=[[${session.tMenu}]];
-	  $("#"+tMenu).css("color","red");
-	  laypage.render({
-	     elem: 'articlePage'
-	    ,limit:6
-	    ,count: [[${userReviewsCount}]]
-	    ,jump: function(obj){
-	      $("#userReviewsList").empty();
-	      $.post("/user/userReviews/list",{"resourceId":[[${gameInformation.id}]],"largeCategory":[[${gameInformation.largeCategory}]],"page":obj.curr},function(result){
-			  var rows=result;
-			  if(rows.length==0){
-				  $("#userReviewsList").html("<p align='center'>暂无评论</p>");
-			  }
-			  for(var i=0;i<rows.length;i++){
-				  var row=rows[i];
-				  $("#userReviewsList").append("<div class='comment'>"+
-						  "<div class='left_img'>"+
-							  "<img src='"+row.userInformation.userHead+"' class='layui-nav-img'/>"+
-							  "</div>"+
-							  "<div class='right'>"+
-								  "<dt class='top'>"+
-								  row.userInformation.userName+
-								  "<span class='time'>"+row.reviewsTime+"</span>"+
-								  "</dt>"+
-								  "<dd class='bottom'>"+row.reviewsContent+"</dd>"+
-							  "</div>"+
-						  "</div>");
-			  }
-		  },"json");
-	    }
-	  });
-});
-
-function submitData(){
-	var userReviews=$("#reviewsInformation").val();
-	if(userReviews==""){
-		layer.msg("请填写评论内容！");
-		return false;
-	}
-	$.post("/user/userReviews/add",{"resourceId":[[${gameInformation.id}]],"resourceName":[[${gameInformation.gameName}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
-		if(result.success){
-			$("#reviewsInformation").val("");
-			 window.location.reload();
-			//layer.msg("评论成功，稍后显示！");
+	/*<![CDATA[*/
+	layui.use([ 'element','laypage','form' ], function() {
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  var $ = layui.jquery; // 使用jquery
+		  var laypage = layui.laypage;
+		  var tMenu=[[${session.tMenu}]];
+		  $("#"+tMenu).css("color","red");
+			  //调用分页
+			  /* laypage.render({
+			     elem: 'articlePage'
+			    ,limit:6
+			    ,count: [[${userReviewsCount}]]
+			    ,jump: function(obj){
+			      $("#userReviewsList").empty();
+			      $.post("/user/userReviews/list",{"resourceId":[[${gameInformation.id}]],"largeCategory":[[${gameInformation.largeCategory}]],"page":obj.curr},function(result){
+					  var rows=result;
+					  if(rows.length==0){
+						  $("#userReviewsList").html("<p align='center'>暂无评论</p>");
+					  }
+					  for(var i=0;i<rows.length;i++){
+						  var row=rows[i];
+						  $("#userReviewsList").append("<div class='comment'>"+
+								  "<div class='left_img'>"+
+									  "<img src='"+row.userInformation.userHead+"' class='layui-nav-img'/>"+
+									  "</div>"+
+									  "<div class='right'>"+
+										  "<dt class='top'>"+
+										  row.userInformation.userName+
+										  "<span class='time'>"+row.reviewsTime+"</span>"+
+										  "</dt>"+
+										  "<dd class='bottom'>"+row.reviewsContent+"</dd>"+
+									  "</div>"+
+								  "</div>");
+					  }
+				  },"json");
+			    }
+			  }); */
+ });
+	
+	/* function download(){
+		var userId = [[${session.sessionUserInformation.id}]];
+		var publisher =[[${gameInformation.userInformation.userId}]];
+		
+		// 判断是否登录
+	 	if([[${session.sessionUserInformation}]]==null){
+			layer.msg("登录后才能下载资源！");
+			return;
 		}
-	},"json");
-}
-
-
-function download(){
- 	if([[${session.sessionUserInformation}]]==null){//未登录
-		layer.msg("登录后才能下载资源！");
-		return;
-	}else{//已登录
-		var sessionUserId = $("#session_user_id").val();
-		var resourceUserId =[[${gameInformation.userInformation.id}]];
-	 	if(sessionUserId==resourceUserId){//下载的资源为当前登录用户自己发布的
-	        	layer.confirm('来啦老弟，这是您发布的资源可以直接查看哟！', {
-					title:"下载提示"
-					  ,btn: ['确定','取消'] //按钮
-					}, function(){
-						layer.closeAll('dialog');
-						layer.open({
-						  type: 2,
-						  title: '资源下载页面',
-						  shadeClose: true,
-						  shade: 0.8,
-						  area: ['600px', '150px'],
-						  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/1' //iframe的url
-						}); 
-						
-					}, function(){
-					  
-					});
-			}else{//下载的资源不是当前登录用户自己发布的
-				   $.post("/downloadRecord/exist",{"resourceId":[[${gameInformation.id}]],"largeCategory":"A"},function(result){	
-				 		  if(result){//已下载资源
-				 			 layer.confirm('来啦老弟，该资源您已下载过可以直接查看哟！', {
+        if((userId!=null && publisher!=null) && (userId==publisher)){
+        	layer.confirm('您是该资源的发布者可直接查看资源信息', {
+				title:"下载提示"
+				  ,btn: ['确定','取消'] //按钮
+				}, function(){
+					layer.closeAll('dialog');
+					layer.open({
+					  type: 2,
+					  title: '资源下载页面',
+					  shadeClose: true,
+					  shade: 0.8,
+					  area: ['600px', '150px'],
+					  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/1' //iframe的url
+					}); 
+					
+				}, function(){
+				  
+				});
+		}
+	 	   $.post("/downloadRecord/exist",{"resourceId":[[${gameInformation.id}]]},function(result){	
+	 		  if(result){
+					alert("已下载资源");
+				}else{
+					$.post("/downloadRecord/isIntegralEnough",{"integral":[[${gameInformation.integral}]]},function(result){
+						 if(result){
+								layer.confirm('该资源下载需要 <font color="red">[[${gameInformation.integral}]]</font> 积分,您确定要下载这个资源吗？', {
 									title:"下载提示"
 									  ,btn: ['确定','取消'] //按钮
 									}, function(){
@@ -104,65 +95,57 @@ function download(){
 										  area: ['550px', '450'],
 										  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/2' //iframe的url
 										}); 
+										
 									}, function(){
 									  
 									});
-							}else{//未下载资源
-								$.post("/downloadRecord/isIntegralEnough",{"integral":[[${gameInformation.integral}]]},function(result){
-									 if(result){
-											layer.confirm('来啦老弟，该资源下载需要 <font color="red">[[${gameInformation.integral}]]</font> 积分,您确定要下载这个资源吗？', {
-												title:"下载提示"
-												  ,btn: ['确定','取消'] //按钮
-												}, function(){
-													layer.closeAll('dialog');
-													layer.open({
-													  type: 2,
-													  title: '资源下载页面',
-													  shadeClose: true,
-													  shade: 0.8,
-													  area: ['550px', '450'],
-													  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/3' //iframe的url
-													}); 
-													
-												}, function(){
-												  
-												});
-									 }else{
-										 alert("积分不够");  
-									 }
-								},"json"); 
-							}
-					},"json");  
-			}  
-	}
+						 }else{
+							 alert("积分不够");  
+						 }
+					},"json"); 
+				}
+			
+		},"json");  
+	}  */
 	
-} 
-/*]]>*/
+	function submitData(){
+		var userReviews=$("#reviewsInformation").val();
+		if(userReviews==""){
+			layer.msg("请填写评论内容！");
+			return false;
+		}
+		$.post("/user/userReviews/add",{"resourceId":[[${gameInformation.id}]],"resourceName":[[${gameInformation.gameName}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
+			if(result.success){
+				$("#reviewsInformation").val("");
+				 window.location.reload();
+				//layer.msg("评论成功，稍后显示！");
+			}
+		},"json");
+	}
+	/*]]>*/
 </script>
 </head>
 <body onload="ResizeImages()">
 	<!-- 导航区 -->
 	<div class="w1170" style="padding-bottom: 10px; overflow: visible;"
 		th:include="common/head::#head"></div>
-
 	<!-- 游戏类容展示区 -->
 	<div class="w1170">
 		<div class="pLeft">
-		    <!-- 资源信息区 -->
 			<div class="data_list_resources">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-app"></i> <span class="head">帖子信息</span>
 				</div>
 				<div class="article">
-					<div class="title" th:text="${gameInformation.gameTitle}"></div>
+					<div class="title" th:text="${gameInformation.gameTitle}">帖子标题</div>
 					<div class="info">
-						<font th:text="${gameInformation.userInformation.userName}"></font>&nbsp;&nbsp;
+						<font th:text="${gameInformation.userInformation.userName}">用户昵称</font>&nbsp;&nbsp;
 						分享于&nbsp;&nbsp;<font
-							th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}"></font>
+							th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}">分享时间</font>
 						&nbsp;&nbsp;查看次数：&nbsp;<font
-							th:text="${gameInformation.gameBrowseFrequency}"></font>&nbsp;次
+							th:text="${gameInformation.gameBrowseFrequency}">-1</font>&nbsp;次
 						&nbsp;&nbsp;所需：<font color="red"
-							th:text="${gameInformation.integral}"></font>&nbsp;积分
+							th:text="${gameInformation.integral}">-1</font>&nbsp;积分
 					</div>
 					<div align="center">
 						<div class="bshare-custom">
@@ -180,7 +163,6 @@ function download(){
 							src="http://static.bshare.cn/b/bshareC0.js"></script>
 					</div>
 					<div class="downloadBtn">
-				<input th:if="${session.sessionUserInformation!=null}" th:value="${session.sessionUserInformation.id}" id="session_user_id" type="hidden"></input> 
 						<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
 						<!-- <button class="layui-btn layui-btn-radius" onclick="vipDownload()"
 							style="background-color: red">&nbsp;&nbsp;VIP免积分下载&nbsp;&nbsp;</button> -->
@@ -189,7 +171,7 @@ function download(){
 						th:utext="${gameInformation.gameDescribe}"></div>
 				</div>
 			</div>
-            <!-- 用户评论区 -->
+           <!-- 用户评论区 -->
 			<div class="data_list_resources" style="margin-top: 10px">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-dialogue"></i> <span class="head">评论信息</span>&nbsp;&nbsp;<font
@@ -203,8 +185,7 @@ function download(){
 				</div>
 				<div id="userReviewsList" class="userReviewsList"></div>
 				<div id="articlePage" class="articlePage"  align="center"></div>
-			</div>
-		
+			</div> 
 		</div>
 		
 		<!--签到处-->
@@ -222,7 +203,10 @@ function download(){
 					</p>
 				</div>
 			</div>
-			
+		</div>
+		
+		<!--热门资源 -->
+		<div class="pRight">
 			<div class="data_list">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-fire"></i> <span class="head">热门游戏</span>
@@ -239,7 +223,5 @@ function download(){
 				</div>
 			</div>
 		</div>
-		
 	</div>
-	
 </body>

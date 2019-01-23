@@ -28,18 +28,21 @@ public class UserReviews {
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "userId")
+	@JoinColumn(name="userId")
 	private UserInformation userInformation; //评论人
 	
-	@Column(length=10)
-	private String largeCategory;  //大类别
+	@Column(length=30)
+	private String resourceName;  //资源名称
 	
-	private Integer resourcesId;  //资源Id
+	private Integer resourceId;  //资源Id
+	
+	@Column(length=30)
+	private String largeCategory;  //大类别
 	
     private Date reviewsTime;  //评论时间
     
     @Column(length=500)
-    private String reviewsContent;
+    private String reviewsContent;//评论内容
 
 	public Integer getId() {
 		return id;
@@ -83,13 +86,23 @@ public class UserReviews {
 		this.reviewsContent = reviewsContent;
 	}
 
-	public Integer getResourcesId() {
-		return resourcesId;
+	public String getResourceName() {
+		return resourceName;
 	}
 
-	public void setResourcesId(Integer resourcesId) {
-		this.resourcesId = resourcesId;
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
 	}
+
+	public Integer getResourceId() {
+		return resourceId;
+	}
+
+	public void setResourceId(Integer resourceId) {
+		this.resourceId = resourceId;
+	}
+
+	 
 
 	
 	

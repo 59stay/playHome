@@ -7,14 +7,13 @@
       	<div style="padding-left: 10px">
       		<form class="layui-form" action="/user/gameInformation/update" method="post">
 				<div class="layui-form-item">
-				<input id="game_picture" type="hidden" value="" name="gamePicture"></input>
 						<div class="layui-upload-list" style="float: left;">
 						<label class="layui-form-label">游戏封面：</label>  
-						 <img class="layui-upload-img" id="uploadImage" th:src="${gameInformation.gamePicture}"></img>
-							<p id="demoText"></p>
+						 <img class="layui-upload-img" id="upload_image"  th:src="${gameInformation.gamePicture}"></img>
+							<p id="demo_text"></p>
 						</div>
 						<div class="layui-upload" style="float: left; margin-top: 10px;">
-							<button type="button" class="layui-btn" id="uploadGameBtn">上传图片</button>
+							<button type="button" class="layui-btn" id="upload_Game_Btn">上传图片</button>
 							<div class="layui-inline layui-word-aux">封面大小限制60KB</div>
 						</div>
 				</div>
@@ -52,45 +51,69 @@
 				</div>
 
 				<div class="layui-form-item">
-				    <label class="layui-form-label">游戏类别：</label>
-				    <div class="layui-input-inline">
-				      <select  name="dataDictionary.dictionaryId" lay-verify="required">
-				        <option value="">请选择游戏类别</option>
-				        <option th:each="gameDataDictionary:${application.gameDataDictionaryList}" th:value="${gameDataDictionary.dictionaryId}" th:text="${gameDataDictionary.dictionaryName}" th:selected="${gameDataDictionary.dictionaryId==gameInformation.dataDictionary.dictionaryId}"></option>
-				      </select>
-				    </div>
-				  </div>
-				  <div class="layui-form-item">
-				    <label class="layui-form-label">游戏描述：</label>
+					<label class="layui-form-label">游戏类别：</label>
+					<div class="layui-input-inline">
+						<select name="dataDictionary.id" lay-verify="required">
+							<option value="">请选择游戏类别</option>
+							<option
+								th:each="gameDataDictionary:${application.gameDataDictionaryList}"
+								th:value="${gameDataDictionary.id}"
+								th:text="${gameDataDictionary.dictionaryName}"
+								th:selected="${gameDataDictionary.id==gameInformation.dataDictionary.id}"></option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">分享方式：</label>
+					<div class="layui-input-inline">
+						<select id="download_type" name="downloadType" lay-filter="search_type">
+							<option value="">请选择分享方式</option>
+							<option value="1">百度云盘</option>
+							<option value="2">其他</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="layui-form-item" id="addr1" style="display: none;">
+					<label class="layui-form-label">分享地址：</label>
+
+					<div class="layui-input-inline" style="width: 600px">
+						<input type="text" id="game_download_address1"
+							name="gameDownloadAddress" autocomplete="off"
+							placeholder="请输入百度云分享地址" class="layui-input" maxlength="350" />
+					</div>
+					<div class="layui-input-inline" style="width: 100px">
+						<input type="text" id="link_pwd" name="linkPwd"
+							 autocomplete="off" placeholder="请输入密码"
+							class="layui-input" maxlength="4"
+							onKeyUp="value=value.replace(/[\W]/g,'')" />
+					</div>
+				</div>
+
+				<div class="layui-form-item" id="addr2" style="display: none;">
+					<label class="layui-form-label">分享地址：</label>
+
+					<div class="layui-input-block">
+						<input type="text" id="game_download_address2"
+							name="gameDownloadAddress" autocomplete="off"
+							placeholder="请输入其他分享地址" class="layui-input" maxlength="350" />
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">游戏描述：</label>
+					<div class="layui-input-block">
+						<textarea id="content" name="gameDescribe" style="display: none;"
+							th:utext="${gameInformation.gameDescribe}"></textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
 				    <div class="layui-input-block">
-				    	<textarea id="content" name="gameDescribe" style="display: none;" th:utext="${gameInformation.gameDescribe}"></textarea>
-				    </div>
-				 </div>
-				 <div class="layui-form-item"   >
-				   <div class="layui-inline">
-				      <label class="layui-form-label" >分享资源一：</label>
-				      <div class="layui-input-inline" style="width: 500px">
-				        <input type="text" id="game_download_address1" name="gameDownloadAddress1" lay-verify="url" autocomplete="off" th:value="${gameInformation.gameDownloadAddress1}" placeholder="请输入百度云分享地址" class="layui-input" maxlength="350" />
-				      </div>
-				      <div class="layui-input-inline" style="width: 100px">
-				        <input type="text" id="link_pwd" name="linkPwd" autocomplete="off" th:value="${gameInformation.linkPwd}" placeholder="请输入密码" class="layui-input" maxlength="4"/>
-				      </div>
-				    </div>
-				 </div>
-				 
-				 <div class="layui-form-item">
-				   <div class="layui-inline">
-				      <label class="layui-form-label" >分享资源二：</label>
-				      <div class="layui-input-inline" style="width: 500px">
-				        <input type="text" id="game_download_address2" name="gameDownloadAddress2" lay-verify="url" autocomplete="off" th:value="${gameInformation.gameDownloadAddress2}" placeholder="请输入其他分享地址" class="layui-input"  maxlength="350"/>
-				      </div>
-				    </div>
-				 </div>
-				 
-				  <div class="layui-form-item">
-				    <div class="layui-input-block">
-				      <input type="hidden" name="gameId" th:value="${gameInformation.gameId}"/>
-				      <button class="layui-btn" lay-submit="" lay-filter="gameSubmit">立即提交</button>
+				      <input type="hidden"  id="game_picture"  name="gamePicture" th:value="${gameInformation.gamePicture}"></input>
+				      <input type="hidden" name="id" th:value="${gameInformation.id}"/>
+				      <button class="layui-btn" lay-submit="" lay-filter="game_submit">立即提交</button>
 				    </div>
 				  </div>
 	      		</form>

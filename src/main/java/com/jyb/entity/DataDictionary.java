@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class DataDictionary {
 	@Id
 	@GeneratedValue
-	private Integer dictionaryId; // 主键id
+	private Integer id; // 主键id
 
 	@Column(length = 30)
 	private String dictionaryName;// 字典名称类型
@@ -21,12 +21,14 @@ public class DataDictionary {
 
 	private Integer dictionarySort; // 字典排序
 
-	public Integer getDictionaryId() {
-		return dictionaryId;
+
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setDictionaryId(Integer dictionaryId) {
-		this.dictionaryId = dictionaryId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getDictionaryName() {
@@ -55,8 +57,8 @@ public class DataDictionary {
 
 	@Override
 	public String toString() {
-		return "DataDictionary [dictionaryId=" + dictionaryId + ", dictionaryName=" + dictionaryName
-				+ ", dictionaryType=" + dictionaryType + ", dictionarySort=" + dictionarySort + "]";
+		return "DataDictionary [id=" + id + ", dictionaryName=" + dictionaryName + ", dictionaryType=" + dictionaryType
+				+ ", dictionarySort=" + dictionarySort + "]";
 	}
 
  

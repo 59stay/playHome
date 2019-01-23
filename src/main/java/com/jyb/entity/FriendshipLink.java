@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class FriendshipLink {
 @Id
 @GeneratedValue
-private Integer linkId;
+private Integer id;
 
 @Column(length=30)
 private String linkName;
@@ -18,18 +18,17 @@ private String linkName;
 @Column(length=300)
 private String linkAddress;
 
-public Integer getLinkId() {
-	return linkId;
+public Integer getId() {
+	return id;
 }
 
-public void setLinkId(Integer linkId) {
-	this.linkId = linkId;
+public void setId(Integer id) {
+	this.id = id;
 }
 
 public String getLinkName() {
 	return linkName;
 }
-
 public void setLinkName(String linkName) {
 	this.linkName = linkName;
 }
@@ -44,8 +43,9 @@ public void setLinkAddress(String linkAddress) {
 
 @Override
 public String toString() {
-	return "FriendshipLink [linkId=" + linkId + ", linkName=" + linkName + ", linkAddress=" + linkAddress + "]";
+	return "FriendshipLink [id=" + id + ", linkName=" + linkName + ", linkAddress=" + linkAddress + "]";
 }
+
 
 
 }

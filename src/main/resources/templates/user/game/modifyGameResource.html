@@ -20,6 +20,23 @@ width: 90px;
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/  
+      $(document).ready(function(){
+			  var downloadType = [[${gameInformation.downloadType}]];
+			  var gameDownloadAddress = [[${gameInformation.gameDownloadAddress}]];
+			  var linkPwd = [[${gameInformation.linkPwd}]];
+			  $("#points").val([[${gameInformation.integral}]]);
+			  $("#download_type").val(downloadType);
+			  if(downloadType=="1"){
+				  $("#addr1").show(); 
+	              $("#game_download_address1").val(gameDownloadAddress);
+		    	  $("#link_pwd").val(linkPwd); 
+			  }else{
+				  $("#addr2").show(); 
+	              $("#game_download_address2").val(gameDownloadAddress); 
+			  }
+				  
+	    });
+
 	layui.use(['element','form','layedit','upload'], function(){
 	//  document.getElementById("d1").className='layui-this'
 	      var form=layui.form;
@@ -29,13 +46,13 @@ width: 90px;
 		  
 		  //普通图片上传
 		  var uploadInst = upload.render({
-		     elem: '#uploadGameBtn'
+		     elem: '#upload_Game_Btn'
 		    ,url: '/user/gameInformation/uploadCoverImage'
 		    ,size: 60 //限制文件大小，单位 KB
 		    ,before: function(obj){
 		      //预读本地文件示例，不支持ie8
 		      obj.preview(function(index, file, result){
-		        $('#uploadImage').attr('src', result); //图片链接（base64）
+		        $('#upload_image').attr('src', result); //图片链接（base64）
 		      });
 		    }
 		    ,done: function(res){
@@ -49,7 +66,7 @@ width: 90px;
 		    }
 		    ,error: function(){
 		      //演示失败状态，并实现重传
-		      var demoText = $('#demoText');
+		      var demoText = $('#demo_text');
 		      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
 		      demoText.find('.demo-reload').on('click', function(){
 		        uploadInst.upload();
@@ -63,9 +80,36 @@ width: 90px;
 				  type:'post'
 			  }
 		  });
+		  
+		  form.on('select(search_type)', function(data) {
+				// console.log(data.elem); //得到select原始DOM对象
+				// console.log(data.value); //得到被选中的值
+				//  console.log(data.othis); //得到美化后的DOM对象
+				
+		         if (data.value == 1) {
+	                   $("#addr1").show(); 
+	                   $("#addr2").hide();
+	                   $("#game_download_address1").val("");
+			    	   $("#link_pwd").val(""); 
+				       $("#game_download_address2").val("");
+					}else if (data.value == 2) {
+					   $("#addr2").show(); 
+					   $("#addr1").hide();
+					   $("#game_download_address1").val("");
+			    	   $("#link_pwd").val(""); 
+				       $("#game_download_address2").val("");
+				    }else{
+			    	   $("#addr1").hide();
+			    	   $("#addr2").hide();
+			    	   $("#game_download_address1").val("");
+			    	   $("#link_pwd").val(""); 
+				       $("#game_download_address2").val("");
+				    }
+
+			});
 		 
 		  //监听提交
-		  form.on('submit(gameSubmit)', function(data){
+		  form.on('submit(game_submit)', function(data){
 			  var content=layedit.getContent(index);
 			  if(content==""){
 				  layer.msg("请输入资源描述！");
@@ -75,10 +119,10 @@ width: 90px;
 		    return true;
 		  });
 	   });
-	   
-	$(document).ready(function(){
-		  $("#points").val([[${gameInformation.integral}]])
-    });
+	 
+
+	
+	
 	
 /*]]>*/
 	

@@ -74,7 +74,7 @@ layui.use(['carousel', 'form'], function(){
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.id}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
 						</a></li>
@@ -94,7 +94,7 @@ layui.use(['carousel', 'form'], function(){
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.id}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
 						</a></li>
@@ -114,7 +114,7 @@ layui.use(['carousel', 'form'], function(){
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.id}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
 						</a></li>
@@ -131,7 +131,7 @@ layui.use(['carousel', 'form'], function(){
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}" title="毒液">
+						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.id}" title="毒液">
 								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
 								<p  th:text="${gameBrowseFrequency.gameName}"></p>
 						</a></li>

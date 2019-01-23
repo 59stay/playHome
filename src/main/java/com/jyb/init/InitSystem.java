@@ -44,12 +44,12 @@ public class InitSystem implements ServletContextListener,ApplicationContextAwar
 		GameInformationService gameInformationService = (GameInformationService)applicationContext.getBean("gameInformationService");
 		DataDictionaryService  dataDictionaryService = (DataDictionaryService)applicationContext.getBean("dataDictionaryService");
 		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.listPage(null, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
-		List<FriendshipLink> friendshipLinkList=friendshipLinkService.listAll(Sort.Direction.ASC, "linkId");
+		List<FriendshipLink> friendshipLinkList=friendshipLinkService.listAll(Sort.Direction.ASC, "id");
 		DataDictionary gameDataDictionary = new DataDictionary();
 		gameDataDictionary.setDictionaryType("A");
 		List<DataDictionary> gameDataDictionaryList = dataDictionaryService.listAll(gameDataDictionary, Sort.Direction.ASC, "dictionarySort");
 		for (DataDictionary gddl : gameDataDictionaryList) {
-			dataDictionaryMap.put(gddl.getDictionaryId(),gddl);
+			dataDictionaryMap.put(gddl.getId(),gddl);
 		}
 		application.setAttribute("friendshipLinkList", friendshipLinkList); // 所有友情链接
 		application.setAttribute("gameBrowseFrequencyList", gameBrowseFrequencyList); // 最热门游戏链接

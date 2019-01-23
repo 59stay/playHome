@@ -20,7 +20,7 @@ import com.jyb.util.CustomDateTimeSerializer;
 public class GameInformation {
 	@Id
 	@GeneratedValue
-	private Integer gameId; // 主键id
+	private Integer id; // 主键id
 
 	@NotEmpty(message = "请输入名称！")
 	@Column(length = 30)
@@ -43,14 +43,14 @@ public class GameInformation {
 
 
 	@Column(length = 200)
-	private String gameDownloadAddress1;// 游戏下载地址-百度云
+	private String gameDownloadAddress;// 游戏下载地址-百度云
 	
 	@Column(length = 100)
 	private String linkPwd; //资源链接密码-百度云
 	
-	@Column(length = 200)
-	private String gameDownloadAddress2;// 游戏下载地址-其他地址
 
+	private Integer downloadType;//资源地址类别    1.百度云盘地址  2.其他地址 
+	
 	@Column(length = 500)
 	private String remarks;// 备注
 
@@ -58,9 +58,9 @@ public class GameInformation {
 
 	@ManyToOne
 	@JoinColumn(name="gameTypeId")
-	private DataDictionary dataDictionary; // 所属类别(5单机游戏 6网络游戏 7手游) 游戏类为A
+	private DataDictionary dataDictionary; // 所属类别(1单机游戏 2网络游戏  ) 游戏类为A
 	
-	private String  largeCategory;//所属大类别 
+	private String  largeCategory="A";//所属大类别 
 	
 	private Integer integral;// 积分
 
@@ -74,17 +74,15 @@ public class GameInformation {
 	private boolean isUseful=true; // 资源链接是否有效 true 有效 false 无效 默认有效
 
 	@ManyToOne
-	@JoinColumn(name = "foreignKeyUserId")
+	@JoinColumn(name = "userId")
 	private UserInformation userInformation;// 所属用户
 	
-	
-
-	public Integer getGameId() {
-		return gameId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setGameId(Integer gameId) {
-		this.gameId = gameId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getGameName() {
@@ -129,20 +127,13 @@ public class GameInformation {
 	}
 
 
-	public String getGameDownloadAddress1() {
-		return gameDownloadAddress1;
+
+	public String getGameDownloadAddress() {
+		return gameDownloadAddress;
 	}
 
-	public void setGameDownloadAddress1(String gameDownloadAddress1) {
-		this.gameDownloadAddress1 = gameDownloadAddress1;
-	}
-
-	public String getGameDownloadAddress2() {
-		return gameDownloadAddress2;
-	}
-
-	public void setGameDownloadAddress2(String gameDownloadAddress2) {
-		this.gameDownloadAddress2 = gameDownloadAddress2;
+	public void setGameDownloadAddress(String gameDownloadAddress) {
+		this.gameDownloadAddress = gameDownloadAddress;
 	}
 
 	public String getRemarks() {
@@ -246,18 +237,27 @@ public class GameInformation {
 		this.largeCategory = largeCategory;
 	}
 
+	public Integer getDownloadType() {
+		return downloadType;
+	}
+
+	public void setDownloadType(Integer downloadType) {
+		this.downloadType = downloadType;
+	}
+
 	@Override
 	public String toString() {
-		return "GameInformation [gameId=" + gameId + ", gameName=" + gameName + ", gameTitle=" + gameTitle
-				+ ", gameDescribe=" + gameDescribe + ", gameDownloadFrequency=" + gameDownloadFrequency
-				+ ", gameBrowseFrequency=" + gameBrowseFrequency + ", gamePicture=" + gamePicture
-				+ ", gameDownloadAddress1=" + gameDownloadAddress1 + ", linkPwd=" + linkPwd + ", gameDownloadAddress2="
-				+ gameDownloadAddress2 + ", remarks=" + remarks + ", gameCreationTime=" + gameCreationTime
-				+ ", dataDictionary=" + dataDictionary + ", largeCategory=" + largeCategory + ", integral=" + integral
-				+ ", auditStatus=" + auditStatus + ", reason=" + reason + ", auditDate=" + auditDate + ", isUseful="
-				+ isUseful + ", userInformation=" + userInformation + "]";
+		return "GameInformation [id=" + id + ", gameName=" + gameName + ", gameTitle=" + gameTitle + ", gameDescribe="
+				+ gameDescribe + ", gameDownloadFrequency=" + gameDownloadFrequency + ", gameBrowseFrequency="
+				+ gameBrowseFrequency + ", gamePicture=" + gamePicture + ", gameDownloadAddress=" + gameDownloadAddress
+				+ ", linkPwd=" + linkPwd + ", downloadType=" + downloadType + ", remarks=" + remarks
+				+ ", gameCreationTime=" + gameCreationTime + ", dataDictionary=" + dataDictionary + ", largeCategory="
+				+ largeCategory + ", integral=" + integral + ", auditStatus=" + auditStatus + ", reason=" + reason
+				+ ", auditDate=" + auditDate + ", isUseful=" + isUseful + ", userInformation=" + userInformation + "]";
 	}
-	
+
+
+ 
 	
 
 

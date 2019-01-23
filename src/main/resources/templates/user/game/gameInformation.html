@@ -44,8 +44,8 @@ layui.use([ 'element','form' ], function() {
 								<ul>
 									<li><a href="/user/gameInformation/index" title="全部"><span id="t_0">全部</span></a></li>
 									<li th:each="gameDataDictionary:${application.gameDataDictionaryList}"> 
-									   <a th:href="'/user/gameInformation/list/1?gameTypeId='+${gameDataDictionary.dictionaryId}" th:title="${gameDataDictionary.dictionaryName}"> 
-									   <span th:id="'t_'+${gameDataDictionary.dictionaryId}"  th:text="${gameDataDictionary.dictionaryName}"></span>
+									   <a th:href="'/user/gameInformation/list/1?gameTypeId='+${gameDataDictionary.id}" th:title="${gameDataDictionary.dictionaryName}"> 
+									   <span th:id="'t_'+${gameDataDictionary.id}"  th:text="${gameDataDictionary.dictionaryName}"></span>
 									   </a>
 									   
 									</li>
@@ -92,7 +92,7 @@ layui.use([ 'element','form' ], function() {
 						</a></li> -->
 
 						<li th:each="gameInfo:${indexGameInformationList}" class="imageLi"><a
-							target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameInfo.gameId}"
+							target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameInfo.id}"
 							th:title="${gameInfo.gameName}"> 
 							<img th:src="${gameInfo.gamePicture}"></img>
 								<p th:text="${#strings.length(gameInfo.gameName)>9} ? ${#strings.substring(gameInfo.gameName,0,9)} : ${gameInfo.gameName}"></p>
@@ -130,7 +130,7 @@ layui.use([ 'element','form' ], function() {
 					<ul>
 						<li th:each="gameBrowseFrequency,iterStat:${application.gameBrowseFrequencyList}">
 							<em th:text="${iterStat.index}+1" ></em> 
-							<a  style="margin-left: 10px;" target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameBrowseFrequency.gameId}"
+							<a  style="margin-left: 10px;" target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameBrowseFrequency.id}"
 							th:title="${gameBrowseFrequency.gameName}" th:text="${gameBrowseFrequency.gameName}"> </a>
 						</li>
 					</ul>

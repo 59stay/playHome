@@ -37,14 +37,14 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 				Predicate predicate = cb.conjunction();
 				if (userReviews != null) {
 					if (userReviews.getUserInformation() != null
-							&& userReviews.getUserInformation().getUserId() != null) {
+							&& userReviews.getUserInformation().getId() != null) {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("userId"),
-								userReviews.getUserInformation().getUserId()));
+								userReviews.getUserInformation().getId()));
 					}
-					if (userReviews.getLargeCategory() != null && userReviews.getResourcesId() != null) {
+					if (userReviews.getLargeCategory() != null && userReviews.getResourceId() != null) {
 						predicate.getExpressions()
 								.add(cb.equal(root.get("largeCategory"), userReviews.getLargeCategory()));
-						predicate.getExpressions().add(cb.equal(root.get("resourcesId"), userReviews.getResourcesId()));
+						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
 					}
 				}
 				return predicate;
@@ -63,14 +63,14 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 				Predicate predicate = cb.conjunction();
 				if (userReviews != null) {
 					if (userReviews.getUserInformation() != null
-							&& userReviews.getUserInformation().getUserId() != null) {
+							&& userReviews.getUserInformation().getId() != null) {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("userId"),
-								userReviews.getUserInformation().getUserId()));
+								userReviews.getUserInformation().getId()));
 					}
-					if (userReviews.getLargeCategory() != null && userReviews.getResourcesId() != null) {
+					if (userReviews.getLargeCategory() != null && userReviews.getResourceId() != null) {
 						predicate.getExpressions()
 								.add(cb.equal(root.get("largeCategory"), userReviews.getLargeCategory()));
-						predicate.getExpressions().add(cb.equal(root.get("resourcesId"), userReviews.getResourcesId()));
+						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
 					}
 				}
 				return predicate;

@@ -77,5 +77,13 @@ public class PersonalCenterController {
     	mav.setViewName("user/personalCenter/InvalidLinkManagement");
         return mav;
     }
+    
+    @RequestMapping("/toUserReviewsManagement")
+    public ModelAndView  toUserReviewsManagement(){
+       ModelAndView mv  =  new ModelAndView();
+       mv.addObject("title","用户评论管理页面");
+       mv.setViewName("user/personalCenter/userReviewsManagement");
+       return mv;
+    }
 	
 }

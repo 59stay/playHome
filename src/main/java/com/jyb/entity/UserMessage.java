@@ -17,9 +17,9 @@ import com.jyb.util.CustomDateTimeSerializer;
 @Table(name="user_message")
 public class UserMessage {
 
-	@Id
+	@Id//messageId
 	@GeneratedValue
-	private Integer messageId;  // id
+	private Integer id;  // id
 	
 	@Column(length=500)
 	private String messageInformation; // 留言信息
@@ -31,14 +31,16 @@ public class UserMessage {
 	
 	@Column(length=100)
 	private String userHead; //用户头像
-
-	public Integer getMessageId() {
-		return messageId;
+	
+	
+	public Integer getId() {
+		return id;
 	}
 
-	public void setMessageId(Integer messageId) {
-		this.messageId = messageId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
+	
 
 	public String getMessageInformation() {
 		return messageInformation;
@@ -73,12 +75,14 @@ public class UserMessage {
 		this.userHead = userHead;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "UserMessage [messageId=" + messageId + ", messageInformation=" + messageInformation
-				+ ", messageCreationTime=" + messageCreationTime + ", keyUserName=" + keyUserName + ", userHead="
-				+ userHead + "]";
+		return "UserMessage [id=" + id + ", messageInformation=" + messageInformation + ", messageCreationTime="
+				+ messageCreationTime + ", keyUserName=" + keyUserName + ", userHead=" + userHead + "]";
 	}
+
 	
 	
 	

@@ -108,7 +108,8 @@ public class GameInformationController {
 		GameInformation gameInformation = gameInformationService.getId(id);
 		UserReviews ur=new UserReviews();
 		ur.setLargeCategory(gameInformation.getLargeCategory());
-		ur.setResourcesId(gameInformation.getGameId());
+		ur.setResourceId(gameInformation.getId());
+		ur.setResourceName(gameInformation.getGameName());
     	mv.addObject("userReviewsCount", userReviewsService.getCount(ur));
 		mv.addObject("gameInformation",gameInformation);
 		mv.addObject("title", "宅着玩资源网站 - 宅游戏 - "+gameInformation.getGameTitle());
@@ -178,7 +179,7 @@ public class GameInformationController {
 	@RequestMapping("/add")
 	public ModelAndView addGameInformation(GameInformation gameInfo,HttpSession session){
 		UserInformation userInformation =(UserInformation) session.getAttribute("sessionUserInformation");
-		userInformation.getUserId();
+		userInformation.getId();
 		gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
 		gameInfo.setGameDownloadFrequency(StringUtil.randomInteger());
 		gameInfo.setGameCreationTime(new Date());
@@ -200,14 +201,14 @@ public class GameInformationController {
 	 */
 	@RequestMapping("/update")
 	public ModelAndView update(GameInformation gameInfo)throws Exception{
-	    GameInformation gameInformation=gameInformationService.getId(gameInfo.getGameId());
+	    GameInformation gameInformation=gameInformationService.getId(gameInfo.getId());
 	    gameInformation.setGameName(gameInfo.getGameName());
 	    gameInformation.setGameTitle(gameInfo.getGameTitle());
 	    gameInformation.setGamePicture(gameInfo.getGamePicture());
 	    gameInformation.setGameDescribe(gameInfo.getGameDescribe());
-	    gameInformation.setGameDownloadAddress1(gameInfo.getGameDownloadAddress1());
+	    gameInformation.setDownloadType(gameInfo.getDownloadType());
+	    gameInformation.setGameDownloadAddress(gameInfo.getGameDownloadAddress());
 	    gameInformation.setLinkPwd(gameInfo.getLinkPwd());
-	    gameInformation.setGameDownloadAddress2(gameInfo.getGameDownloadAddress2());
 	    gameInformation.setDataDictionary(gameInfo.getDataDictionary());
 	    if(gameInformation.getAuditStatus()==3){
 	      gameInformation.setAuditStatus(1);	

@@ -40,7 +40,7 @@ public class InvalidLinkController {
 	public Map<String,Object> userInvalidLink(InvalidLink s_invalidLink,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
 		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
-		s_invalidLink.setUserId(userInformation.getUserId());
+		s_invalidLink.setUserId(userInformation.getId());
 		List<InvalidLink> invalidLinkList=invalidLinkService.listPage(s_invalidLink, page,limit,Sort.Direction.DESC,"creationTime");
 		Long count=invalidLinkService.getCount(s_invalidLink);
 		resultMap.put("code", 0);
@@ -63,7 +63,7 @@ public class InvalidLinkController {
     	InvalidLink link = invalidLinkService.getId(invalidLink.getId());
     	if(link.getLargeCategory().equals("A")){//游戏
     		GameInformation gm = gameInformationService.getId(link.getResourceId());
-    		gm.setGameDownloadAddress1(invalidLink.getGameDownloadAddress1());
+    		gm.setGameDownloadAddress(invalidLink.getGameDownloadAddress1());
     		gm.setLinkPwd(invalidLink.getLinkPwd());
     		gm.setUseful(true);
     		gameInformationService.save(gm);

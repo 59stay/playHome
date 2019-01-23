@@ -23,7 +23,7 @@ import com.jyb.util.CustomDateSerializer;
 public class UserInformation {
 	@Id
 	@GeneratedValue
-	private Integer userId;  // id
+	private Integer id;  // id
 	
 	@Column(length=30)
 	@NotEmpty(message="请输入用户名称！")
@@ -61,14 +61,13 @@ public class UserInformation {
 	@Column(length=30)
 	private String hostIp;
 
-	public Integer getUserId() {
-		return userId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-
 
 	public String getUserName() {
 		return userName;
@@ -86,7 +85,6 @@ public class UserInformation {
 		this.userPassword = userPassword;
 	}
 
-
 	public String getUserHead() {
 		return userHead;
 	}
@@ -102,7 +100,6 @@ public class UserInformation {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public String getUserPhoneNumber() {
 		return userPhoneNumber;
@@ -144,7 +141,14 @@ public class UserInformation {
 		this.remarks = remarks;
 	}
 
-	@JsonSerialize(using=CustomDateSerializer.class)
+	public Integer getUserIntegral() {
+		return userIntegral;
+	}
+
+	public void setUserIntegral(Integer userIntegral) {
+		this.userIntegral = userIntegral;
+	}
+
 	public Date getUserCreationTime() {
 		return userCreationTime;
 	}
@@ -161,23 +165,16 @@ public class UserInformation {
 		this.hostIp = hostIp;
 	}
 
-	public Integer getUserIntegral() {
-		return userIntegral;
-	}
-
-	public void setUserIntegral(Integer userIntegral) {
-		this.userIntegral = userIntegral;
-	}
-
 	@Override
 	public String toString() {
-		return "UserInformation [userId=" + userId + ", userName=" + userName + ", userPassword=" + userPassword
-				+ ", userHead=" + userHead + ", email=" + email + ", userPhoneNumber=" + userPhoneNumber
-				+ ", userIdcard=" + userIdcard + ", accountStatus=" + accountStatus + ", userRole=" + userRole
-				+ ", remarks=" + remarks + ", userIntegral=" + userIntegral + ", userCreationTime=" + userCreationTime
-				+ ", hostIp=" + hostIp + "]";
+		return "UserInformation [id=" + id + ", userName=" + userName + ", userPassword=" + userPassword + ", userHead="
+				+ userHead + ", email=" + email + ", userPhoneNumber=" + userPhoneNumber + ", userIdcard=" + userIdcard
+				+ ", accountStatus=" + accountStatus + ", userRole=" + userRole + ", remarks=" + remarks
+				+ ", userIntegral=" + userIntegral + ", userCreationTime=" + userCreationTime + ", hostIp=" + hostIp
+				+ "]";
 	}
 
+	
 
 
 }

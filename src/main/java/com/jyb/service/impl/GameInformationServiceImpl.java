@@ -45,8 +45,8 @@ public class GameInformationServiceImpl implements GameInformationService {
 					if(gameInfo.getAuditStatus()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("auditStatus"), gameInfo.getAuditStatus()));
 					}
-				if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getDictionaryId()!=null ){
-						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("dictionaryId"),gameInfo.getDataDictionary().getDictionaryId() ));
+				if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getId()!=null ){
+						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("id"),gameInfo.getDataDictionary().getId() ));
 					}	
 				}
 				return predicate;
@@ -73,8 +73,8 @@ public class GameInformationServiceImpl implements GameInformationService {
 					if(StringUtil.isNotEmpty(gameInfo.getGameName())){
 						predicate.getExpressions().add(cb.like(root.get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
 					}
-					if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getDictionaryId()!=null ){
-						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("dictionaryId"),gameInfo.getDataDictionary().getDictionaryId() ));
+					if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getId()!=null ){
+						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("id"),gameInfo.getDataDictionary().getId() ));
 					}
 				}
 				return predicate;

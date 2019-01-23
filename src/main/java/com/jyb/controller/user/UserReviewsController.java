@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jyb.entity.InvalidLink;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.service.GameInformationService;
@@ -61,4 +62,45 @@ public class UserReviewsController {
 		map.put("success", true);
 		return map;
 	}
+	
+	
+	/**
+	 * 根据条件分页查询用户评论信息
+	 * @param s_invalidLink
+	 * @param page
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/userReviewsList")
+	public Map<String,Object> userReviews(UserReviews s_userReviews,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
+		Map<String, Object> resultMap = new HashMap<>();
+		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		s_userReviews.setUserInformation(userInformation);
+		List<UserReviews> userReviewsList=userReviewsService.listPage(s_userReviews, page, limit, Direction.DESC, "reviewsTime");
+		Long count=userReviewsService.getCount(s_userReviews);
+		resultMap.put("code", 0);
+		resultMap.put("count", count);
+		resultMap.put("data", userReviewsList);
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 根据id删除评论
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/delete")
+	public Map<String,Object> delete(Integer id)throws Exception{
+		Map<String, Object> resultMap = new HashMap<>();
+		userReviewsService.delete(id);
+		resultMap.put("success", true);
+		return resultMap;
+	}
+
+	
 }
