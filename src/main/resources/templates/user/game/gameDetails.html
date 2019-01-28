@@ -47,6 +47,36 @@ layui.use([ 'element','laypage','form' ], function() {
 	  });
 });
 
+ $(document).ready(function(){
+	 $.post("/user/SignIn/loadSignIn",{},function(result){   
+		 if(result.success){
+			 if(result.alreadySignI!=null){
+				 $("#sign_in_div").empty();
+				 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
+			 }else{
+				 $("#sign_in_div").empty();
+				 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+					 
+			 }
+		 }else{
+			 $("#sign_in_div").empty();
+			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+		 }
+	},"json"); 
+}); 
+
+function signIn(){
+	if([[${session.userInfo}]]==null){//未登录
+		layer.msg("大佬登录后才能签到哟！");
+		return;
+	}else{
+		   $.post("/user/SignIn/loginSignIn",{},function(result){ 
+			   $("#sign_in_div").empty();
+			  $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+			},"json"); 
+	}
+}
+
 function submitData(){
 	var userReviews=$("#reviewsInformation").val();
 	if(userReviews==""){
@@ -64,7 +94,7 @@ function submitData(){
 
 
 function download(){
- 	if([[${session.sessionUserInformation}]]==null){//未登录
+ 	if([[${session.userInfo}]]==null){//未登录
 		layer.msg("登录后才能下载资源！");
 		return;
 	}else{//已登录
@@ -82,7 +112,7 @@ function download(){
 						  shadeClose: true,
 						  shade: 0.8,
 						  area: ['600px', '150px'],
-						  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/1' //iframe的url
+						  content: '/user/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/1' //iframe的url
 						}); 
 						
 					}, function(){
@@ -102,7 +132,7 @@ function download(){
 										  shadeClose: true,
 										  shade: 0.8,
 										  area: ['550px', '450'],
-										  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/2' //iframe的url
+										  content: '/user/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/2' //iframe的url
 										}); 
 									}, function(){
 									  
@@ -121,7 +151,7 @@ function download(){
 													  shadeClose: true,
 													  shade: 0.8,
 													  area: ['550px', '450'],
-													  content: '/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/3' //iframe的url
+													  content: '/user/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/3' //iframe的url
 													}); 
 													
 												}, function(){
@@ -134,8 +164,7 @@ function download(){
 							}
 					},"json");  
 			}  
-	}
-	
+	   }
 } 
 /*]]>*/
 </script>
@@ -180,7 +209,7 @@ function download(){
 							src="http://static.bshare.cn/b/bshareC0.js"></script>
 					</div>
 					<div class="downloadBtn">
-				<input th:if="${session.sessionUserInformation!=null}" th:value="${session.sessionUserInformation.id}" id="session_user_id" type="hidden"></input> 
+				<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
 						<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
 						<!-- <button class="layui-btn layui-btn-radius" onclick="vipDownload()"
 							style="background-color: red">&nbsp;&nbsp;VIP免积分下载&nbsp;&nbsp;</button> -->
@@ -207,22 +236,10 @@ function download(){
 		
 		</div>
 		
-		<!--签到处-->
+		
 		<div class="pRight">
-			<div class="data_list">
-				<div class="data_list_title">
-					<i class="layui-icon layui-icon-face-smile-fine"></i> <span
-						class="head">每日签到，每日领取3个积分</span>
-				</div>
-				<div align="center">
-					<a><img style="padding-top: 10px; padding-bottom: 10px"
-						alt="用户签到处" src="/static/images/sign.jpg" width="200" height="50"></img></a>
-					<p style="padding-bottom: 10px">
-						今日已经有<font color="red">28</font>位大佬签到了！
-					</p>
-				</div>
-			</div>
-			
+		    <!--签到处-->
+			<div class="data_list"  th:include="common/signIn::#sI"></div> 
 			<div class="data_list">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-fire"></i> <span class="head">热门游戏</span>

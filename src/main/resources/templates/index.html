@@ -10,7 +10,7 @@
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
-	/*<![CDATA[*/
+/*<![CDATA[*/
 	layui.use(['element','laypage','form'], function(){
 		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		 var $ = layui.jquery; // 使用jquery
@@ -18,20 +18,18 @@
 		$("#"+tMenu).css("color","red");
 	});
 
-	/*]]>*/
-	
-layui.use(['carousel', 'form'], function(){
-  var carousel = layui.carousel,form = layui.form;
-  //常规轮播
-  carousel.render({
-    elem: '#test1'
-    ,arrow: 'always'
-    ,width: '1170px'
-    ,height: '270px'
-    ,interval: 3000
-  });
-});
-	
+	layui.use(['carousel', 'form'], function(){
+	  var carousel = layui.carousel,form = layui.form;
+	  //常规轮播
+	  carousel.render({
+	    elem: '#test1'
+	    ,arrow: 'always'
+	    ,width: '1170px'
+	    ,height: '270px'
+	    ,interval: 3000
+	  });
+	});
+/*]]>*/	
 	
 </script>
 </head>

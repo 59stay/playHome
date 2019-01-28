@@ -17,6 +17,19 @@ function showRegister(){
 		  content: '/user/userRegister.html' //iframe的url
 		}); 
 }
+/**
+ * 找回密码
+ */
+function showFindPassword(){
+	layer.closeAll('iframe');
+	layer.open({
+		  type: 2,
+		  title: '找回用户密码',
+		  area: ['300px', '300px'],//宽度，长度
+		  content: '/user/findPassword.html' //iframe的url
+		}); 
+}
+
 
 /**
  * 刷新父页面

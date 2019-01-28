@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jyb.entity.UserInformation;
 import com.jyb.service.UserInformationService;
+import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.CryptographyUtil;
 import com.jyb.util.IpUtil;
 import com.jyb.util.MD5Util;
@@ -40,12 +41,12 @@ public class UserInformationController {
 	 */
 	@RequestMapping("login")
 	@ResponseBody
-	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpSession session){
+	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(userInformation!=null ){
-			if(userInformation.getUserName().equals("jyb") || userInformation.getUserName().equals("test") ){
+			if(userInformation.getUserName().equals("jyb") || userInformation.getUserName().equals("test1") || userInformation.getUserName().equals("test2")|| userInformation.getUserName().equals("test3")  ){
 				UserInformation sessionUserInformation = userInformationService.findByUserName(userInformation.getUserName());
-				session.setAttribute("sessionUserInformation", sessionUserInformation);
+				request.getSession().setAttribute("userInfo", sessionUserInformation);
 				map.put("success",true);
 			}else{
 				map.put("success",false);

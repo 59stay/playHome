@@ -52,9 +52,40 @@ public class DateUtil {
 		return sdf.format(date);
 	}
 	
+	 /**
+	  * 将yyyy-MM-dd HH-mm-ss截取成 yyyy-MM-dd 
+	  * @param date
+	  * @param geshi
+	  * @return
+	  */
+	 public static String toTimestamp(String date,String geshi){ SimpleDateFormat df=new SimpleDateFormat(geshi);
+		     Date s = null;
+		     String result=null;
+		     try { s = df.parse(date);
+		         result=df.format(s);
+		     } catch (Exception e) {
+		         e.printStackTrace();
+		     } return result;
+    }
+	 /**
+	  * 将yyyy-MM-dd HH-mm-ss截取成 yyyy-MM-dd 
+	  * @param date
+	  * @param geshi
+	  * @return
+	  */
+     public static String toTimestamp(Date date,String geshi){ SimpleDateFormat df=new SimpleDateFormat(geshi);
+      Date s = date;
+      String result=null;
+      result=df.format(s);
+      return result;
+   }
+ 
+	
 	public static void main(String[] args) {
 		try {
-			System.out.println(getCurrentDatePath());
+			 String s=DateUtil.toTimestamp("2017-03-23 10:57:57","yyyy-MM-dd");
+			 System.out.println(s);
+			//System.out.println(getCurrentDatePath());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

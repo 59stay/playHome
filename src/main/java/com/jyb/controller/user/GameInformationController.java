@@ -23,11 +23,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.SignIn;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.init.InitSystem;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.SignInService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
 import com.jyb.util.StringUtil;
@@ -41,6 +44,11 @@ public class GameInformationController {
 	
 	@Autowired
 	private UserReviewsService userReviewsService;
+	
+	@Autowired
+	private SignInService signInService;
+	
+	
 	
 	@Value("${gameContentImageFilePath}")
 	private String gameContentImageFilePath;
@@ -61,7 +69,9 @@ public class GameInformationController {
 	    	gameIndfo.setAuditStatus(2);//显示审核通过的
 	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameIndfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
 	    	Long total = gameInformationService.getCount(gameIndfo);
+	    	Integer signInNumber= CommonMethodUtil.getSignInNumber();
 	    	ModelAndView mv = new ModelAndView();
+	    	mv.addObject("signInNumber", signInNumber);
 	    	mv.addObject("indexGameInformationList", indexGameInformationList);
 	    	mv.addObject("pageCode",PageUtil.getPagination("/user/gameInformation/list",total, 1,20, ""));
 	    	mv.addObject("title","宅着玩资源网站 - 宅游戏");
@@ -106,10 +116,12 @@ public class GameInformationController {
 	public ModelAndView listDetails(@PathVariable("id") Integer id){
 		ModelAndView mv = new ModelAndView();
 		GameInformation gameInformation = gameInformationService.getId(id);
+		Integer signInNumber= CommonMethodUtil.getSignInNumber();
 		UserReviews ur=new UserReviews();
 		ur.setLargeCategory(gameInformation.getLargeCategory());
 		ur.setResourceId(gameInformation.getId());
 		ur.setResourceName(gameInformation.getGameName());
+		mv.addObject("signInNumber",signInNumber);//今日签到总人数
     	mv.addObject("userReviewsCount", userReviewsService.getCount(ur));
 		mv.addObject("gameInformation",gameInformation);
 		mv.addObject("title", "宅着玩资源网站 - 宅游戏 - "+gameInformation.getGameTitle());
@@ -178,7 +190,7 @@ public class GameInformationController {
 	 */
 	@RequestMapping("/add")
 	public ModelAndView addGameInformation(GameInformation gameInfo,HttpSession session){
-		UserInformation userInformation =(UserInformation) session.getAttribute("sessionUserInformation");
+		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
 		userInformation.getId();
 		gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
 		gameInfo.setGameDownloadFrequency(StringUtil.randomInteger());
@@ -232,7 +244,7 @@ public class GameInformationController {
 	@RequestMapping(value = "/userGameList")
 	public Map<String,Object> userGame(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		s_gameInformation.setUserInformation(userInformation);
 		List<GameInformation> articleList=gameInformationService.listPage(s_gameInformation, page, limit,Sort.Direction.DESC,"gameCreationTime");
 		Long count=gameInformationService.getCount(s_gameInformation);

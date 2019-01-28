@@ -55,7 +55,7 @@ public class UserReviewsController {
     @PostMapping("/add")
 	public Map<String,Object> addGameInformation(UserReviews userReviews,HttpSession session){
 		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute("sessionUserInformation");
+		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
 		userReviews.setReviewsTime(new Date());
 		userReviews.setUserInformation(userInformation);
 		userReviewsService.save(userReviews);
@@ -76,7 +76,7 @@ public class UserReviewsController {
 	@RequestMapping(value = "/userReviewsList")
 	public Map<String,Object> userReviews(UserReviews s_userReviews,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		s_userReviews.setUserInformation(userInformation);
 		List<UserReviews> userReviewsList=userReviewsService.listPage(s_userReviews, page, limit, Direction.DESC, "reviewsTime");
 		Long count=userReviewsService.getCount(s_userReviews);

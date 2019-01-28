@@ -38,7 +38,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 				if (userReviews != null) {
 					if (userReviews.getUserInformation() != null
 							&& userReviews.getUserInformation().getId() != null) {
-						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("userId"),
+						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),
 								userReviews.getUserInformation().getId()));
 					}
 					if (userReviews.getLargeCategory() != null && userReviews.getResourceId() != null) {

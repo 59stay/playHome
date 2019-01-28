@@ -1,4 +1,4 @@
-package com.jyb.controller;
+package com.jyb.controller.user;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ import com.jyb.service.GameInformationService;
 import com.jyb.service.UserInformationService;
 
 @Controller
-@RequestMapping("downloadRecord")
+@RequestMapping("user/downloadRecord")
 public class DownloadRecordController {
 
 	@Autowired
@@ -42,7 +42,7 @@ public class DownloadRecordController {
 	@ResponseBody
 	@RequestMapping("/exist")
 	public boolean exist(Integer resourceId,String largeCategory,HttpSession session)throws Exception{
-		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		Integer count=downloadRecordService.getDownloadTime(userInformation.getId(), resourceId,largeCategory);
 		if(count>0){
 			return true;
@@ -60,7 +60,7 @@ public class DownloadRecordController {
 	@ResponseBody
 	@RequestMapping("/isIntegralEnough")
 	public boolean isIntegralEnough(Integer integral,HttpSession session)throws Exception{
-		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		if(userInformation.getUserIntegral()>=integral){
 			return true;
 		}else{
@@ -78,7 +78,7 @@ public class DownloadRecordController {
 	@RequestMapping("/saveAndShowDownloadRecord/{id}/{type}")
 	@Transactional
 	public synchronized  ModelAndView saveAndShowDownloadRecord(@PathVariable("id") Integer id,@PathVariable("type") Integer type,HttpSession session) {
-		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		GameInformation gameInfo = gameInformationService.getId(id);
 		UserInformation publisher =  gameInfo.getUserInformation();
 		DownloadRecord dr = new DownloadRecord();

@@ -39,7 +39,7 @@ public class InvalidLinkController {
 	@RequestMapping(value = "/userInvalidLinkList")
 	public Map<String,Object> userInvalidLink(InvalidLink s_invalidLink,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		UserInformation userInformation=(UserInformation)session.getAttribute("sessionUserInformation");
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		s_invalidLink.setUserId(userInformation.getId());
 		List<InvalidLink> invalidLinkList=invalidLinkService.listPage(s_invalidLink, page,limit,Sort.Direction.DESC,"creationTime");
 		Long count=invalidLinkService.getCount(s_invalidLink);
