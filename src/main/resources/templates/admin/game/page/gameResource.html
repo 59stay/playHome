@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<link rel="stylesheet" href="/static/css/css.css"></link>
+<style type="text/css">
+.layui-table-body{
+     overflow:auto;
+ }
+
+.layui-table img {
+width: auto;
+height: auto;
+max-width: 100% !important;
+max-height: 100%;
+}
+.layui-table-tool-self{
+display: none;
+}
+
+.my-skin .layui-layer-btn .layui-layer-btn0 {
+	background-color: #84c101;
+	border: 1px solid #84c101;
+	color: #FFF;
+}
+
+.my-skin .layui-layer-btn .layui-layer-btn1 {
+	background-color:#f84d28;
+	border: 1px solid #f84d28;
+	color: #FFF;
+}
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/  
+           
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  var table = layui.table;
+		  table.render({
+		     elem: '#gameTable'
+		    ,url:'/admin/gameInformation/listPage'
+		    ,limits:[10,20,30]
+		    ,toolbar: '#toolbar'
+		    ,cols: [[
+			   {type:'checkbox'}
+			  ,{type:'numbers',width:40}
+			  ,{field:'gamePicture',height:200, width:150, title: '封面',align:'center',templet:formatGamePicture}
+		      ,{field:'gameName', width:120, title: '名称',align:'center'}
+		      ,{field:'gameTitle', width:200, title: '标题',align:'center'}
+		      ,{field:'gameDownloadFrequency', width:100, title: '下载次数', sort: true,align:'center'}
+		      ,{field:'gameBrowseFrequency', width:100, title: '浏览次数',sort: true,align:'center'}
+		      ,{field:'gameDownloadAddress', width:150, title: '资源下载地址',align:'center'}
+		      ,{field:'linkPwd', width:100, title: '资源密码',align:'center'}
+		      ,{field:'downloadType', width:150, title: '资源地址类别',align:'center',templet:formatDownloadType}
+		      ,{field:'dataDictionary', width:100, title: '类别',align:'center',templet:formatGameTypeName}
+		      ,{field:'auditStatus', width:150, title: '审核状态',align:'center',templet:formatAuditStatus}
+		      ,{field:'reason', width:200, title: '审核未通过原因',align:'center'}
+		      ,{field:'auditDate', width:180, title: '审核日期',align:'center'}
+		      ,{field:'useful', title:'链接是否有效', align:'center', width:150,templet:formatIsUseful}
+		      ,{field:'integral', width:100, title: '积分',align:'center'}
+		      ,{field:'userInformation', width:100, title: '发布人',align:'center',templet:formatUserName}
+		      ,{field:'gameCreationTime', width:160, title: '创建时间',align:'center'}
+		      ,{field:'remarks', width:200, title: '备注',align:'center'}
+		    ]]
+		    ,page: true
+		  });
+
+		  
+		  //头工具栏事件
+		  table.on('toolbar(gameTable)', function(obj){
+		    var checkStatus = table.checkStatus(obj.config.id);
+		    var rows = checkStatus.data;
+		    switch(obj.event){
+		      case 'detail':
+		        if(rows.length==0){
+		        	 layer.msg('请选择需要查看的信息');
+		        }else if(rows.length>1){
+		        	 layer.msg('只能选一行信息查看呦');	
+		        }else{
+		        	layer.open({
+			            type:2,
+			            title:"编辑资源详细信息",
+			            area: ['45%','70%'],
+			            content: '/admin/gameInformation/getGameInformation?id='+rows[0].id
+		        	});
+		        }
+		      break;
+		      case 'del':
+		        if(rows.length==0){
+		        	 layer.msg('请选择需要删除的信息');
+		        	 return;
+		        }else{
+		        	var strIds=[];
+		        	for(var i=0;i<rows.length;i++){
+		    			strIds.push(rows[i].id);
+		    		}
+		    		var ids=strIds.join(",");
+		    		layer.confirm("您确定要删除这<font color=red>"+checkStatus.data.length+"</font>条记录吗？", {
+		  		       title:"系统提示"
+		  		      ,icon: 6
+		  			  ,btn: ['确定','取消'] //按钮
+		  			}, function(){
+		  				layer.closeAll('dialog');
+		  				$.post("/admin/gameInformation/batchDelete",{"ids":ids},function(result){
+		  					if(result.success){
+		  						layer.msg("删除成功！");
+		  						table.reload("gameTable",{});
+		  					}else{
+		  						layer.msg("删除失败，请联系管理员！");
+		  					}
+		  				},"json");
+		  			}, function(){
+		  			  
+		  			});
+		        }
+		      break;
+		    };
+		  });
+		  
+		  
+		 /*   监听开关按钮操作
+		   form.on('switch(usefulSwitch)', function(obj){
+			   $.post("/admin/article/updateHotState",{"id":this.name,"hot":obj.elem.checked},function(result){
+					if(result.success){
+						layer.msg("执行成功！");
+						table.reload("articleListTable",{});
+					}else{
+						layer.msg("执行失败，请联系管理员！");
+					}
+				},"json");
+		    layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+		  });  */
+		  
+		
+	});
+	
+	
+	function formatGamePicture(d){
+			return "<img alt='"+d.gameName+"' src='"+d.gamePicture+"'></img>";
+	}
+	
+	function formatGameTypeName(d){
+		if(d.dataDictionary==null){
+			return "";
+		}else{
+			return d.dataDictionary.dictionaryName;			
+		}
+	}
+
+	function formatUserName(d){
+		if(d.userInformation==null){
+			return "";	
+		}else{
+			return d.userInformation.userName;			
+		}
+	}
+	
+	function formatIsUseful(d){
+		    if(d.useful){
+		    	return "是";
+		      //return "<input type='checkbox' checked lay-text='是|否' checkedname="+d.useful+" value="+d.useful+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
+		    }else{
+		    	return "否";
+		      //return "<input type='checkbox'  lay-text='是|否' checkedname="+d.useful+" value="+d.useful+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
+		    }
+		
+	}
+	
+	function formatDownloadType(d){
+		if(d.downloadType==1){
+			return "百度云盘";	
+		}else if(d.downloadType==2){
+			return "其他";			
+		}else{
+			return "";
+		}
+	}
+	
+	function formatAuditStatus(d){
+		if(d.auditStatus==1){
+			return "<button class='layui-btn layui-btn-danger layui-btn-xs' onclick='AuditResource("+d.id+")'><i class='layui-icon layui-icon-edit'></i>待审核</button>";
+		}else if(d.auditStatus==2){
+			return "<font color='blue'>审核通过</font>";
+		}else if(d.auditStatus==3){
+			return "<a href='#' title='审核未通过原因："+d.reason+"''><font color=red>审核未通过</font></a><br/>";
+		}
+	}
+	
+	function formatAction(d){
+		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyArticle("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button><button class='layui-btn layui-btn-warm layui-btn-xs' onclick='deleteOne("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+	
+	
+	function AuditResource(id){
+		layer.confirm('请审核该资源信息能否通过', {
+			  skin : "my-skin",
+			  title:"审核信息",
+			  content:"<input id='reason'   class='layui-input' placeholder='请填写审核未通过的原因' type='text'/>",
+			  btn: ['审核通过','驳回']//按钮
+			}, function(){
+				  $.post("/admin/gameInformation/auditResourceAdopt",{
+						id:id,
+					 },function(result){
+						 var index = parent.layer.getFrameIndex(window.name); 
+					 	 if(result.success){
+					 		 layer.msg("审核已通过");
+							 parent.location.reload(); //刷新父页面
+							 parent.layer.close(index); //当你在iframe页面关闭自身时
+						
+						 }
+					},"json"); 
+			}, function(){
+				  var reason =  $("#reason").val();
+				  if(reason==""){
+					  layer.msg("请填写审核未通过的原因");
+					  return ;
+				  }
+				   $.post("/admin/gameInformation/auditResourceNotPass",{
+						id:id,
+						reason:reason
+					 },function(result){
+						 var index = parent.layer.getFrameIndex(window.name); 
+					 	 if(result.success){
+					 		 layer.msg("审核已驳回");
+							 parent.location.reload(); //刷新父页面
+							 parent.layer.close(index); //当你在iframe页面关闭自身时
+						
+						 }
+					},"json"); 
+			 
+			});
+	}
+	
+		
+	
+/*]]>*/
+</script>
+
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="detail">编辑资源</button>
+    <button class="layui-btn layui-btn-sm" lay-event="del">批量删除</button>
+  </div>
+</script>
+
+</head>
+
+<body>
+<div class="layui-form" style="margin-top: 10px;">
+  <div class="layui-row">
+    <div class="layui-col-md3">
+	  <div class="layui-inline">
+         <label class="layui-form-label">游戏名称：</label>
+         <div class="layui-input-inline">
+           <input type="text" id="s_name" style="width: 220px" placeholder="请输入游戏名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+          </div>
+       </div>
+    </div>
+    <div class="layui-col-md3">
+	   <div class="layui-inline">
+		   <label class="layui-form-label">审核状态：</label>
+		    <div class="layui-input-inline">
+		      <select id="s_state" name="s_state">
+		        <option value="">请选择审核状态</option>
+		        <option value="1">未审核</option>
+		        <option value="2">审核通过</option>
+		        <option value="3">审核未通过</option>
+		      </select>
+		    </div>
+	    </div>
+    </div>
+    
+    <div class="layui-col-md3">
+       <div class="layui-inline">
+		   <label class="layui-form-label">游戏类别：</label>
+		    <div class="layui-input-inline">
+		      <select   name="dataDictionary.id" lay-verify="required">
+		        <option value="">请选择游戏类别</option>
+		        <option th:each="gameDataDictionary:${application.gameDataDictionaryList}" th:value="${gameDataDictionary.id}" th:text="${gameDataDictionary.dictionaryName}"></option>
+			 </select>
+		    </div>
+	    </div>
+	    
+	     <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+            </button>
+        </div>
+    </div>
+  </div>
+</div>  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="gameTable" lay-filter="gameTable"></table>
+</div>
+
+
+
+</body>
+</html>

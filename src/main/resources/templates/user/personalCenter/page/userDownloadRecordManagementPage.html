@@ -1,0 +1,15 @@
+<meta charset="UTF-8"/>
+<div id="udrmPage">
+   	<fieldset class="layui-elem-field layui-field-title">
+	  <legend>已下载资源列表</legend>
+	</fieldset>
+    <div class="listUserDownLoad" >
+    	<div class="UserDownLoad" th:each="userDownLoad:${userDownLoadList}">
+    		<span th:text="'【'+${#dates.format(userDownLoad.downloadDate,'yyyy-MM-dd HH:mm')}+'】 '"></span>
+    		&nbsp;下载了&nbsp;
+    		<a th:href="'/user/gameInformation/listDetails/'+${userDownLoad.userInformation.id}" target="_blank" th:title="${userDownLoad.resourceName}" th:text="${userDownLoad.resourceName}"></a>
+    	</div>
+		<div align="center" th:utext="${pageCode}" style="padding-top: 20px">
+		</div>
+    </div>
+</div>
