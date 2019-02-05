@@ -30,6 +30,12 @@ public class UserInformationServiceImpl implements UserInformationService {
 		return userInformationRepositroy.findByEmail(email);
 	}
 
+	@Override
+	public UserInformation getById(Integer id) {
+		// TODO Auto-generated method stub
+		return userInformationRepositroy.getOne(id);
+	}
+
 	
 	
 }

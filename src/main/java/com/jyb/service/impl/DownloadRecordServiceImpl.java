@@ -35,6 +35,9 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(downloadRecord!=null){
+					if(downloadRecord.getUserInformation()!=null && downloadRecord.getUserInformation().getId()!=null){
+						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),downloadRecord.getUserInformation().getId()));
+					}
 					if(downloadRecord.getUserInformation()!=null && StringUtil.isNotEmpty(downloadRecord.getUserInformation().getUserName())){
 						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+downloadRecord.getUserInformation().getUserName()+"%"));
 					}
@@ -60,6 +63,9 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(downloadRecord!=null){
+					if(downloadRecord.getUserInformation()!=null && downloadRecord.getUserInformation().getId()!=null){
+						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),downloadRecord.getUserInformation().getId()));
+					}
 					if(downloadRecord.getUserInformation()!=null && StringUtil.isNotEmpty(downloadRecord.getUserInformation().getUserName())){
 						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+downloadRecord.getUserInformation().getUserName()+"%"));
 					}

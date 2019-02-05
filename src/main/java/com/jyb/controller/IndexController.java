@@ -21,7 +21,18 @@ public class IndexController {
     }
     
    
-     
+    /**
+     * 后台-首页
+     */
+    @RequestMapping("admin/index")
+    public ModelAndView rootAdmin(){
+    	ModelAndView mv = new ModelAndView();
+    	mv.setViewName("admin/index");
+    	return mv;
+    }
+    
+    
+    
     
     
 }

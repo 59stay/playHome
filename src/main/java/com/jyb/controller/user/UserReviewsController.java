@@ -37,7 +37,7 @@ public class UserReviewsController {
 	
 	
 	/**
-	 * 分页查询某个帖子的评论信息
+	 * 分页查询某个资源的评论信息
 	 * @param s_comment
 	 * @param page
 	 * @param rows
@@ -47,7 +47,6 @@ public class UserReviewsController {
 	@RequestMapping(value = "/list")
 	public List<UserReviews> list(UserReviews s_userReviews,@RequestParam(value="page",required=false)Integer page){
 		List<UserReviews>  userReviewsList =  userReviewsService.listPage(s_userReviews, page, 6, Direction.DESC, "reviewsTime");
-		System.out.println(userReviewsList.size());
 		return userReviewsList;
 	}
 	

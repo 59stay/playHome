@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>宅着玩资源网站-首页</title>
+    <title>宅着玩资源网站-留言板</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css" />
     <link rel="stylesheet" href="/static/css/index.css" />
     <link rel="stylesheet" href="/static/css/icon.css" />
@@ -21,7 +21,6 @@
         
         function submitData(){
        	 var messageInformation = $(".layui-textarea").val();
-       	 layer.msg(messageInformation);
        	  if(messageInformation){
        		  $.post("/user/userMessage/save",{
        			  messageInformation:messageInformation

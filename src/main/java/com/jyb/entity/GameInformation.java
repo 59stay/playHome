@@ -38,16 +38,11 @@ public class GameInformation {
 
 	private Integer gameBrowseFrequency; // 游戏浏览次数
 
-	@Column(length = 200)
 	private String gamePicture;// 游戏封面
 
-
-	@Column(length = 200)
-	private String gameDownloadAddress;// 游戏下载地址-百度云
+	private String gameDownloadAddress;// 游戏下载地址-百度云 其他地址 
 	
-	@Column(length = 100)
 	private String linkPwd; //资源链接密码-百度云
-	
 
 	private Integer downloadType;//资源地址类别    1.百度云盘地址  2.其他地址 
 	
@@ -71,7 +66,7 @@ public class GameInformation {
 
 	private Date auditDate;// 审核日期
 	
-	private boolean isUseful=true; // 资源链接是否有效 true 有效 false 无效 默认有效
+	private boolean isUseful=true; // 资源链接是否有效 true(0) 有效 false(1) 无效 默认有效
 
 	@ManyToOne
 	@JoinColumn(name = "userId")

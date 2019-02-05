@@ -43,4 +43,10 @@ public interface UserReviewsService {
 	 * @return
 	 */
 	public UserReviews getId(Integer id);
+	/**
+	 * 根据资源ID和大类别删除评论信息
+	 * @param resourceId
+	 * @param largeCategory
+	 */
+	public void deleteUserReviews(Integer resourceId,String largeCategory);
 }

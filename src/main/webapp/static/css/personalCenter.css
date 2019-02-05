@@ -8,3 +8,11 @@
 	float: left;
 }
 
+.listUserDownLoad{
+	padding: 10px
+}
+
+
+.listUserDownLoad .UserDownLoad{
+	padding-top: 10px
+}

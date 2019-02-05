@@ -49,17 +49,17 @@ function formatUserName(data){
 }     
 function formatLargeCategory(data){
 	if(data.largeCategory=="A"){
-		return "游戏类";
+		return "宅游戏";
 	}else if(data.largeCategory=="B"){
-		return "电影类";
+		return "宅电影";
 	}else if(data.largeCategory=="C"){
-		return "书籍类";
+		return "宅软件";
 	}else{
-		return "软件类";
+		return "";
 	}
 }
 function formatAction(data){
-	return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='del("+data.id+")'><i class='layui-icon layui-icon-edit'></i>删除评论</button>";
+	return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+data.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
 }
 
 function del(id){

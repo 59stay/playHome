@@ -24,23 +24,25 @@ layui.use([ 'element','laypage','form' ], function() {
 	      $("#userReviewsList").empty();
 	      $.post("/user/userReviews/list",{"resourceId":[[${gameInformation.id}]],"largeCategory":[[${gameInformation.largeCategory}]],"page":obj.curr},function(result){
 			  var rows=result;
+			  //alert(rows.length)
 			  if(rows.length==0){
 				  $("#userReviewsList").html("<p align='center'>暂无评论</p>");
-			  }
-			  for(var i=0;i<rows.length;i++){
-				  var row=rows[i];
-				  $("#userReviewsList").append("<div class='comment'>"+
-						  "<div class='left_img'>"+
-							  "<img src='"+row.userInformation.userHead+"' class='layui-nav-img'/>"+
-							  "</div>"+
-							  "<div class='right'>"+
-								  "<dt class='top'>"+
-								  row.userInformation.userName+
-								  "<span class='time'>"+row.reviewsTime+"</span>"+
-								  "</dt>"+
-								  "<dd class='bottom'>"+row.reviewsContent+"</dd>"+
-							  "</div>"+
-						  "</div>");
+			  }else{
+				  for(var i=0;i<rows.length;i++){
+					  var row=rows[i];
+					  $("#userReviewsList").append("<div class='comment'>"+
+							  "<div class='left_img'>"+
+								  "<img src='"+row.userInformation.userHead+"' class='layui-nav-img'/>"+
+								  "</div>"+
+								  "<div class='right'>"+
+									  "<dt class='top'>"+
+									  row.userInformation.userName+
+									  "<span class='time'>"+row.reviewsTime+"</span>"+
+									  "</dt>"+
+									  "<dd class='bottom'>"+row.reviewsContent+"</dd>"+
+								  "</div>"+
+							  "</div>");
+				  } 
 			  }
 		  },"json");
 	    }
@@ -79,6 +81,10 @@ function signIn(){
 
 function submitData(){
 	var userReviews=$("#reviewsInformation").val();
+	if([[${session.userInfo}]]==null){//未登录
+		layer.msg("登录后才能评论哟！");
+		return;
+	}
 	if(userReviews==""){
 		layer.msg("请填写评论内容！");
 		return false;
@@ -193,7 +199,7 @@ function download(){
 						&nbsp;&nbsp;所需：<font color="red"
 							th:text="${gameInformation.integral}"></font>&nbsp;积分
 					</div>
-					<div align="center">
+				<!-- 	<div align="center">
 						<div class="bshare-custom">
 							<div class="bsPromo bsPromo2"></div>
 							<a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博"
@@ -207,7 +213,7 @@ function download(){
 							src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
 						<script type="text/javascript" charset="utf-8"
 							src="http://static.bshare.cn/b/bshareC0.js"></script>
-					</div>
+					</div> -->
 					<div class="downloadBtn">
 				<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
 						<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>

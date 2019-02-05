@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateTimeSerializer;
 
 /**
- * 失效链接（电影 游戏 书籍 软件）
+ * 失效链接（电影 游戏 软件）
  * 
  * @author jyb
  *
@@ -27,15 +27,15 @@ public class InvalidLink {
 	private Integer userId;// 用户id
 	@Column(length = 30)
 	private String invalidName;// 失效链名称
+	private Integer downloadType;//资源地址类别    1.百度云盘地址  2.其他地址 
 	private Date creationTime; // 失效链接创建时间
 	private String largeCategory;// 失效链接大类别
 	private Integer resourceId;// 资源id
 
-	private String gameDownloadAddress1;// 游戏下载地址-百度云
+	private String gameDownloadAddress;// 游戏下载地址-百度云 或其他
 
 	private String linkPwd; // 资源链接密码-百度云
 
-	private String gameDownloadAddress2;// 游戏下载地址-其他地址
 
 	public Integer getId() {
 		return id;
@@ -86,14 +86,6 @@ public class InvalidLink {
 		this.userId = userId;
 	}
 
-	public String getGameDownloadAddress1() {
-		return gameDownloadAddress1;
-	}
-
-	public void setGameDownloadAddress1(String gameDownloadAddress1) {
-		this.gameDownloadAddress1 = gameDownloadAddress1;
-	}
-
 	public String getLinkPwd() {
 		return linkPwd;
 	}
@@ -102,20 +94,31 @@ public class InvalidLink {
 		this.linkPwd = linkPwd;
 	}
 
-	public String getGameDownloadAddress2() {
-		return gameDownloadAddress2;
+	public String getGameDownloadAddress() {
+		return gameDownloadAddress;
 	}
 
-	public void setGameDownloadAddress2(String gameDownloadAddress2) {
-		this.gameDownloadAddress2 = gameDownloadAddress2;
+	public void setGameDownloadAddress(String gameDownloadAddress) {
+		this.gameDownloadAddress = gameDownloadAddress;
+	}
+
+	
+	public Integer getDownloadType() {
+		return downloadType;
+	}
+
+	public void setDownloadType(Integer downloadType) {
+		this.downloadType = downloadType;
 	}
 
 	@Override
 	public String toString() {
-		return "InvalidLink [id=" + id + ", userId=" + userId + ", invalidName=" + invalidName + ", creationTime="
-				+ creationTime + ", largeCategory=" + largeCategory + ", resourceId=" + resourceId
-				+ ", gameDownloadAddress1=" + gameDownloadAddress1 + ", linkPwd=" + linkPwd + ", gameDownloadAddress2="
-				+ gameDownloadAddress2 + "]";
+		return "InvalidLink [id=" + id + ", userId=" + userId + ", invalidName=" + invalidName + ", downloadType="
+				+ downloadType + ", creationTime=" + creationTime + ", largeCategory=" + largeCategory + ", resourceId="
+				+ resourceId + ", gameDownloadAddress=" + gameDownloadAddress + ", linkPwd=" + linkPwd + "]";
 	}
+ 
+	 
+ 
 
 }

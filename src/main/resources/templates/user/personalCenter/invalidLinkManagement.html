@@ -35,8 +35,9 @@ width: 90px;
 				}
 			    ,cols: [[
 			       {type:'numbers',width:40}
-			      ,{field:'invalidName',  title: '资源名称' ,width:150}
-			      ,{field:'largeCategory',  title: '资源类别' ,width:150 ,templet:formatLargeCategory}
+			      ,{field:'invalidName',  title: '资源名称' ,width:220}
+			      ,{field:'largeCategory',  title: '资源类别' ,width:120 ,templet:formatLargeCategory}
+			      ,{field:'largeCategory',  title: '失效链接类型' ,width:171 ,templet:formatDownloadType}
 			      ,{field:'creationTime', width:200, title: '发布日期', sort: true,align:'center'}
 			      ,{field:'action', width:150, title: '操作',align:'center',templet:formatAction}
 			    ]]
@@ -46,29 +47,39 @@ width: 90px;
          
    function formatLargeCategory(data){
 		if(data.largeCategory=="A"){
-			return "游戏类";
+			return "宅游戏";
 		}else if(data.largeCategory=="B"){
-			return "电影类";
+			return "宅电影";
 		}else if(data.largeCategory=="C"){
-			return "书籍类";
+			return "宅软件";
 		}else{
-			return "软件类";
+			return "";
+		}
+	}
+   
+   function formatDownloadType(data){
+		if(data.downloadType==1){
+			return "百度云盘地址";
+		}else if(data.downloadType==2){
+			return "其他地址";
+		}else{
+			return "";
 		}
 	}
    function formatAction(data){
-		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyLink("+data.id+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
+		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyLink("+data.id+","+data.downloadType+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
 	}
    
    /**
     * 修改失效资源链接
     * @param id
     */
-   function modifyLink(id){
+   function modifyLink(id,downloadType){
    	layer.open({
    		  type: 2,
    		  title: '修复资源分享链接',
-   		  area: ['700px', '260px'],
-   		  content: '/user/common/modifyShareLink.html?id='+id //iframe的url
+   		  area: ['700px', '200px'],
+   		  content: '/user/common/modifyShareLink.html?id='+id+'&downloadType='+downloadType//iframe的url
    		});
    }
 

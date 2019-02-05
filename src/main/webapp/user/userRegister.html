@@ -77,8 +77,7 @@
 			  if(result.success){
 				  layer.close(index);
 				  $("#register_button").attr('disabled',false);
-				  alert("注册成功");
-				 // layer.msg('恭喜您，注册成功！'); 
+				  layer.alert('注册成功!', {icon:1});
 				  parent.reloadPage();//刷新父页面（index.html）
 			  }else{
 				  $("#error_div").text(result.errorInfo);

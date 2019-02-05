@@ -1,14 +1,20 @@
 package com.jyb.controller.user;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +24,7 @@ import com.jyb.entity.UserInformation;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserInformationService;
+import com.jyb.util.PageUtil;
 
 @Controller
 @RequestMapping("user/downloadRecord")
@@ -32,6 +39,29 @@ public class DownloadRecordController {
 	
 	@Autowired
 	private UserInformationService userInformationService;
+	
+	/**
+	 *  分页查询用户资源下载信息
+	 * @param session
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/listPage/{id}")
+	public ModelAndView listPage(HttpSession session,@PathVariable(value="id",required=false) Integer page)throws Exception{
+		ModelAndView mav=new ModelAndView();
+		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+		DownloadRecord s_userDownload=new DownloadRecord();
+		s_userDownload.setUserInformation(userInformation);
+		List<DownloadRecord> userDownLoadList=downloadRecordService.listPage(s_userDownload, page, 10, Sort.Direction.DESC, "downloadDate");
+		mav.addObject("userDownLoadList", userDownLoadList);
+		Long total=downloadRecordService.getCount(s_userDownload);
+		mav.addObject("pageCode", PageUtil.getPagination("/user/downloadRecord/listPage", total, page, 10,""));
+		mav.addObject("title", "用户已下载资源页面");
+		mav.setViewName("user/personalCenter/userDownloadRecordManagement");
+        return mav;
+	}
+	
 	/**
 	 * 判断用户是否下载过某资源
 	 * @param resourceId
@@ -76,7 +106,6 @@ public class DownloadRecordController {
 	 */
 	@ResponseBody
 	@RequestMapping("/saveAndShowDownloadRecord/{id}/{type}")
-	@Transactional
 	public synchronized  ModelAndView saveAndShowDownloadRecord(@PathVariable("id") Integer id,@PathVariable("type") Integer type,HttpSession session) {
 		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		GameInformation gameInfo = gameInformationService.getId(id);

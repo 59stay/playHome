@@ -38,7 +38,6 @@ width: 90px;
 	    });
 
 	layui.use(['element','form','layedit','upload'], function(){
-	//  document.getElementById("d1").className='layui-this'
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		  var $ = layui.jquery,upload = layui.upload;
@@ -107,10 +106,9 @@ width: 90px;
 				    }
 
 			});
-		 
 		  //监听提交
 		  form.on('submit(game_submit)', function(data){
-			  var content=layedit.getContent(index);
+			  var content=layedit.getText(index);
 			  if(content==""){
 				  layer.msg("请输入资源描述！");
 				  return false;
@@ -120,10 +118,6 @@ width: 90px;
 		  });
 	   });
 	 
-
-	
-	
-	
 /*]]>*/
 	
 </script>

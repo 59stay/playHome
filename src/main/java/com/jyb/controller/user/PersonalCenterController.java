@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.jyb.entity.InvalidLink;
+import com.jyb.entity.UserInformation;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.InvalidLinkService;
 
 
 @Controller
@@ -17,6 +20,11 @@ public class PersonalCenterController {
 	
 	@Autowired
 	private GameInformationService gameInformationService;
+	
+	@Autowired
+	private InvalidLinkService invalidLinkService;
+	
+	
 	/**
 	 * 个人中心-main页
 	 * @param session
@@ -25,6 +33,11 @@ public class PersonalCenterController {
     @RequestMapping("toMain")
     public ModelAndView toPersonalCenterMain(HttpSession session){
     	ModelAndView mav=new ModelAndView();
+    	UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+    	InvalidLink  invalidLink = new InvalidLink();
+    	invalidLink.setUserId(userInformation.getId());
+    	Long count=invalidLinkService.getCount(invalidLink);
+    	session.setAttribute("invalidLinkCount", count);
     	mav.setViewName("user/personalCenter/main");
         return mav;
     }
@@ -77,7 +90,10 @@ public class PersonalCenterController {
     	mav.setViewName("user/personalCenter/InvalidLinkManagement");
         return mav;
     }
-    
+    /**
+     *  个人中心-用户评论管理
+     * @return
+     */
     @RequestMapping("/toUserReviewsManagement")
     public ModelAndView  toUserReviewsManagement(){
        ModelAndView mv  =  new ModelAndView();
@@ -86,4 +102,17 @@ public class PersonalCenterController {
        return mv;
     }
 	
+    
+    /**
+     *  个人中心-用户已下载资源信息
+     * @return
+     */
+    @RequestMapping("/toUserDownloadRecordManagement")
+    public ModelAndView  toUserDownloadRecordManagement(){
+       ModelAndView mv  =  new ModelAndView();
+       mv.addObject("title","用户已下载资源信息");
+       mv.setViewName("user/personalCenter/userDownloadRecordManagement");
+       return mv;
+    }
+    
 }

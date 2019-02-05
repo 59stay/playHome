@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jyb.util.CustomDateTimeSerializer;
+
 
 /**
  * 实体类-下载记录表
@@ -76,7 +79,7 @@ public class DownloadRecord {
 	public void setUserInformation(UserInformation userInformation) {
 		this.userInformation = userInformation;
 	}
-
+	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getDownloadDate() {
 		return downloadDate;
 	}

@@ -20,7 +20,12 @@ width: 90px;
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/  
-           
+     $(document).ready(function(){  
+    	  $("#li1").addClass("layui-nav-itemed");
+    	  $("#li1_d1").addClass("layui-this");
+    	  
+    	 
+     });       
 	layui.use(['element','form','layedit','upload'], function(){
 	//  document.getElementById("d1").className='layui-this'
 	      var form=layui.form;

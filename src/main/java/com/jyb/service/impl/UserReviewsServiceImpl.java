@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,7 +65,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 				if (userReviews != null) {
 					if (userReviews.getUserInformation() != null
 							&& userReviews.getUserInformation().getId() != null) {
-						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("userId"),
+						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),
 								userReviews.getUserInformation().getId()));
 					}
 					if (userReviews.getLargeCategory() != null && userReviews.getResourceId() != null) {
@@ -94,6 +95,12 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 	public UserReviews getId(Integer id) {
 		// TODO Auto-generated method stub
 		return userReviewsRepositroy.findOne(id);
+	}
+
+	@Override
+	public void deleteUserReviews(Integer resourceId, String largeCategory) {
+		// TODO Auto-generated method stub
+		userReviewsRepositroy.deleteUserReviews(resourceId, largeCategory);
 	}
 
 }

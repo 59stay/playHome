@@ -76,4 +76,10 @@ public class InvalidLinkServiceImpl implements InvalidLinkService{
 		return invalidLinkRepositroy.getOne(id);
 	}
 
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		invalidLinkRepositroy.delete(id);
+	}
+
 }

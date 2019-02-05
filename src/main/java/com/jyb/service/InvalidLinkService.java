@@ -39,5 +39,11 @@ public interface InvalidLinkService {
 	   */
 	  public InvalidLink getId(Integer id);
 	  
+	  /**
+	   * 删除失效信息
+	   * @param id
+	   */
+	  public void delete(Integer id);
+	  
 	 
 }

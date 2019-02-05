@@ -22,6 +22,14 @@ public interface UserInformationService {
 	 * @return
 	 */
 	public UserInformation findByEmail(String email);
+	
+	
+	/**
+	 * 根据id查找实体
+	 * @param id
+	 * @return
+	 */
+	public UserInformation getById(Integer id);
 
 
 }

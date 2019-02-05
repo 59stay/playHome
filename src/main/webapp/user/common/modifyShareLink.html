@@ -12,17 +12,16 @@
 </head>
 <body>
 <div style="padding: 20px">
-	<form method="post">
-	<!--   <input type="hidden"  id="user_id" th:value="${}"> </input> -->
+	<!--  <input type="hidden"  id="download_type" th:value="${downloadType}"> </input> -->
 		<table>
-			<tr>
-				<td>分享资源一：</td>
+			<tr id="tr1">
+				<td>分享地址：</td>
 				<td><input type="text" id="download1"  placeholder="请输入百度云分享地址" class="layui-input" autocomplete="off"  style="width: 380px;display: inline;" maxlength="350"/>
 				&nbsp;&nbsp;
-				<input type="text" id="password1"   autocomplete="off" placeholder="请输入密码" class="layui-input" style="width: 100px;display: inline;" maxlength="4"/></td>
+				<input type="text" id="password"   autocomplete="off" placeholder="请输入密码" class="layui-input" style="width: 100px;display: inline;" maxlength="4"/></td>
 			</tr>
-			<tr>
-				<td>分享资源二：</td>
+			<tr id="tr2">
+				<td>分享地址：</td>
 				<td><input type="text" id="download2"   placeholder="请输入其他分享地址" class="layui-input" autocomplete="off"  style="width: 380px;display: inline;" maxlength="350"/> </td>
 			</tr>
 			<tr>
@@ -30,28 +29,49 @@
 				<td><button class="layui-btn" onclick="submitData();return false;">提交</button>&nbsp;&nbsp;<font id="errorInfo" color="red"></font></td>
 			</tr>
 		</table>
-	</form>
 </div>
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/common.js"></script>
 <script type="text/javascript">
+var id=getQueryVariable("id");
+var downloadType=getQueryVariable("downloadType");
+ $(document).ready(function(){
+	 if(downloadType==1){
+		 $("#tr1").show();
+		 $("#tr2").hide();
+	 }else{
+		 $("#tr2").show();
+		 $("#tr1").hide();
+	 }
+});
 
 	function submitData(){
-		var download1=$("#download1").val().trim();
-		var password1=$("#password1").val().trim();
-		if(download1=="") { 
-	　　　　  $("#errorInfo").text("请输入百度云分享地址！");
-			  $("#download1").focus();
-	　　　　　　      return false; 
-	　　　} 
-		if(password1=="") { 
-	　　　　  $("#errorInfo").text("请输入密码！");
-			  $("#password1").focus();
-	　　　　　return false; 
-	　　　}
-	   var id=getQueryVariable("id");
-	   if(id){
-		   $.post("/user/invalidLink/modifyShareLink",{id:id,gameDownloadAddress1:download1,linkPwd:password1},function(result){
+     var gameDownloadAddress;
+	 var download1=$("#download1").val().trim();
+	 var download2=$("#download2").val().trim();
+	 var password=$("#password").val().trim();
+		if(downloadType==1){
+			if(download1=="") { 
+			　　　　  $("#errorInfo").text("请输入百度云分享地址！");
+					  $("#download1").focus();
+			　　　　  return false; 
+			　　　} 
+			if(password=="") { 
+			　　　　  $("#errorInfo").text("请输入百度云分享密码！");
+					  $("#password").focus();
+			　　　　　return false; 
+			　　　}
+			gameDownloadAddress = download1;
+		}else{
+			if(download2=="") { 
+			　　　　  $("#errorInfo").text("请输入其他分享地址！");
+					  $("#download2").focus();
+			　　　　  return false; 
+			　　　} 
+			gameDownloadAddress = download2;
+		}	 
+	    if(id){
+		   $.post("/user/invalidLink/modifyShareLink",{id:id,gameDownloadAddress:gameDownloadAddress,linkPwd:password,downloadType:downloadType},function(result){
 			  if(result.success){
 				  alert("提交成功！");
 				  parent.reloadPage();
@@ -59,7 +79,7 @@
 				  $("#errorInfo").text(result.errorInfo);
 			  }
 		  },"json");
-	   }
+	   } 
 	}
 	
 	function getQueryVariable(variable){

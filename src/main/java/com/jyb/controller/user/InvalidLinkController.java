@@ -61,19 +61,19 @@ public class InvalidLinkController {
     public Map<String,Object> modifyShareLink(InvalidLink invalidLink,HttpSession session)throws Exception{
     	Map<String, Object> resultMap = new HashMap<>();
     	InvalidLink link = invalidLinkService.getId(invalidLink.getId());
+    
     	if(link.getLargeCategory().equals("A")){//游戏
     		GameInformation gm = gameInformationService.getId(link.getResourceId());
-    		gm.setGameDownloadAddress(invalidLink.getGameDownloadAddress1());
+    		gm.setGameDownloadAddress(invalidLink.getGameDownloadAddress());
     		gm.setLinkPwd(invalidLink.getLinkPwd());
     		gm.setUseful(true);
     		gameInformationService.save(gm);
     	}else if(link.getLargeCategory().equals("B")){ //电影
     		
-    	}else if(link.getLargeCategory().equals("C")){  //书籍
-    		
     	}else{//软件
     		
     	}
+    	invalidLinkService.delete(link.getId());
     	resultMap.put("success", true);
     	return resultMap;
     	/*if(CheckShareLinkEnableUtil.check(invalidLink.getDownload1())){

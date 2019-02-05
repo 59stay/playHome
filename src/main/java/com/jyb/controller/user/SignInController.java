@@ -14,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.SignIn;
 import com.jyb.entity.UserInformation;
+import com.jyb.service.GameInformationService;
 import com.jyb.service.SignInService;
+import com.jyb.service.UserInformationService;
 import com.jyb.specialEntity.AgentThreadLocal;
 import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
@@ -25,6 +27,9 @@ public class SignInController {
 
 	@Autowired
 	private SignInService signInService;
+	
+	@Autowired
+	private UserInformationService userInformationService;
 	
 	/**
 	 * 加载页面时已签到就展示签到信息
@@ -73,6 +78,8 @@ public class SignInController {
 			signIn.setSignInRanking(signInRanking);//签到排名
 			signIn.setSignInTime(strDate);//签到时间
 			signInService.save(signIn);
+			UserInformation userInformation  = userInformationService.getById(userInfo.getId());
+			userInformation.setUserIntegral(userInformation.getUserIntegral()+3);//签到成功加3积分
 			map.put("signInNumber", signInRanking);//用户签到总人数
 			map.put("alreadySignI", signIn); //已经签到的用户信息
 			map.put("success", true);

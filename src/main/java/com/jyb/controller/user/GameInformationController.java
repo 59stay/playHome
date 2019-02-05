@@ -45,9 +45,6 @@ public class GameInformationController {
 	@Autowired
 	private UserReviewsService userReviewsService;
 	
-	@Autowired
-	private SignInService signInService;
-	
 	
 	
 	@Value("${gameContentImageFilePath}")
@@ -219,10 +216,11 @@ public class GameInformationController {
 	    gameInformation.setGamePicture(gameInfo.getGamePicture());
 	    gameInformation.setGameDescribe(gameInfo.getGameDescribe());
 	    gameInformation.setDownloadType(gameInfo.getDownloadType());
+	    gameInformation.setIntegral(gameInfo.getIntegral());
 	    gameInformation.setGameDownloadAddress(gameInfo.getGameDownloadAddress());
 	    gameInformation.setLinkPwd(gameInfo.getLinkPwd());
 	    gameInformation.setDataDictionary(gameInfo.getDataDictionary());
-	    if(gameInformation.getAuditStatus()==3){
+	    if(gameInformation.getAuditStatus()==2||gameInformation.getAuditStatus()==3){
 	      gameInformation.setAuditStatus(1);	
 	    }
 	    gameInformationService.save(gameInformation);

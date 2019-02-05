@@ -18,19 +18,25 @@ spring:
     show-sql: true
   thymeleaf:
     cache: false
-
-
-lucenePath: C://lucene
+    maode: LEGACYHTML5
+    content-type: text/html
+  mail:
+    host: smtp.qq.com
+    username: 166768601@qq.com
+    password: zivatvjkuzkebhca
+    default-encoding: UTF-8
+    port: 465
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.properties.mail.debug: true
 # 游戏封面图片路径
 gameCoverImageFilePath: D://phImage/gameCoverImage/
 # 游戏内容图片路径
 gameContentImageFilePath: D://phImage/gameContentImage/
-
 # 用户头像路径
 userImageFilePath: D://userImages/
 
-#lucenePath: /home/lucene
-
-#articleImageFilePath: /home/articleImages/
-
-#userImageFilePath: /home/userImages/
