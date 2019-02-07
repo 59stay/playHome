@@ -59,11 +59,11 @@ public interface DownloadRecordService {
 	public void delete(Integer id);
 
 	/**
-	 * 根据资源id删除下载记录
-	 * 
-	 * @param id
+	 * 根据资源id和大类别删除下载记录
+	 * @param articleId
+	 * @param largeCategory
 	 */
-	public void deleteByResourceId(Integer id);
+	public void deleteDownloadRecord(Integer articleId,String largeCategory);
 	
 	
 	

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<link rel="stylesheet" href="/static/css/css.css"></link>
+<style type="text/css">
+.layui-table-body{
+     overflow:auto;
+ }
+
+.layui-table-tool-self{
+     display: none;
+}
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/ 
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  var table = layui.table;
+		  table.render({
+		     elem: '#friendshipLinkTable'
+		    ,url:'/admin/friendshipLink/listAll'
+		    ,toolbar: '#toolbar'
+		    ,cols: [[
+		       {type:'radio'}
+			  ,{type:'numbers',width:40}
+			  ,{field:'linkName', title: '友情链接名称',align:'center'}
+			  ,{field:'linkAddress', title: '友情链接地址',align:'center'}
+		      ,{field:'action', width:180, title: '操作',align:'center',templet:formatAction}
+		    ]]
+		  });
+		  
+		  table.on('toolbar(friendshipLinkTable)', function(obj){
+			    switch(obj.event){
+			      case 'add':
+			        	layer.open({
+				            type:2,
+				            title:"添加友情链接",
+				            area: ['22%','38%'],
+				            content: '/admin/saveFriendshipLink.html'
+			        	});
+			      break;
+			    }
+		});
+		
+});
+	
+	  function del(id){
+			layer.confirm('您确定要删除这条记录吗？', {
+		    title:"系统提示"
+			  ,btn: ['确定','取消'] //按钮
+			}, function(){
+				layer.closeAll('dialog');
+				$.post("/admin/friendshipLink/delete",{"id":id},function(result){
+					if(result.success){
+						layer.msg("删除成功！");
+                        location.reload();
+						//table.reload("friendshipLinkTable",{});
+					}else{
+						layer.msg("删除失败，请联系管理员！");
+					}
+				},"json");
+			}, function(){
+			  
+			});
+		}
+	
+	function formatAction(d){
+		return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+	
+	
+	/*]]>*/
+</script>
+
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="add">添加友情链接</button>
+  </div>
+</script>
+
+</head>
+
+<body>
+  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="friendshipLinkTable" lay-filter="friendshipLinkTable"></table>
+</div>
+
+
+
+</body>
+</html>

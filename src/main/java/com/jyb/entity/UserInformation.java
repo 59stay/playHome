@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.jyb.util.CustomDateSerializer;
+import com.jyb.util.CustomDateTimeSerializer;
 /**
  * 用户信息实体类
  * @author jyb
@@ -49,7 +49,7 @@ public class UserInformation {
 	
 	private Integer accountStatus; // 账号状态 0表示可用 1表示禁用 （默认为0）
 	
-	private Integer userRole; // 用户角色    0表示管理员 1表示普通用户  2表示vip
+	private Integer userRole; // 用户角色    0表示管理员 1表示普通用户 
 	
 	@Column(length=100)
 	private String remarks; // 备注
@@ -148,7 +148,8 @@ public class UserInformation {
 	public void setUserIntegral(Integer userIntegral) {
 		this.userIntegral = userIntegral;
 	}
-
+	
+	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getUserCreationTime() {
 		return userCreationTime;
 	}

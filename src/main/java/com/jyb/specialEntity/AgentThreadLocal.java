@@ -3,7 +3,7 @@ package com.jyb.specialEntity;
 import com.jyb.entity.UserInformation;
 
 /**
- * @description : 用于存储用户信息
+ * @description : 用于存储用户信息-在service层调用session中的用户信息
  * @author jyb
  * @date : Create in 2019年1月26日22:44:30
  */

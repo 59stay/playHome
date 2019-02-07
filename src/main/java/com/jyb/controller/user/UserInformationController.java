@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jyb.entity.UserInformation;
 import com.jyb.service.UserInformationService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.CryptographyUtil;
 import com.jyb.util.IpUtil;
 import com.jyb.util.StringUtil;
@@ -79,10 +80,12 @@ public class UserInformationController {
 			map.put("success",false);
 			map.put("errorInfo","邮箱已存在,请更换");
 		}else{
-			
-			userInformation.setUserPassword(CryptographyUtil.md5(userInformation.getUserPassword(),CryptographyUtil.SALT));
+			userInformation.setUserPassword(CryptographyUtil.md5(userInformation.getUserPassword(),Constant.SALT));
 			userInformation.setUserCreationTime(new Date());
 			userInformation.setUserHead("default.jpg");
+			userInformation.setAccountStatus(0);
+			userInformation.setUserIntegral(0);
+			userInformation.setUserRole(1);
 			userInformation.setHostIp(IpUtil.getIpAddr(request));
 			userInformationService.save(userInformation);
 			map.put("success",true);
@@ -151,7 +154,7 @@ public class UserInformationController {
 			return resultMap;
 		}
 		UserInformation user=userInformationService.getById(userId);
-		user.setUserPassword(CryptographyUtil.md5("123456", CryptographyUtil.SALT));
+		user.setUserPassword(CryptographyUtil.md5("123456",Constant.SALT));
 		userInformationService.save(user);
 		resultMap.put("success", true);
 		return resultMap;

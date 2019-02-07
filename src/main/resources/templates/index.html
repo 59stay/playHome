@@ -72,9 +72,9 @@
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.id}" title="毒液">
-								<img th:src="${gameBrowseFrequency.gamePicture}"></img>
-								<p  th:text="${gameBrowseFrequency.gameName}">电影名称</p>
+						<li th:each="game:${gameList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${game.id}" title="毒液">
+								<img th:src="${game.gamePicture}"></img>
+								<p  th:text="${game.gameName}">电影名称</p>
 						</a></li>
 
 

@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import com.jyb.repository.DownloadRecordRepositroy;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.util.StringUtil;
 @Service("downloadRecordService")
+@Transactional
 public class DownloadRecordServiceImpl implements DownloadRecordService {
 
 	@Autowired
@@ -107,9 +109,9 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 	}
 
 	@Override
-	public void deleteByResourceId(Integer id) {
+	public void deleteDownloadRecord(Integer id,String largeCategory) {
 		// TODO Auto-generated method stub
-		downloadRecordRepositroy.deleteByResourceId(id); 
+		downloadRecordRepositroy.deleteDownloadRecord(id,largeCategory); 
 	}
 
 }

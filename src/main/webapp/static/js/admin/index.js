@@ -40,11 +40,11 @@ layui.config({
 			}
 		}
 	});
-	$(document).on('keydown', function() {
+/*	$(document).on('keydown', function() {
 		if(event.keyCode == 13) {
 			$("#unlock").click();
 		}
-	});
+	});*/
 
 	//手机设备的简单适配
 	var treeMobile = $('.site-tree-mobile'),

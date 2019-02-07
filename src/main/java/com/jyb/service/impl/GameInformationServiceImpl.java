@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import com.jyb.service.GameInformationService;
 import com.jyb.util.StringUtil;
 
 @Service("gameInformationService")
+@Transactional
 public class GameInformationServiceImpl implements GameInformationService {
 	@Autowired
 	private GameInformationRepository gameInformationRepository;

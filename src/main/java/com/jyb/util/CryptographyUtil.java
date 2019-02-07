@@ -2,6 +2,8 @@ package com.jyb.util;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 
+import com.jyb.specialEntity.Constant;
+
 /**
  * 加密工具
  * @author Administrator
@@ -9,8 +11,6 @@ import org.apache.shiro.crypto.hash.Md5Hash;
  */
 public class CryptographyUtil {
 
-	public final static String SALT="java1234"; // 加密的盐
-	
 	/**
 	 * Md5加密
 	 * @param str
@@ -24,6 +24,6 @@ public class CryptographyUtil {
 	public static void main(String[] args) {
 		String password="123456";
 		
-		System.out.println("Md5加密："+CryptographyUtil.md5(password, SALT));
+		System.out.println("Md5加密："+CryptographyUtil.md5(password, Constant.SALT));
 	}
 }

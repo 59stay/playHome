@@ -1,17 +1,33 @@
 package com.jyb.service.impl;
 
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.jyb.entity.GameInformation;
 import com.jyb.entity.UserInformation;
 import com.jyb.repository.UserInformationRepositroy;
 import com.jyb.service.UserInformationService;
+import com.jyb.util.StringUtil;
 
 @Service("userInformationService")
+@Transactional
 public class UserInformationServiceImpl implements UserInformationService {
 	@Autowired
 	private UserInformationRepositroy userInformationRepositroy;
-
+	
 	@Override
 	public void save(UserInformation userInformation) {
 		// TODO Auto-generated method stub
@@ -34,6 +50,43 @@ public class UserInformationServiceImpl implements UserInformationService {
 	public UserInformation getById(Integer id) {
 		// TODO Auto-generated method stub
 		return userInformationRepositroy.getOne(id);
+	}
+
+	@Override
+	public List<UserInformation> listPage(UserInformation userInfo, Integer page, Integer pageSize, Direction direction,
+			String... properties) {
+		// TODO Auto-generated method stub
+		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
+		Page<UserInformation> pageUserInformation = userInformationRepositroy.findAll(new Specification<UserInformation>() {
+			@Override
+			public Predicate toPredicate(Root<UserInformation> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+				// TODO Auto-generated method stub
+				Predicate predicate =  cb.conjunction();
+				if(userInfo!=null){
+
+
+				}
+				return predicate;
+			}
+		},pageable);
+		return pageUserInformation.getContent();
+	}
+
+	@Override
+	public Long getCount(UserInformation userInfo) {
+		// TODO Auto-generated method stub
+		Long count = userInformationRepositroy.count(new Specification<UserInformation>() {
+			@Override
+			public Predicate toPredicate(Root<UserInformation> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+				// TODO Auto-generated method stub
+				Predicate predicate =  cb.conjunction();
+				if(userInfo!=null){
+				
+				}
+				return predicate;
+			}
+		});
+		return count;
 	}
 
 	

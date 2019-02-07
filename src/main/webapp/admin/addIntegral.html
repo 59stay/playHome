@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>积分充值</title>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+
+</head>
+<body>
+<div style="padding: 20px">
+		<form class="layui-form" >
+		<table>
+			<tr>
+				<td><input  type="text" placeholder="请输入充值的积分"  onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')"  id="integral" name="integral" maxlength="6"  class="layui-input"/></td>
+				<td><button class="layui-btn"  onclick="submitData();return false;">提交</button></td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/common.js"></script>
+<script type="text/javascript">
+layui.use(['form','layer'], function(){
+	 var form = layui.form;
+	 var layer = layui.layer;
+});
+
+function submitData(){
+    var integral=$("#integral").val().trim()
+	if (integral=="") { 
+		  layer.msg("请输入充值积分！");
+　　　　　return false; 
+　　　} 
+    
+   var id=getQueryVariable("id");
+   $.post("/admin/userInfor/addIntegral",{id:id,userIntegral:integral},function(result){
+	  if(result.success){
+		      alert('积分充值成功！')
+			  var index = parent.layer.getFrameIndex(window.name);
+			  parent.location.reload();  //刷新父页面
+			  parent.layer.close(index); //当你在iframe页面关闭自身时
+	  }else{
+		  layer.alert("积分充值失败，请联系管理员！");
+	  }
+  },"json");
+}
+	
+	
+</script>
+</body>
+</html>

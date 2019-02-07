@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<style type="text/css">
+	.layui-line{
+	  margin-top: 19px;
+	  width: auto;
+	}
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/common.js"></script>
+<script type="text/javascript">
+ $(function(){ 
+	var id=getQueryVariable("id");
+	if(id){
+		$.post("/admin/dataDictionary/getDataDictionary",{id:id},function(result){
+			  if(result.success){
+				  var dataDictionary=result.dataDictionary;
+			      $("#dictionaryName").val(dataDictionary.dictionaryName);
+				  $("#dictionaryType").val(dataDictionary.dictionaryType);
+				  $("#dictionarySort").val(dataDictionary.dictionarySort); 
+			  }else{
+				  alert("服务器加载有问题，请联系管理员！");
+			  }
+		  },"json");
+	}
+ }); 
+
+
+layui.use(['form','layer'], function(){
+	  var form=layui.form;
+	  var layer = layui.layer;
+	/*   form.on("select(search_dictionary_type)",function (data) {
+	       $.post("/admin/dataDictionary/getDictionaryName",{dictionaryType:data.value},function(result){
+	    		  if(result.success){
+	    			//var d=JSON.stringify(result.dataList); //将JSON对象转化为JSON字符
+	    			//var d= eval(result.dataList);//将JSON字符串转化为JSON对象
+	    			    //empty() 方法从被选元素移除所有内容
+	    			    $("select[name='dictionaryName']").empty();
+	    			    var html = "<option value=''>请选择类别</option>";
+	    			    $(result.dataList).each(function (v, k) {
+	                        html += "<option value='" + k.id + "'>" + k.dictionaryName + "</option>";
+	                    }); 
+	    			    //把遍历的数据放到select表里面
+	                    $("select[name='dictionaryName']").append(html);
+	                    //重新渲染下拉框
+	                    form.render('select');     
+	    		  }else{
+	    			  layer.alert("系统错误,请联系管理员");
+	    		  }
+	    	  },"json");
+	   }); */
+	  
+	  //监听提交
+	  form.on('submit(submit_data)', function(data){
+		  var id=getQueryVariable("id");
+		  if(id){
+			  $.ajax({
+		           url : '/admin/dataDictionary/saveDataDictionary',
+		           type : "post",
+		           dataType: "json",
+		           data : {id:id,dictionaryName:data.field.dictionaryName,dictionaryType:data.field.dictionaryType,dictionarySort:data.field.dictionarySort},
+		           async : false,
+		           success : function(data) {
+		        	   if(data.success){
+							  var index = parent.layer.getFrameIndex(window.name);
+							  alert("编辑成功！");
+							  parent.location.reload();  //刷新父页面
+							  parent.layer.close(index); //当你在iframe页面关闭自身时 
+						  }else{
+							  alert("添加失败，请联系管理员！");
+						  } 
+		          }
+	           });
+		  }else{
+			  $.ajax({
+		           url : '/admin/dataDictionary/saveDataDictionary',
+		           type : "post",
+		           dataType: "json",
+		           data : {id:null,dictionaryName:data.field.dictionaryName,dictionaryType:data.field.dictionaryType,dictionarySort:data.field.dictionarySort},
+		           async : false,
+		           success : function(data) {
+		        	   if(data.success){
+							  var index = parent.layer.getFrameIndex(window.name);
+							  alert("添加成功！");
+							  parent.location.reload();  //刷新父页面
+							  parent.layer.close(index); //当你在iframe页面关闭自身时 
+						  }else{
+							  alert("添加失败，请联系管理员！");
+						  } 
+		          }
+	           });
+		  }
+	  });
+	  
+});
+</script>
+</head>
+<body>
+	<div style="padding: 25px">
+		<form class="layui-form" >
+		    	<div class="layui-line">
+					<select id="dictionaryType" name="dictionaryType" lay-filter="search_dictionary_type" lay-verify="required">
+						<option value="">请选择大类别</option>
+						<option value="A">宅游戏</option>
+						<option value="B">宅电影</option>
+						<option value="C">宅软件</option>
+					</select>
+				</div>
+
+		     	<div class="layui-line">
+					<input id="dictionaryName" type="text" name="dictionaryName" class="layui-input" lay-verify="required" placeholder="请输入类别名称"  value=""  maxlength="10" />
+				</div>
+
+		        <div class="layui-line">
+					<input id="dictionarySort"  type="text" name="dictionarySort" class="layui-input" lay-verify="required" placeholder="请输入排序" value=""   onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" maxlength="3" />
+				</div>
+			
+		    	<div class="layui-line">
+					 <button  class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="submit_data"  > 立即提交</button>
+			   </div>
+		</form>
+	</div>
+</body>
+</html>

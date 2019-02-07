@@ -14,8 +14,6 @@ layui.use([ 'element','laypage','form' ], function() {
 	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 	  var $ = layui.jquery; // 使用jquery
 	  var laypage = layui.laypage;
-	  var tMenu=[[${session.tMenu}]];
-	  $("#"+tMenu).css("color","red");
 	  laypage.render({
 	     elem: 'articlePage'
 	    ,limit:6
@@ -107,7 +105,7 @@ function download(){
 		var sessionUserId = $("#session_user_id").val();
 		var resourceUserId =[[${gameInformation.userInformation.id}]];
 	 	if(sessionUserId==resourceUserId){//下载的资源为当前登录用户自己发布的
-	        	layer.confirm('来啦老弟，这是您发布的资源可以直接查看哟！', {
+	 		layer.confirm('来啦老弟，这是您发布的资源可以直接查看哟！', {
 					title:"下载提示"
 					  ,btn: ['确定','取消'] //按钮
 					}, function(){
@@ -125,7 +123,7 @@ function download(){
 					  
 					});
 			}else{//下载的资源不是当前登录用户自己发布的
-				   $.post("/downloadRecord/exist",{"resourceId":[[${gameInformation.id}]],"largeCategory":"A"},function(result){	
+				$.post("/user/downloadRecord/exist",{"resourceId":[[${gameInformation.id}]],"largeCategory":"A"},function(result){	
 				 		  if(result){//已下载资源
 				 			 layer.confirm('来啦老弟，该资源您已下载过可以直接查看哟！', {
 									title:"下载提示"
@@ -144,7 +142,7 @@ function download(){
 									  
 									});
 							}else{//未下载资源
-								$.post("/downloadRecord/isIntegralEnough",{"integral":[[${gameInformation.integral}]]},function(result){
+								$.post("/user/downloadRecord/isIntegralEnough",{"integral":[[${gameInformation.integral}]]},function(result){
 									 if(result){
 											layer.confirm('来啦老弟，该资源下载需要 <font color="red">[[${gameInformation.integral}]]</font> 积分,您确定要下载这个资源吗？', {
 												title:"下载提示"

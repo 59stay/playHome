@@ -16,9 +16,10 @@
 	layui.use(['form','layer'], function(){
 		var form = layui.form;
 		var layer = layui.layer;
-	});
 
-	function submitData(){
+
+	$('#register_button').on('click', function(){
+		
 		 if($("#userName").val().trim()==""){
 			  $("#error_div").text("请输入用户名");
 			  $("#userName").focus();
@@ -72,20 +73,18 @@
 			});
 		  $("#register_button").attr('disabled',true);
 		  $.post("/user/userInformation/register",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#email").val().trim()},function(result){
-			  layer.close(index);//关闭弹出层
-			  $("#register_button").attr('disabled',false);//使注册按钮能点击
 			  if(result.success){
-				  layer.close(index);
-				  $("#register_button").attr('disabled',false);
-				  layer.alert('注册成功!', {icon:1});
-				  parent.reloadPage();//刷新父页面（index.html）
+				   $("#register_button").attr('disabled',false);
+				   alert("注册成功！");
+				   var index = parent.layer.getFrameIndex(window.name);   
+				   parent.layer.close(index); //当你在iframe页面关闭自身时
+		
 			  }else{
 				  $("#error_div").text(result.errorInfo);
 			  }
 		  },"json");
-
-	}
-
+	   });
+	});
 </script>
 
 </head>
@@ -114,7 +113,7 @@
 	    </div>
 
 		   <div class="div_one"  style="width: 350px; margin-left: 10px;">
-	          <button id="register_button" class="layui-btn layui-btn-fluid"  onclick="submitData();return false;">注 册</button>
+	          <button id="register_button" class="layui-btn layui-btn-fluid">注 册</button>
 	          <div id="error_div" style="margin:5px 0px 5px 0px; color:#ff0000; text-align: center;"> </div>
 	       </div>
 	  </form>

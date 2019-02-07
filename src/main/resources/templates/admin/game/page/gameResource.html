@@ -120,24 +120,8 @@ display: none;
 		  			});
 		        }
 		      break;
-		    };
+		    }
 		  });
-		  
-		  
-		 /*   监听开关按钮操作
-		   form.on('switch(usefulSwitch)', function(obj){
-			   $.post("/admin/article/updateHotState",{"id":this.name,"hot":obj.elem.checked},function(result){
-					if(result.success){
-						layer.msg("执行成功！");
-						table.reload("articleListTable",{});
-					}else{
-						layer.msg("执行失败，请联系管理员！");
-					}
-				},"json");
-		    layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
-		  });  */
-		  
-		
 	});
 	
 	
@@ -164,10 +148,8 @@ display: none;
 	function formatIsUseful(d){
 		    if(d.useful){
 		    	return "是";
-		      //return "<input type='checkbox' checked lay-text='是|否' checkedname="+d.useful+" value="+d.useful+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
 		    }else{
 		    	return "否";
-		      //return "<input type='checkbox'  lay-text='是|否' checkedname="+d.useful+" value="+d.useful+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
 		    }
 		
 	}

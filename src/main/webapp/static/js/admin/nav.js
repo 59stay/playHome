@@ -19,12 +19,33 @@ var navs = [{
 	"icon" : "&#xe61c;",
 	"href" : "page/404.html",
 	"spread" : false
-},{
-	"title" : "系统基本参数",
-	"icon" : "&#xe631;",
-	"href" : "page/systemParameter/systemParameter.html",
-	"spread" : false
 }*/
+,{
+	"title" : "基础信息管理",
+	"icon" : "&#xe61c;",
+	"href" : "",
+	"spread" : false,
+	"children" : [
+		{
+			"title" : "用户信息",
+			"icon" : "&#xe631;",
+			"href" : "/admin/userInfo",
+			"spread" : false
+		},
+		{
+			"title" : "类别信息",
+			"icon" : "&#xe631;",
+			"href" : "/admin/dataDictionary",
+			"spread" : false
+		},
+		{
+			"title" : "友情链接信息",
+			"icon" : "icon-text",
+			"href" : "/admin/friendshipLink",
+			"spread" : false
+		}
+	]
+}
 ,{
 	"title" : "资源管理",
 	"icon" : "&#xe61c;",
@@ -34,7 +55,7 @@ var navs = [{
 		{
 			"title" : "游戏资源",
 			"icon" : "&#xe631;",
-			"href" : "/admin/gameInformation/gameResource",
+			"href" : "/admin/gameResource",
 			"spread" : false
 		},
 		{

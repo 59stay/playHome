@@ -21,6 +21,7 @@ import com.jyb.repository.UserReviewsRepositroy;
 import com.jyb.service.UserReviewsService;
 
 @Service("userReviewsService")
+@Transactional
 public class UserReviewsServiceImpl implements UserReviewsService {
 
 	@Autowired

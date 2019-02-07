@@ -14,7 +14,6 @@ public interface UserReviewsRepositroy extends JpaRepository<UserReviews, Intege
 	 * @param resourceId
 	 * @param largeCategory
 	 */
-	@Transactional
 	@Query(value="delete from user_reviews where resource_id=?1 and large_category=?2",nativeQuery=true)
 	@Modifying
 	public void deleteUserReviews(Integer resourceId,String largeCategory);

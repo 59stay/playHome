@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<style type="text/css">
+	.layui-line{
+	  margin-top: 19px;
+	  width: auto;
+	}
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/common.js"></script>
+<script type="text/javascript">
+
+layui.use(['form','layer'], function(){
+	  var form=layui.form;
+	  var layer = layui.layer;
+	  //监听提交
+	  form.on('submit(submit_data)', function(data){
+			  $.ajax({
+		           url : '/admin/friendshipLink/saveFriendshipLink',
+		           type : "post",
+		           dataType: "json",
+		           data : {linkName:data.field.linkName,linkAddress:data.field.linkAddress},
+		           async : false,
+		           success : function(data) {
+		        	   if(data.success){
+							  var index = parent.layer.getFrameIndex(window.name);
+							  alert("添加成功！");
+							  parent.location.reload();  //刷新父页面
+							  parent.layer.close(index); //当你在iframe页面关闭自身时 
+						  }else{
+							  alert("添加失败，请联系管理员！");
+						  } 
+		          }
+	           });
+	  });
+	  
+});
+</script>
+</head>
+<body>
+	<div style="padding: 25px">
+		<form class="layui-form" >
+		     	<div class="layui-line">
+					<input  type="text" name="linkName" class="layui-input" lay-verify="required" placeholder="请输入链接名称"  value=""  maxlength="10" />
+				</div>
+
+		        <div class="layui-line">
+					<input    type="text" name="linkAddress" class="layui-input" lay-verify="required|url" placeholder="请输入链接地址" value=""  maxlength="200" />
+				</div>
+			
+		    	<div class="layui-line">
+					 <button  class="layui-btn layui-btn-fluid" lay-submit="" lay-filter="submit_data"  > 立即提交</button>
+			   </div>
+		</form>
+	</div>
+</body>
+</html>

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
+import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
 
@@ -31,15 +32,10 @@ public class AdminGameInformationController {
 	@Autowired
 	private UserReviewsService   userReviewsService;
 	
-	 /**
-     * 后台-游戏资源
-     */
-    @RequestMapping("gameResource")
-    public ModelAndView game(){
-    	ModelAndView mv = new ModelAndView();
-    	mv.setViewName("admin/game/page/gameResource");
-    	return mv;
-    }
+	@Autowired
+	private DownloadRecordService downloadRecordService;
+	
+	
 	
     /**
      * 分页查询所有的游戏资源
@@ -112,7 +108,7 @@ public class AdminGameInformationController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("auditResourceAdopt")//
+	@RequestMapping("auditResourceAdopt")
 	@ResponseBody
 	public Map<String,Object>  auditResourceAdopt(String id){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -154,7 +150,8 @@ public class AdminGameInformationController {
 		String []idsStr=ids.split(",");
 		for(int i=0;i<idsStr.length;i++){
 			gameInformationService.delete(Integer.parseInt(idsStr[i])); // 删除游戏资源信息
-			userReviewsService.deleteUserReviews(Integer.parseInt(idsStr[i]),"A");
+			userReviewsService.deleteUserReviews(Integer.parseInt(idsStr[i]),"A");//删除资源相关的评论
+			downloadRecordService.deleteDownloadRecord(Integer.parseInt(idsStr[i]),"A");//删除下载的资源信息
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("success", true);

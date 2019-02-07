@@ -12,7 +12,14 @@
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
-layui.use(['form'], function(){});
+layui.use([ 'element','laypage','form' ], function() {
+	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+	  var $ = layui.jquery; // 使用jquery
+	  var laypage = layui.laypage;
+	  var tMenu=[[${session.tMenu}]];
+	  $("#"+tMenu).css("color","red");
+	
+});
 
 /*<![CDATA[*/
  $(document).ready(function(){

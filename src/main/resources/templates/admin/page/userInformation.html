@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<link rel="stylesheet" href="/static/css/css.css"></link>
+<style type="text/css">
+.layui-table-body{
+     overflow:auto;
+ }
+
+.layui-table img {
+width: auto;
+height: auto;
+max-width: 100% !important;
+max-height: 100%;
+}
+.layui-table-tool-self{
+display: none;
+}
+
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/  
+           
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  var table = layui.table;
+		  table.render({
+		     elem: '#userinfoTable'
+		    ,url:'/admin/userInfor/listPage'
+		    ,limits:[10,20,30]
+		    ,cols: [[
+			   {type:'checkbox'}
+			  ,{type:'numbers', }
+			  ,{field:'userHead',  title: '头像',align:'center',templet:formatUserHeadPicture}
+		      ,{field:'userName',   title: '名称',align:'center'}
+		      ,{field:'email',   title: '邮箱',align:'center'}
+		      ,{field:'userPhoneNumber', width:200, title: '手机号', align:'center'}
+		      ,{field:'userIdcard',   title: '身份证号',align:'center'}
+		      ,{field:'accountStatus',   title: '账号状态',align:'center',templet:formatAccountStatus}
+		      ,{field:'userRole',   title: '角色',align:'center',templet:formatUserRole}
+		      ,{field:'userIntegral',   title: '积分',align:'center',sort: true}
+		      ,{field:'userCreationTime',   title: '注册时间',align:'center' }
+		      ,{field:'hostIp',   title: '注册地址',align:'center'}
+		      ,{field:'remarks',   title: '备注',align:'center'}
+		      ,{field:'action',  width:300, title: '操作',align:'center',templet:formatAction}
+		    ]]
+		    ,page: true
+		  });
+
+		  
+			   //监听开关按钮操作
+			   form.on('switch(usefulSwitch)', function(obj){
+			   var accountStatus ;
+			   if(obj.elem.checked){
+				   accountStatus=0;
+			   }else{
+				   accountStatus=1; 
+			   }
+				    $.post("/admin/userInfor/updateAccountStatus",{"id":this.value,"accountStatus":accountStatus},function(result){
+						if(result.success){
+							layer.msg("执行成功！");
+							table.reload("userinfoTable",{});
+						}else{
+							layer.msg("执行失败，请联系管理员！");
+						}
+					},"json"); 
+			   //  layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+			  });
+		
+	});
+	
+	
+	function formatUserHeadPicture(d){
+			return "<img alt='"+d.userName+"' src='"+d.userHead+"'></img>";
+	}
+	
+	function formatUserRole(d){
+		if(d.userRole=="0"){
+			return "管理员";
+		}else{
+			return "普通用户";			
+		}
+	}
+
+	function formatUserName(d){
+		if(d.userInformation==null){
+			return "";	
+		}else{
+			return d.userInformation.userName;			
+		}
+	}
+	
+	function formatAccountStatus(d){
+		if(d.userRole==1){
+			if(d.accountStatus==0 ){
+			      return "<input type='checkbox' checked lay-text='启用|禁用' name='cs1' value="+d.id+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
+			    }else{
+			      return "<input type='checkbox'  lay-text='启用|禁用' name='cs2'  value="+d.id+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
+			    }	
+		}else{
+			 return "无";
+		}
+		    
+		
+	}
+	
+	
+	function formatAction(d){
+		if(d.userRole==1){
+			return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='resetPassword("+d.id+")'><i class='layui-icon layui-icon-edit' ></i>重置密码</button>&nbsp;&nbsp;<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='addIntegral("+d.id+")'><i class='layui-icon layui-icon-edit' ></i>充值积分</button>";
+		}else{
+			return "";
+		}
+		
+	}
+	
+	function AuditResource(id){
+		layer.confirm('请审核该资源信息能否通过', {
+			  skin : "my-skin",
+			  title:"审核信息",
+			  content:"<input id='reason'   class='layui-input' placeholder='请填写审核未通过的原因' type='text'/>",
+			  btn: ['审核通过','驳回']//按钮
+			}, function(){
+				  $.post("/admin/gameInformation/auditResourceAdopt",{
+						id:id,
+					 },function(result){
+						 var index = parent.layer.getFrameIndex(window.name); 
+					 	 if(result.success){
+					 		 layer.msg("审核已通过");
+							 parent.location.reload(); //刷新父页面
+							 parent.layer.close(index); //当你在iframe页面关闭自身时
+						
+						 }
+					},"json"); 
+			}, function(){
+				  var reason =  $("#reason").val();
+				  if(reason==""){
+					  layer.msg("请填写审核未通过的原因");
+					  return ;
+				  }
+				   $.post("/admin/gameInformation/auditResourceNotPass",{
+						id:id,
+						reason:reason
+					 },function(result){
+						 var index = parent.layer.getFrameIndex(window.name); 
+					 	 if(result.success){
+					 		 layer.msg("审核已驳回");
+							 parent.location.reload(); //刷新父页面
+							 parent.layer.close(index); //当你在iframe页面关闭自身时
+						
+						 }
+					},"json"); 
+			 
+			});
+	}
+	
+	function addIntegral(id){
+		layer.open({
+			  type: 2,
+			  title: '充值积分',
+			  area: ['320px', '150px'],
+			  content: '/admin/addIntegral.html?id='+id //iframe的url
+			}); 
+	}
+	
+	function resetPassword(id){
+		layer.confirm('请问您是否要重置密码?', {
+			  title:"重置密码",
+			  icon:6,
+			  btn: ['确定','取消']//按钮
+			}, function(){
+				  $.post("/admin/userInfor/resetPassword",{
+						id:id,
+					 },function(result){
+						 var index = parent.layer.getFrameIndex(window.name); 
+					 	 if(result.success){
+					 		 layer.msg("该账号密码已被重置");
+							 parent.layer.close(index); //当你在iframe页面关闭自身时
+						
+						 }
+					},"json"); 
+			}, function(){
+			   var index = parent.layer.getFrameIndex(window.name); 
+			   parent.layer.close(index); //当你在iframe页面关闭自身时
+			});
+	}
+	
+	
+	
+/*]]>*/
+</script>
+
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="detail">编辑资源</button>
+    <button class="layui-btn layui-btn-sm" lay-event="del">批量删除</button>
+  </div>
+</script>
+
+</head>
+
+<body>
+  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="userinfoTable" lay-filter="userinfoTable"></table>
+</div>
+
+
+
+</body>
+</html>

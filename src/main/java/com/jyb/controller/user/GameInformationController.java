@@ -27,6 +27,7 @@ import com.jyb.entity.SignIn;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.init.InitSystem;
+import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.SignInService;
 import com.jyb.service.UserReviewsService;
@@ -44,6 +45,9 @@ public class GameInformationController {
 	
 	@Autowired
 	private UserReviewsService userReviewsService;
+	
+	@Autowired
+	private DownloadRecordService downloadRecordService;
 	
 	
 	
@@ -192,7 +196,7 @@ public class GameInformationController {
 		gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
 		gameInfo.setGameDownloadFrequency(StringUtil.randomInteger());
 		gameInfo.setGameCreationTime(new Date());
-		gameInfo.setAuditStatus(0);
+		gameInfo.setAuditStatus(1);
 		gameInfo.setUserInformation(userInformation);
 		gameInformationService.save(gameInfo);
 		ModelAndView mav=new ModelAndView();
@@ -262,7 +266,9 @@ public class GameInformationController {
 	@RequestMapping("/delete")
 	public Map<String,Object> delete(Integer id)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		gameInformationService.delete(id);
+		gameInformationService.delete(id);//删除资源信息
+		userReviewsService.deleteUserReviews(id,"A");//删除资源信息评论
+		downloadRecordService.deleteDownloadRecord(id, "A");//删除下载的资源信息
 		resultMap.put("success", true);
 		return resultMap;
 	}
