@@ -1,5 +1,6 @@
 package com.jyb.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Sort.Direction;
@@ -12,19 +13,17 @@ public interface UserMessageService {
 	/**
 	 * 分页查询用户留言信息
 	 * 
-	 * @param direction
 	 * @param properties
 	 * @return
 	 */
-	public List<UserMessage> listPage(Integer page, Integer pageSize, Direction direction, String... properties);
+	public List<UserMessage> listPage(UserMessage userMessage,Integer page, Integer pageSize, Direction direction, String... properties);
 
 	/**
 	 * 查询所有留言总记录数
 	 * 
-	 * @param gameInfo
 	 * @return
 	 */
-	public Long getCount();
+	public Long getCount(UserMessage userMessage);
 
 	/**
 	 * 添加用户留言信息
@@ -32,5 +31,18 @@ public interface UserMessageService {
 	 * @param userInformation
 	 */
 	public void save(UserMessage userMessage);
+	/**
+	 * 删除留言信息
+	 * @param id
+	 */
+	 public void delete(Integer id);
+	 /**
+	  * 根据日期获取当天某用户留言总记录数
+	  * @param id
+	  * @param startDate
+	  * @param endDate
+	  * @return
+	  */
+	 public Integer getByDate(Integer userId,Date startDate,Date endDate);
 
 }

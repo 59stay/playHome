@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateSerializer;
 import com.jyb.util.CustomDateTimeSerializer;
@@ -39,6 +40,7 @@ public class UserReviews {
 	@Column(length=30)
 	private String largeCategory;  //大类别
 	
+	@JSONField(format="yyyy-mm-dd HH:mm:ss")
     private Date reviewsTime;  //评论时间
     
     @Column(length=500)
@@ -69,7 +71,6 @@ public class UserReviews {
 		this.largeCategory = largeCategory;
 	}
 	
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getReviewsTime() {
 		return reviewsTime;
 	}

@@ -201,6 +201,29 @@
 	
 }
 
+
+.data_list .data_result{
+	padding: 15px;
+}
+
+.data_result .title a{
+	color: #256EB1 ;
+	text-decoration: underline;
+}
+
+.data_result .summary{
+	display:block;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	line-height: 25px;
+	padding-top: 0px;
+	font-size: 13px;
+	color: rgb(0, 0, 0);
+}
+
+.data_result .link a{
+	color:#008400
+}
+
 .data_list .datas ul li em{
 margin:9px 0px 0px 0px;
 padding: 2px 3px 2px  2px;

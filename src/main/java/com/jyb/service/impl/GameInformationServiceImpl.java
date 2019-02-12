@@ -1,5 +1,6 @@
 package com.jyb.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,36 @@ import com.jyb.repository.GameInformationRepository;
 import com.jyb.service.GameInformationService;
 import com.jyb.util.StringUtil;
 
+
 @Service("gameInformationService")
 @Transactional
 public class GameInformationServiceImpl implements GameInformationService {
+	
 	@Autowired
 	private GameInformationRepository gameInformationRepository;
+	
+	
+	@Override
+	public List<GameInformation> listAll(GameInformation gameInfo, Direction direction, String... properties) {
+		// TODO Auto-generated method stub
+		Sort sort = new Sort(direction,properties);
+		List<GameInformation> result = gameInformationRepository.findAll(new Specification<GameInformation>() {
+			@Override
+			public Predicate toPredicate(Root<GameInformation> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				  // TODO Auto-generated method stub
+				  List<Predicate> list = new ArrayList<Predicate>();
+				  if (gameInfo!=null&&gameInfo.getAuditStatus()!=null) {
+					  list.add(cb.equal(root.get("auditStatus"),gameInfo.getAuditStatus()));
+					  
+				  }
+				  Predicate[] p = new Predicate[list.size()];
+		          return cb.and(list.toArray(p));
+			}
+			
+		  },sort);
+		return result;
+	}
+ 
 	
 	@Override
 	public List<GameInformation> listPage(GameInformation gameInfo, Integer page, Integer pageSize, Direction direction,
@@ -47,7 +74,10 @@ public class GameInformationServiceImpl implements GameInformationService {
 					if(gameInfo.getAuditStatus()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("auditStatus"), gameInfo.getAuditStatus()));
 					}
-				if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getId()!=null ){
+					if(gameInfo.getIsUseful()!=null){
+						predicate.getExpressions().add(cb.equal(root.get("isUseful"), gameInfo.getIsUseful()));
+					}
+				    if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getId()!=null ){
 						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("id"),gameInfo.getDataDictionary().getId() ));
 					}	
 				}
@@ -74,6 +104,9 @@ public class GameInformationServiceImpl implements GameInformationService {
 					}
 					if(StringUtil.isNotEmpty(gameInfo.getGameName())){
 						predicate.getExpressions().add(cb.like(root.get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
+					}
+					if(gameInfo.getIsUseful()!=null){
+						predicate.getExpressions().add(cb.equal(root.get("isUseful"), gameInfo.getIsUseful()));
 					}
 					if(gameInfo.getDataDictionary()!=null && gameInfo.getDataDictionary().getId()!=null ){
 						predicate.getExpressions().add(cb.equal(root.get("dataDictionary").get("id"),gameInfo.getDataDictionary().getId() ));
@@ -102,5 +135,7 @@ public class GameInformationServiceImpl implements GameInformationService {
 		// TODO Auto-generated method stub
 		gameInformationRepository.delete(id);
 	}
+
+
 
 }

@@ -65,8 +65,7 @@ width: 90px;
 								.render({
 									elem : '#upload_Game_Btn',
 									url : '/user/gameInformation/uploadCoverImage',
-									size : 60 //限制文件大小，单位 KB
-									,
+									size : 60, //限制文件大小，单位 KB
 									before : function(obj) {
 										//预读本地文件示例，不支持ie8
 										obj.preview(function(index, file,
@@ -97,15 +96,12 @@ width: 90px;
 									}
 								});
 
-						var index = layedit
-								.build(
-										'content',
-										{
+					 	var index = layedit.build( 'content', {
 											uploadImage : {
 												url : '/user/gameInformation/uploadContentImage',
-												type : 'post'
+												type : 'post',
 											}
-										});
+										}); 
 
 						//监听提交
 						form.on('submit(game_submit)', function(data) {

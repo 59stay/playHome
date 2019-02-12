@@ -14,7 +14,7 @@ import com.jyb.service.FriendshipLinkService;
 
 @Controller
 @RequestMapping("admin/friendshipLink")
-public class FriendshipLinkController {
+public class AdminFriendshipLinkController {
   @Autowired
   private FriendshipLinkService friendshipLinkService;
   /**

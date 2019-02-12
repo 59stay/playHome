@@ -22,7 +22,7 @@
 			<div class="layui-main">
 				<a href="#" class="logo">宅着玩后台管理</a>
 				<!-- 搜索 -->
-				<div class="layui-form component">
+				<!-- <div class="layui-form component">
 			        <select name="modules" lay-verify="required" lay-search="">
 						<option value="">直接选择或搜索选择</option>
 						<option value="1">layer</option>
@@ -47,7 +47,7 @@
 						<option value="20">radio</option>
 			        </select>
 			        <i class="layui-icon">&#xe615;</i>
-			    </div>
+			    </div> -->
 			    <!-- 天气信息 -->
 			   <!--  <div class="weather" `>
 			    	<div id="tp-weather-widget"></div>
@@ -77,20 +77,20 @@
 			    		<a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>设置</cite></a>
 			    	</li>
 			    	<li class="layui-nav-item" >
-			    		<a href="javascript:;"><i class="iconfont icon-loginout"></i> 退出</a>
+			    		<a href="/logout"><i class="iconfont icon-loginout"></i>退出</a>
 			    	</li>
 					<li class="layui-nav-item lockcms">
 						<a href="javascript:;"><i class="iconfont icon-lock1"></i><cite>锁屏</cite></a>
 					</li>
 					<li class="layui-nav-item">
 						<a href="javascript:;">
-							<img src="/static/images/face.jpg" class="layui-circle" width="35" height="35"></img>
-							<cite>来啦老弟!!!</cite>
+							<img class="layui-circle" width="35" height="35" th:src="${session.adminUserInfo.userHead}"></img>
+							<cite th:text="${session.adminUserInfo.userName}">来啦老弟!!!</cite>
 						</a>
 						<dl class="layui-nav-child">
 							<dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="iconfont icon-zhanghu" data-icon="icon-zhanghu"></i><cite>个人资料</cite></a></dd>
 							<dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>修改密码</cite></a></dd>
-							<dd><a href="javascript:;"><i class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>
+							<dd><a href="/logout"><i class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>
 						</dl>
 					</li>
 				</ul>
@@ -99,8 +99,8 @@
 		<!-- 左侧导航 -->
 		<div class="layui-side layui-bg-black">
 			<div class="user-photo">
-				<a class="img" title="我的头像" ><img src="/static/images/face.jpg"></img></a>
-				<p>你好！<span class="userName">来啦老弟!!!</span>, 欢迎登录</p>
+				<a class="img" title="我的头像" ><img th:src="${session.adminUserInfo.userHead}"></img></a>
+				<p>你好！<span class="userName" th:text="${session.adminUserInfo.userName}"></span>, 欢迎登录</p>
 			</div>
 			<div class="navBar layui-side-scroll"></div>
 		</div>
@@ -112,7 +112,7 @@
 				</ul>
 				<div class="layui-tab-content clildFrame">
 					<div class="layui-tab-item layui-show">
-					aaaas
+					主页
 						<!-- <iframe src="page/main.html"></iframe> -->
 					</div>
 				</div>

@@ -1,6 +1,7 @@
 package com.jyb.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -79,12 +80,42 @@ public class DateUtil {
       result=df.format(s);
       return result;
    }
- 
+     /**
+      * 获取当天起始时间
+      * @return
+      */
+     public static Date getTodayStartTime() {
+         Calendar todayStart = Calendar.getInstance();
+         todayStart.set(Calendar.HOUR_OF_DAY, 0);
+         todayStart.set(Calendar.MINUTE, 0);
+         todayStart.set(Calendar.SECOND, 0);
+         return todayStart.getTime();
+     }
+     /**
+      * 获取当天结束时间
+      * @return
+      */
+     public static Date getTodayEndTime() {
+         Calendar todayEnd = Calendar.getInstance();
+         todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+         todayEnd.set(Calendar.MINUTE, 59);
+         todayEnd.set(Calendar.SECOND, 59);
+         return todayEnd.getTime();
+     }
+     /**
+      * 获取当前时间
+      * @return
+      */
+     public static Date getNowDate() {
+         Calendar now = Calendar.getInstance();
+         return now.getTime();
+     }
 	
 	public static void main(String[] args) {
 		try {
-			 String s=DateUtil.toTimestamp("2017-03-23 10:57:57","yyyy-MM-dd");
-			 System.out.println(s);
+			// String s=DateUtil.toTimestamp("2017-03-23 10:57:57","yyyy-MM-dd");
+			 System.out.println(DateUtil.getTodayStartTime());
+			 System.out.println(DateUtil.getTodayEndTime());
 			//System.out.println(getCurrentDatePath());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -1,4 +1,6 @@
 package com.jyb.specialEntity;
+
+
 /**
  * 常量类
  * @author jyb
@@ -14,7 +16,5 @@ public class Constant {
      * 加密的盐
      */
 	public final static String SALT="saltPwd"; 
-	
-	
 	
 }

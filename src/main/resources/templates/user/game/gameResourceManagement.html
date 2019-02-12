@@ -72,7 +72,6 @@ function modify(id){
 	window.location.href="/personalCenter/toModifyGameResource/"+id;
 }
 
-
 function del(id){
 	layer.confirm('您确定要删除这条记录吗？', {
       title:"系统提示"
@@ -92,6 +91,19 @@ function del(id){
 	});
 }
 
+function search(){
+	var s_gameName=$("#s_name").val();
+	var s_auditStatus=$("#s_state").val();
+	table.reload("gameListTable",{
+		page:{
+			curr:1 //重新从第 1 页开始
+		}
+		,where:{
+			gameName:s_gameName,
+			auditStatus:s_auditStatus
+		}
+	});
+}
 
 /*]]>*/
 </script>

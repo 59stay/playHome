@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateTimeSerializer;
 
@@ -23,19 +24,25 @@ public class InvalidLink {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(length = 30)
+	
 	private Integer userId;// 用户id
-	@Column(length = 30)
+	
+	private String userName;//用户名称
+	
 	private String invalidName;// 失效链名称
+	
 	private Integer downloadType;//资源地址类别    1.百度云盘地址  2.其他地址 
+	
+	@JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date creationTime; // 失效链接创建时间
+	
 	private String largeCategory;// 失效链接大类别
+	
 	private Integer resourceId;// 资源id
-
-	private String gameDownloadAddress;// 游戏下载地址-百度云 或其他
-
+	
+	private String downloadAddress;// 游戏下载地址-百度云 或其他
+	
 	private String linkPwd; // 资源链接密码-百度云
-
 
 	public Integer getId() {
 		return id;
@@ -43,6 +50,14 @@ public class InvalidLink {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getInvalidName() {
@@ -53,7 +68,6 @@ public class InvalidLink {
 		this.invalidName = invalidName;
 	}
 
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getCreationTime() {
 		return creationTime;
 	}
@@ -94,15 +108,14 @@ public class InvalidLink {
 		this.linkPwd = linkPwd;
 	}
 
-	public String getGameDownloadAddress() {
-		return gameDownloadAddress;
+	public String getDownloadAddress() {
+		return downloadAddress;
 	}
 
-	public void setGameDownloadAddress(String gameDownloadAddress) {
-		this.gameDownloadAddress = gameDownloadAddress;
+	public void setDownloadAddress(String downloadAddress) {
+		this.downloadAddress = downloadAddress;
 	}
 
-	
 	public Integer getDownloadType() {
 		return downloadType;
 	}
@@ -113,12 +126,12 @@ public class InvalidLink {
 
 	@Override
 	public String toString() {
-		return "InvalidLink [id=" + id + ", userId=" + userId + ", invalidName=" + invalidName + ", downloadType="
-				+ downloadType + ", creationTime=" + creationTime + ", largeCategory=" + largeCategory + ", resourceId="
-				+ resourceId + ", gameDownloadAddress=" + gameDownloadAddress + ", linkPwd=" + linkPwd + "]";
+		return "InvalidLink [id=" + id + ", userId=" + userId + ", userName=" + userName + ", invalidName="
+				+ invalidName + ", downloadType=" + downloadType + ", creationTime=" + creationTime + ", largeCategory="
+				+ largeCategory + ", resourceId=" + resourceId + ", downloadAddress=" + downloadAddress + ", linkPwd="
+				+ linkPwd + "]";
 	}
- 
-	 
+
  
 
 }

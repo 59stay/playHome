@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,17 +25,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
-import com.jyb.entity.SignIn;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.init.InitSystem;
+import com.jyb.lucene.GameIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
-import com.jyb.service.SignInService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
+import com.jyb.util.RedisUtil;
 import com.jyb.util.StringUtil;
 
 @Controller
@@ -49,6 +52,11 @@ public class GameInformationController {
 	@Autowired
 	private DownloadRecordService downloadRecordService;
 	
+	@Autowired
+	private GameIndex gameIndex;
+	
+	@Autowired
+	private RedisUtil<GameInformation> redisUtil;
 	
 	
 	@Value("${gameContentImageFilePath}")
@@ -58,6 +66,8 @@ public class GameInformationController {
 	@Value("${gameCoverImageFilePath}")
 	private String gameCoverImageFilePath;
 	
+
+	
 	
 	/**
 	 * 游戏主页面
@@ -66,17 +76,18 @@ public class GameInformationController {
 	 @RequestMapping("index")
 	 public ModelAndView index(HttpServletRequest request){
 		    request.getSession().setAttribute("tMenu", "t_0");
-		    GameInformation gameIndfo  = new GameInformation();
-	    	gameIndfo.setAuditStatus(2);//显示审核通过的
-	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameIndfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
-	    	Long total = gameInformationService.getCount(gameIndfo);
+		    GameInformation gameInfo  = new GameInformation();
+	    	gameInfo.setAuditStatus(2);//显示审核通过的
+	    	gameInfo.setIsUseful(1);//显示未失效的资源
+	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameInfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
+	    	Long total = gameInformationService.getCount(gameInfo);
 	    	Integer signInNumber= CommonMethodUtil.getSignInNumber();
 	    	ModelAndView mv = new ModelAndView();
 	    	mv.addObject("signInNumber", signInNumber);
 	    	mv.addObject("indexGameInformationList", indexGameInformationList);
 	    	mv.addObject("pageCode",PageUtil.getPagination("/user/gameInformation/list",total, 1,20, ""));
 	    	mv.addObject("title","宅着玩资源网站 - 宅游戏");
-	    	mv.setViewName("user/game/gameInformation");
+	    	mv.setViewName("user/game/gameIndex");
 	    	return mv;
 	 }
 	
@@ -89,7 +100,8 @@ public class GameInformationController {
 	public ModelAndView list(@RequestParam(value="gameTypeId",required=false)Integer gameTypeId,@PathVariable(value="page",required=false) Integer page,HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
 		GameInformation gameInfo = new GameInformation();
-		gameInfo.setAuditStatus(2);
+		gameInfo.setAuditStatus(2);//显示审核通过的
+		gameInfo.setIsUseful(1);//显示未失效的资源
 		if(gameTypeId==null){
 			mv.addObject("title","宅着玩资源网站 - 宅游戏 - 第"+page+"页");
 		}else{
@@ -108,7 +120,7 @@ public class GameInformationController {
 		}
 		mv.addObject("indexGameInformationList", indexGameInformationList);
     	mv.addObject("pageCode",PageUtil.getPagination("/user/gameInformation/list",total,page,20,param.toString()));
-    	mv.setViewName("user/game/gameInformation");
+    	mv.setViewName("user/game/gameIndex");
 		return mv;
 	}
 	
@@ -116,16 +128,23 @@ public class GameInformationController {
 	@RequestMapping("listDetails/{id}")
 	public ModelAndView listDetails(@PathVariable("id") Integer id){
 		ModelAndView mv = new ModelAndView();
-		GameInformation gameInformation = gameInformationService.getId(id);
+		GameInformation r_game = null;
+		String key="r_game_"+id;
+		if(redisUtil.hasKey(key)){
+			r_game=(GameInformation) redisUtil.get(key);
+		}else{
+			r_game=gameInformationService.getId(id);
+			redisUtil.set(key,r_game,60*60);
+		}
 		Integer signInNumber= CommonMethodUtil.getSignInNumber();
 		UserReviews ur=new UserReviews();
-		ur.setLargeCategory(gameInformation.getLargeCategory());
-		ur.setResourceId(gameInformation.getId());
-		ur.setResourceName(gameInformation.getGameName());
+		ur.setLargeCategory(r_game.getLargeCategory());
+		ur.setResourceId(r_game.getId());
+		ur.setResourceName(r_game.getGameName());
 		mv.addObject("signInNumber",signInNumber);//今日签到总人数
     	mv.addObject("userReviewsCount", userReviewsService.getCount(ur));
-		mv.addObject("gameInformation",gameInformation);
-		mv.addObject("title", "宅着玩资源网站 - 宅游戏 - "+gameInformation.getGameTitle());
+		mv.addObject("gameInformation",r_game);
+		mv.addObject("title", "宅着玩资源网站 - 宅游戏 - "+r_game.getGameTitle());
 	    mv.setViewName("user/game/gameDetails");
 		return mv;
 	}
@@ -197,8 +216,11 @@ public class GameInformationController {
 		gameInfo.setGameDownloadFrequency(StringUtil.randomInteger());
 		gameInfo.setGameCreationTime(new Date());
 		gameInfo.setAuditStatus(1);
+		gameInfo.setIsUseful(1);
 		gameInfo.setUserInformation(userInformation);
+		gameInfo.setDataDictionary(gameInfo.getDataDictionary());
 		gameInformationService.save(gameInfo);
+		gameIndex.addIndex(gameInfo);
 		ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "发布游戏成功页面");
     	mav.setViewName("user/game/publishGameSuccess");
@@ -213,7 +235,7 @@ public class GameInformationController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/update")
-	public ModelAndView update(GameInformation gameInfo)throws Exception{
+	public ModelAndView update(GameInformation gameInfo,HttpServletRequest request)throws Exception{
 	    GameInformation gameInformation=gameInformationService.getId(gameInfo.getId());
 	    gameInformation.setGameName(gameInfo.getGameName());
 	    gameInformation.setGameTitle(gameInfo.getGameTitle());
@@ -228,6 +250,9 @@ public class GameInformationController {
 	      gameInformation.setAuditStatus(1);	
 	    }
 	    gameInformationService.save(gameInformation);
+	    InitSystem.loadData(request.getServletContext());
+	    gameIndex.updateIndex(gameInformation);
+	    redisUtil.del("r_game"+gameInformation.getId());
 		ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "修改游戏成功页面");
     	mav.setViewName("user/game/modifyGameSuccess");
@@ -264,15 +289,43 @@ public class GameInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping("/delete")
-	public Map<String,Object> delete(Integer id)throws Exception{
+	public Map<String,Object> delete(Integer id,HttpServletRequest request)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
 		gameInformationService.delete(id);//删除资源信息
 		userReviewsService.deleteUserReviews(id,"A");//删除资源信息评论
 		downloadRecordService.deleteDownloadRecord(id, "A");//删除下载的资源信息
+		InitSystem.loadData(request.getServletContext());
+		gameIndex.deleteIndex(String.valueOf(id));
+		redisUtil.del("r_game"+id);
 		resultMap.put("success", true);
 		return resultMap;
 	}
 
+	
+	/**
+	 * 关键字分词搜索
+	 * @param q
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/search")
+	public ModelAndView search(String q,@RequestParam(value="page",required=false)String page,HttpServletRequest request)throws Exception{
+		request.getSession().setAttribute("tMenu", "t_0");
+		if(StringUtil.isEmpty(page)){
+			page="1";
+		}
+		ModelAndView mav=new ModelAndView();
+		List<GameInformation> hotGameList=gameIndex.search(q);
+		Integer toIndex=hotGameList.size()>=Integer.parseInt(page)*10?Integer.parseInt(page)*10:hotGameList.size();
+		mav.addObject("hotGameList",hotGameList.subList((Integer.parseInt(page)-1)*10, toIndex));
+		mav.addObject("pageCode", PageUtil.getUpAndDownPageCode(Integer.parseInt(page), hotGameList.size(), q, 10));
+		mav.addObject("q",q);
+		mav.addObject("resultTotal",hotGameList.size());
+		mav.addObject("title", q);
+		mav.setViewName("user/game/gameIndexResult");
+		return mav;
+	}
 	
 	
 	

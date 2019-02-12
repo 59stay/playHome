@@ -1,77 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<title th:text="${title}"></title>
-<meta name="renderer" content="webkit"></meta>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
-<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
-<link rel="stylesheet" href="/static/css/gameInformation.css" />
-<script src="/static/layui/layui.js" charset="utf-8"></script>
-<script src="/static/js/jquery.js"></script>
-<script src="/static/js/common.js"></script>
-<script th:inline="javascript">
-layui.use([ 'element','laypage','form' ], function() {
-	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-	  var $ = layui.jquery; // 使用jquery
-	  var laypage = layui.laypage;
-	  var tMenu=[[${session.tMenu}]];
-	  $("#"+tMenu).css("color","red");
-	
-});
-
-/*<![CDATA[*/
- $(document).ready(function(){
-	 $.post("/user/SignIn/loadSignIn",{},function(result){   
-		 if(result.success){
-			 if(result.alreadySignI!=null){
-				 $("#sign_in_div").empty();
-				 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
-			 }else{
-				 $("#sign_in_div").empty();
-				 $("#sign_in_div").append("<a onclick='signIn()'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
-					 
-			 }
-		 }else{
-			 $("#sign_in_div").empty();
-			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
-		 }
-	},"json"); 
-}); 
-
-function signIn(){
-	if([[${session.userInfo}]]==null){//未登录
-		layer.msg("大佬登录后才能签到哟！");
-		return;
-	}else{
-		   $.post("/user/SignIn/loginSignIn",{},function(result){   
-					 $("#sign_in_div").empty();
-					 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
-					 layer.msg("大佬您今天已签到成功了哟！");
-			},"json"); 
-	}
-}
-
-function submitData(){
-	var q=$("#q").val();
-	if(q==""){
-		layer.msg("请输入关键字！");
-		$("#q").focus();
-		return false;
-	}
-}
-
-/*]]>*/
-</script>
-</head>
-
-<body>
-	<!-- 导航区 -->
-<div class="w1170" style="padding-bottom: 10px; overflow: visible;" th:include="common/head::#head"></div>
-
-	<!-- 内容展示区 -->
-	<div class="w1170">
+<meta charset="UTF-8"/>
+<div id="gip">
 		<div class="pLeft">
 			<div class="data_list_condition">
 				<div class="data_list_title">
@@ -167,10 +95,3 @@ function submitData(){
 			</div>
 		</div>
 	</div>
-
-	<div class="w1170" th:include="common/link::#link"></div>
-
-	<div class="w1170" style="padding-top: 40px"
-		th:include="common/foot::#foot"></div>
-</body>
-</html>

@@ -16,23 +16,20 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jyb.entity.DataDictionary;
-import com.jyb.entity.GameInformation;
+import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserMessage;
-import com.jyb.init.InitSystem;
 import com.jyb.service.UserMessageService;
+import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
 
 /**
@@ -57,8 +54,8 @@ public class UserMessageController {
     @RequestMapping("index")
     public ModelAndView userMessageShow(){
              ModelAndView mv  = new ModelAndView();
-             List<UserMessage> userMessageList =  userMessageService.listPage(1,10,Sort.Direction.DESC, "messageCreationTime");
-             Long total = userMessageService.getCount();
+             List<UserMessage> userMessageList =  userMessageService.listPage(null,1,10,Sort.Direction.DESC, "messageCreationTime");
+             Long total = userMessageService.getCount(null);
          	 mv.addObject("userMessageList", userMessageList);
          	 mv.addObject("total", total);
          	 mv.addObject("pageCode",PageUtil.getPagination("/user/userMessage/list",total, 1,10,""));
@@ -74,8 +71,8 @@ public class UserMessageController {
 	@RequestMapping("list/{page}")
 	public ModelAndView list(@PathVariable(value="page",	required=false) Integer page,HttpServletRequest request){
 		ModelAndView mv = new ModelAndView();
-     	List<UserMessage> userMessageList = userMessageService.listPage(page,10,Sort.Direction.DESC, "messageCreationTime");
-      	Long total = userMessageService.getCount();
+     	List<UserMessage> userMessageList = userMessageService.listPage(null,page,10,Sort.Direction.DESC, "messageCreationTime");
+      	Long total = userMessageService.getCount(null);
 		mv.addObject("userMessageList", userMessageList);
 		mv.addObject("total", total);
      	mv.addObject("pageCode",PageUtil.getPagination("/user/userMessage/list",total,page,10,""));
@@ -91,19 +88,42 @@ public class UserMessageController {
      */
     @ResponseBody
     @RequestMapping("save")
-    public  Map<String,Object>   saveUserMessage(UserMessage  userMessage){
+    public  Map<String,Object>   saveUserMessage(UserMessage  userMessage,HttpSession session){
     	Map<String,Object> map = new HashMap<String,Object>();
-    	if(userMessage!=null){
-    		userMessage.setKeyUserName("woshi1");
-        	userMessage.setUserHead("/static/images/header.png");
-        	userMessage.setMessageCreationTime(new Date());
-        	userMessageService.save(userMessage);
-        	map.put("success",true);
+    	UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+    	if(userInformation!=null && userMessage!=null){
+    		userMessage.setMessageCreationTime(new Date());
+    		userMessage.setUserInformation(userInformation);
+    		userMessageService.save(userMessage);
+    		map.put("success",true);
     	}else{
     		map.put("success",false);
     	}
     	return map;
     }
+    
+    /**
+     * 获取当天某用户留言的次数
+     * @param session
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("checkMessageFrequency")
+    public  Map<String,Object>   checkMessageFrequency(HttpSession session){
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+    	if(userInformation!=null){
+    	 Integer num =userMessageService.getByDate(userInformation.getId(),DateUtil.getTodayStartTime(),DateUtil.getTodayEndTime());
+    	 if(num<11){
+    		 map.put("success",true);
+    	 }else{
+    		 map.put("success",false);
+    	 }	
+    	}
+    	return map;
+    }
+    
+    
     
     
 }

@@ -7,6 +7,13 @@ import org.springframework.data.domain.Sort.Direction;
 import com.jyb.entity.GameInformation;
 
 public interface GameInformationService  {
+	
+  /**
+   * 查所信息
+   * @return
+   */
+   public List<GameInformation> listAll(GameInformation gameInfo,Direction direction,String...properties);
+	
   /**
    * 根据条件分页查询游戏信息
    * @param gameInfo

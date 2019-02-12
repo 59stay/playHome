@@ -39,4 +39,7 @@ gameCoverImageFilePath: D://phImage/gameCoverImage/
 gameContentImageFilePath: D://phImage/gameContentImage/
 # 用户头像路径
 userImageFilePath: D://userImages/
+# 索引存储路径
+lucenePath: C://lucene
+
 

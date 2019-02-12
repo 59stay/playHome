@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateTimeSerializer;
 
@@ -36,6 +37,7 @@ public class DownloadRecord {
 	@JoinColumn(name="userId")
 	private UserInformation userInformation; // 下载用户
 	
+	@JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date downloadDate; // 下载日期
 
 	public Integer getId() {
@@ -79,7 +81,6 @@ public class DownloadRecord {
 	public void setUserInformation(UserInformation userInformation) {
 		this.userInformation = userInformation;
 	}
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getDownloadDate() {
 		return downloadDate;
 	}

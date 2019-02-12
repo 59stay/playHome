@@ -23,10 +23,7 @@ public class IndexController {
 	 */
 	@RequestMapping("/")
 	public ModelAndView root() {
-		ModelAndView mv = new ModelAndView();
-		List<GameInformation> gameList = gameInformationService.listPage(null, 1, 14, Sort.Direction.DESC,
-				"gameBrowseFrequency");
-		mv.addObject("gameList", gameList);
+	    ModelAndView mv = new ModelAndView();
 		mv.setViewName("index");
 		return mv;
 	}
@@ -80,5 +77,25 @@ public class IndexController {
 		mv.setViewName("admin/page/friendshipLink");
 		return mv;
 	}
+	/**
+	 * 后台-留言板
+	 */
+	@RequestMapping("admin/userMessage")
+	public ModelAndView userMessage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("admin/page/userMessage");
+		return mv;
+	}
+	
+	/**
+	 * 后台-失效链接
+	 */
+	@RequestMapping("admin/invalidLink")
+	public ModelAndView invalidLink() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("admin/page/invalidLink");
+		return mv;
+	}
+	
 	
 }

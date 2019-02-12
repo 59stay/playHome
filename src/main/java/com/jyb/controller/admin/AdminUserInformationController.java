@@ -5,7 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -35,18 +40,35 @@ public class AdminUserInformationController {
 	@ResponseBody
 	public Map<String,Object> loginUserInformation(UserInformation userInformation,String code,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
-		if(userInformation!=null &&(StringUtil.isNotEmpty(code) )){
-			if(userInformation.getUserName().equals("admin")){
-				UserInformation sessionUserInformation = userInformationService.findByUserName(userInformation.getUserName());
-				request.getSession().setAttribute("userInfo", sessionUserInformation);
-				map.put("success",true);
-			}else{
-				map.put("success",false);
-				map.put("errorInfo","登录失败，账号或者密码错误");
-			}
+		if(StringUtil.isEmpty(userInformation.getUserName())){
+			map.put("success", false);
+    		map.put("errorInfo", "请输入用户名！");
+		}else if(StringUtil.isEmpty(userInformation.getUserPassword())){
+			map.put("success", false);
+    		map.put("errorInfo", "请输入密码！");
+		}else if(StringUtil.isEmpty(code)){
+			map.put("success", false);
+    		map.put("errorInfo", "请输入验证码！");
 		}else{
-			map.put("success",false);
-			map.put("errorInfo","登录失败，账号或者密码错误");
+			try {
+				Subject subject=SecurityUtils.getSubject();
+				UsernamePasswordToken token=new UsernamePasswordToken(userInformation.getUserName(), CryptographyUtil.md5(userInformation.getUserPassword(),Constant.SALT));
+				subject.login(token); // 登录验证
+				String userName=(String) SecurityUtils.getSubject().getPrincipal();
+				UserInformation userInfo=userInformationService.findByUserName(userName);
+				if(userInfo.getUserRole()==0){
+					request.getSession().setAttribute("adminUserInfo", userInfo);
+					map.put("success", true);
+				}else{
+					map.put("success", false);
+					map.put("errorInfo", "只有管理员账号才能登录!");
+				}
+			} catch (AuthenticationException e) {
+				e.printStackTrace();
+				map.put("success", false);
+				map.put("errorInfo", "用户名或者密码错误！");
+			}
+			
 		}
 		return map;
 	}

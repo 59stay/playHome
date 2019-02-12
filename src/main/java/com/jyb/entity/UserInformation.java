@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateTimeSerializer;
 /**
@@ -47,15 +48,16 @@ public class UserInformation {
 	@Column(length=30)
 	private String userIdcard; // 用户身份证号
 	
-	private Integer accountStatus; // 账号状态 0表示可用 1表示禁用 （默认为0）
+	private Integer accountStatus=0; // 账号状态 0表示可用 1表示禁用 （默认为0）
 	
-	private Integer userRole; // 用户角色    0表示管理员 1表示普通用户 
+	private Integer userRole=1; // 用户角色    0表示管理员 1表示普通用户 （默认为1）
 	
 	@Column(length=100)
 	private String remarks; // 备注
 	
-    private Integer userIntegral;//用户积分
+    private Integer userIntegral=0;//用户积分
 	
+    @JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date userCreationTime; // 创建时间
 	
 	@Column(length=30)

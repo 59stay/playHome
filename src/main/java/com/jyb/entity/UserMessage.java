@@ -6,10 +6,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateTimeSerializer;
 
@@ -17,22 +21,24 @@ import com.jyb.util.CustomDateTimeSerializer;
 @Table(name="user_message")
 public class UserMessage {
 
-	@Id//messageId
+	@Id 
 	@GeneratedValue
-	private Integer id;  // id
+	private Integer id;   
 	
 	@Column(length=500)
 	private String messageInformation; // 留言信息
 	
+    @JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date  messageCreationTime;//留言时间
-	
-	@Column(length=30)
-	private String keyUserName; //用户昵称
-	
-	@Column(length=100)
-	private String userHead; //用户头像
-	
-	
+
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private UserInformation userInformation;//留言用户 
+	@Transient
+	private Date startDate;//虚字段-开始时间
+	@Transient
+	private Date endDate;//虚字段-结束时间
+
 	public Integer getId() {
 		return id;
 	}
@@ -40,7 +46,6 @@ public class UserMessage {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
 
 	public String getMessageInformation() {
 		return messageInformation;
@@ -50,7 +55,6 @@ public class UserMessage {
 		this.messageInformation = messageInformation;
 	}
 	
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getMessageCreationTime() {
 		return messageCreationTime;
 	}
@@ -59,33 +63,37 @@ public class UserMessage {
 		this.messageCreationTime = messageCreationTime;
 	}
 
-	public String getKeyUserName() {
-		return keyUserName;
+
+	public UserInformation getUserInformation() {
+		return userInformation;
 	}
 
-	public void setKeyUserName(String keyUserName) {
-		this.keyUserName = keyUserName;
+	public void setUserInformation(UserInformation userInformation) {
+		this.userInformation = userInformation;
 	}
-
-	public String getUserHead() {
-		return userHead;
-	}
-
-	public void setUserHead(String userHead) {
-		this.userHead = userHead;
-	}
-
 	
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
 	@Override
 	public String toString() {
 		return "UserMessage [id=" + id + ", messageInformation=" + messageInformation + ", messageCreationTime="
-				+ messageCreationTime + ", keyUserName=" + keyUserName + ", userHead=" + userHead + "]";
+				+ messageCreationTime + ", userInformation=" + userInformation + "]";
 	}
 
-	
-	
-	
-	
 	
 }

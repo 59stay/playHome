@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * 实体类-用户签到表
  * @author jyb
@@ -23,6 +25,7 @@ private  Integer id; //编号
 @JoinColumn(name="userId")
 private UserInformation userInformation;  //签到用户
 
+@JSONField(format="yyyy-mm-dd HH:mm:ss")
 private String signInTime ;//签到时间
 
 private Integer signInRanking;//签到排名

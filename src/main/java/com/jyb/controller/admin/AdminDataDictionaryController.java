@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
+import com.jyb.init.InitSystem;
 import com.jyb.service.DataDictionaryService;
 
 @Controller
@@ -80,7 +83,7 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="saveDataDictionary")
-	private  Map<String,Object> saveDataDictionary(DataDictionary dataDictionary){
+	private  Map<String,Object> saveDataDictionary(DataDictionary dataDictionary,HttpServletRequest request){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		if(dataDictionary.getId()!=null){
 			DataDictionary dd = dataDictionaryService.getId(dataDictionary.getId());
@@ -88,6 +91,7 @@ public class AdminDataDictionaryController {
 			dd.setDictionaryType(dataDictionary.getDictionaryType());
 			dd.setDictionarySort(dataDictionary.getDictionarySort());
 			dataDictionaryService.save(dd);
+			InitSystem.loadData(request.getServletContext());
 			map.put("success",true);
 		}else if(dataDictionary.getId()==null){
 			dataDictionaryService.save(dataDictionary);
@@ -106,10 +110,11 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping("/delete")
-	public Map<String,Object> delete(Integer id)throws Exception{
+	public Map<String,Object> delete(Integer id,HttpServletRequest request)throws Exception{
 		Map<String, Object> map = new HashMap<>();
 		if(id!=null){
 			dataDictionaryService.delete(id);
+			InitSystem.loadData(request.getServletContext());
 			map.put("success", true);
 		}else{
 			map.put("success", false);

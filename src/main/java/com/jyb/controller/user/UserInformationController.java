@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,18 +50,36 @@ public class UserInformationController {
 	 */
 	@RequestMapping("login")
 	@ResponseBody
-	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpServletRequest request){
+	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpServletRequest request,HttpSession session){
 		Map<String,Object> map = new HashMap<String,Object>();
-		if(userInformation!=null ){
-			if(userInformation.getUserName().equals("jyb") || userInformation.getUserName().equals("test1") || userInformation.getUserName().equals("test2")|| userInformation.getUserName().equals("test3")  ){
-				UserInformation sessionUserInformation = userInformationService.findByUserName(userInformation.getUserName());
-				request.getSession().setAttribute("userInfo", sessionUserInformation);
-				map.put("success",true);
-			}else{
-				map.put("success",false);
-				map.put("errorInfo","登录失败，账号或者密码错误");
+		if(StringUtil.isEmpty(userInformation.getUserName())){
+			map.put("success", false);
+    		map.put("errorInfo", "请输入用户名！");
+		}else if(StringUtil.isEmpty(userInformation.getUserPassword())){
+			map.put("success", false);
+    		map.put("errorInfo", "请输入密码！");
+		}else{
+			try {
+				Subject subject=SecurityUtils.getSubject();
+				UsernamePasswordToken token=new UsernamePasswordToken(userInformation.getUserName(), CryptographyUtil.md5(userInformation.getUserPassword(),Constant.SALT));
+				subject.login(token); // 登录验证
+				String userName=(String) SecurityUtils.getSubject().getPrincipal();
+				UserInformation userInfo=userInformationService.findByUserName(userName);
+				if(userInfo.getAccountStatus()==1){
+					map.put("success", false);
+					map.put("errorInfo", "该用户已经被封禁，请联系管理员！");
+					subject.logout();
+				}else{
+					session.setAttribute("userInfo", userInfo);
+					map.put("success", true);
+				}
+			} catch (AuthenticationException e) {
+				e.printStackTrace();
+				map.put("success", false);
+				map.put("errorInfo", "用户名或者密码错误！");
 			}
 		}
+		
 		return map;
 	}
 	/**
@@ -82,7 +104,7 @@ public class UserInformationController {
 		}else{
 			userInformation.setUserPassword(CryptographyUtil.md5(userInformation.getUserPassword(),Constant.SALT));
 			userInformation.setUserCreationTime(new Date());
-			userInformation.setUserHead("default.jpg");
+			userInformation.setUserHead("/static/images/face.jpg");
 			userInformation.setAccountStatus(0);
 			userInformation.setUserIntegral(0);
 			userInformation.setUserRole(1);

@@ -43,6 +43,12 @@ var navs = [{
 			"icon" : "icon-text",
 			"href" : "/admin/friendshipLink",
 			"spread" : false
+		},
+		{
+			"title" : "留言板信息",
+			"icon" : "icon-text",
+			"href" : "/admin/userMessage",
+			"spread" : false
 		}
 	]
 }
@@ -63,6 +69,39 @@ var navs = [{
 			"icon" : "&#xe631;",
 			"href" : "",
 			"spread" : false
+		},
+		{
+			"title" : "失效资源",
+			"icon" : "&#xe631;",
+			"href" : "/admin/invalidLink",
+			"spread" : false
 		}
 	]
-}]
+}
+,{
+	"title" : "系统管理",
+	"icon" : "&#xe61c;",
+	"href" : "",
+	"spread" : false,
+	"children" : [
+		{
+			"title" : "日志管理",
+			"icon" : "&#xe631;",
+			"href" : " ",
+			"spread" : false
+		},
+		{
+			"title" : "定时器管理",
+			"icon" : "&#xe631;",
+			"href" : "",
+			"spread" : false
+		},
+		{
+			"title" : "失效资源",
+			"icon" : "&#xe631;",
+			"href" : " ",
+			"spread" : false
+		}
+	]
+}
+]

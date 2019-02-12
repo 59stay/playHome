@@ -1,5 +1,6 @@
 package com.jyb.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -31,15 +32,27 @@ public class UserMessageServiceImpl implements UserMessageService{
 	
 
 	@Override
-	public List<UserMessage> listPage(Integer page, Integer pageSize, Direction direction, String... properties) {
+	public List<UserMessage> listPage(UserMessage userMessage,Integer page, Integer pageSize, Direction direction, String... properties) {
 		// TODO Auto-generated method stub
-		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
+	/*	Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
 		Page<UserMessage> pageUserMessage = userMessageRepository.findAll(pageable); 
+		return pageUserMessage.getContent();*/
+		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
+		Page<UserMessage> pageUserMessage = userMessageRepository.findAll(new Specification<UserMessage>() {
+			@Override
+			public Predicate toPredicate(Root<UserMessage> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+				// TODO Auto-generated method stub
+				Predicate predicate =  cb.conjunction();
+				if(userMessage!=null){
+				}
+				return predicate;
+			}
+		},pageable);
 		return pageUserMessage.getContent();
 	}
 
 	@Override
-	public Long getCount() {
+	public Long getCount(UserMessage userMessage) {
 		// TODO Auto-generated method stub
 		return userMessageRepository.count();
 	}
@@ -49,6 +62,18 @@ public class UserMessageServiceImpl implements UserMessageService{
 	public void save(UserMessage userMessage) {
 		// TODO Auto-generated method stub
 		userMessageRepository.save(userMessage);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		userMessageRepository.delete(id);
+	}
+
+	@Override
+	public Integer getByDate(Integer userId, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return userMessageRepository.getByDate(userId, startDate, endDate);
 	}
 
 	

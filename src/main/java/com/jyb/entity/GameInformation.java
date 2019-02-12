@@ -1,5 +1,6 @@
 package com.jyb.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,11 +14,15 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jyb.util.CustomDateTimeSerializer;
 @Entity
 @Table(name="game_information")
-public class GameInformation {
+public class GameInformation implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue
 	private Integer id; // 主键id
@@ -49,6 +54,7 @@ public class GameInformation {
 	@Column(length = 500)
 	private String remarks;// 备注
 
+	@JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date gameCreationTime;// 创建时间
 
 	@ManyToOne
@@ -63,10 +69,11 @@ public class GameInformation {
 	
 	@Column(length = 200)
     private String reason;// 审核未通过原因
-
+	
+	@JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date auditDate;// 审核日期
 	
-	private boolean isUseful=true; // 资源链接是否有效 true(0) 有效 false(1) 无效 默认有效
+	private Integer isUseful; // 资源链接是否有效  true(1) 有效   false(2) 无效 
 
 	@ManyToOne
 	@JoinColumn(name = "userId")
@@ -139,7 +146,6 @@ public class GameInformation {
 		this.remarks = remarks;
 	}
 
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getGameCreationTime() {
 		return gameCreationTime;
 	}
@@ -166,7 +172,7 @@ public class GameInformation {
 		this.auditStatus = auditStatus;
 	}
 
-	@JsonSerialize(using = CustomDateTimeSerializer.class)
+	//@JsonSerialize(using = CustomDateTimeSerializer.class)
 	public Date getAuditDate() {
 		return auditDate;
 	}
@@ -216,11 +222,11 @@ public class GameInformation {
 		this.reason = reason;
 	}
 
-	public boolean isUseful() {
+	public Integer getIsUseful() {
 		return isUseful;
 	}
 
-	public void setUseful(boolean isUseful) {
+	public void setIsUseful(Integer isUseful) {
 		this.isUseful = isUseful;
 	}
 
@@ -250,13 +256,6 @@ public class GameInformation {
 				+ largeCategory + ", integral=" + integral + ", auditStatus=" + auditStatus + ", reason=" + reason
 				+ ", auditDate=" + auditDate + ", isUseful=" + isUseful + ", userInformation=" + userInformation + "]";
 	}
-
-
- 
-	
-
-
-
 
 
 }

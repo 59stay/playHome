@@ -39,11 +39,15 @@ public class InitSystem implements ServletContextListener,ApplicationContextAwar
 		 * 加载数据到application缓存中
 		 * @param application
 		 */
-	public void loadData(ServletContext application){
+	public static void loadData(ServletContext application){
 		FriendshipLinkService friendshipLinkService=(FriendshipLinkService) applicationContext.getBean("friendshipLinkService");
 		GameInformationService gameInformationService = (GameInformationService)applicationContext.getBean("gameInformationService");
 		DataDictionaryService  dataDictionaryService = (DataDictionaryService)applicationContext.getBean("dataDictionaryService");
-		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.listPage(null, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
+		GameInformation gameInfo = new GameInformation();
+		gameInfo.setAuditStatus(2);//显示审核通过的
+		gameInfo.setIsUseful(1);//显示未失效的资源
+		List<GameInformation> gameIndexList = gameInformationService.listPage(gameInfo, 1, 14, Sort.Direction.DESC, "gameCreationTime");
+		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.listPage(gameInfo, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
 		List<FriendshipLink> friendshipLinkList=friendshipLinkService.listAll(Sort.Direction.ASC, "id");
 		DataDictionary gameDataDictionary = new DataDictionary();
 		gameDataDictionary.setDictionaryType("A");
@@ -51,6 +55,7 @@ public class InitSystem implements ServletContextListener,ApplicationContextAwar
 		for (DataDictionary gddl : gameDataDictionaryList) {
 			dataDictionaryMap.put(gddl.getId(),gddl);
 		}
+		application.setAttribute("gameIndexList", gameIndexList); // 主页游戏信息
 		application.setAttribute("friendshipLinkList", friendshipLinkList); // 所有友情链接
 		application.setAttribute("gameBrowseFrequencyList", gameBrowseFrequencyList); // 最热门游戏链接
 		application.setAttribute("gameDataDictionaryList", gameDataDictionaryList);//游戏分类列表

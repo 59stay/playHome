@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<style type="text/css">
+.layui-table-body{
+     overflow:auto;
+ }
+.layui-table-tool-self{
+display: none;
+}
+.layui-table img {
+width: auto;
+height: auto;
+max-width: 100% !important;
+max-height: 100%;
+}
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/  
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  var table = layui.table;
+		  table.render({
+		     elem: '#userMessageTable'
+		    ,url:'/admin/userMessage/listPage'
+		    ,limits:[10,20,30]
+		    ,toolbar: '#toolbar'
+		    ,cols: [[
+		       {type:'checkbox'}
+			  ,{type:'numbers',width:40}
+			  ,{field:'', title: '用户头像',align:'center',templet:formatUserHeadPicture}
+			  ,{field:'', title: '用户名称',align:'center',templet:formatUserName}
+		      ,{field:'messageInformation', align:'center',title: '留言内容',align:'center'}
+		      ,{field:'messageCreationTime', align:'center',title: '留言时间',align:'center'}
+		    ]]
+		    ,page: true
+		  });
+		  
+		  table.on('toolbar(userMessageTable)', function(obj){
+			    var checkStatus = table.checkStatus(obj.config.id);
+			    var rows = checkStatus.data;
+			    switch(obj.event){
+			      case 'del':
+			    	  if(rows.length==0){
+				        	 layer.msg('请选择需要删除的信息');
+				        	 return;
+				        }else{
+				        	var strIds=[];
+				        	for(var i=0;i<rows.length;i++){
+				    			strIds.push(rows[i].id);
+				    		}
+				    		var ids=strIds.join(",");
+				    		layer.confirm("您确定要删除这<font color=red>"+checkStatus.data.length+"</font>条记录吗？", {
+				  		       title:"系统提示"
+				  		      ,icon: 6
+				  			  ,btn: ['确定','取消'] //按钮
+				  			}, function(){
+				  				//layer.closeAll('dialog');
+				  				$.post("/admin/userMessage/batchDelete",{"ids":ids},function(result){
+				  					if(result.success){
+				  						layer.msg("删除成功！");
+				  						table.reload("userMessageTable",{});
+				  					}else{
+				  						layer.msg("删除失败，请联系管理员！");
+				  					}
+				  				},"json");
+				  			}, function(){
+				  			  
+				  			});
+				        }
+			      break;
+			    }
+		});
+	});
+
+	 function formatUserHeadPicture(d){
+			return "<img  src='"+d.userInformation.userHead+"'></img>";
+	 }
+	 function formatUserName(d){
+		 return d.userInformation.userName;
+	 }
+	
+	function formatAction(d){
+		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modify("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button><button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	}
+
+/*]]>*/
+</script>
+
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="del">批量删除</button>
+  </div>
+</script>
+
+</head>
+
+<body>
+  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="userMessageTable" lay-filter="userMessageTable"></table>
+</div>
+
+
+
+</body>
+</html>

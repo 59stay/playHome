@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
+import com.jyb.init.InitSystem;
+import com.jyb.lucene.GameIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.util.RedisUtil;
 
 @Controller
 @RequestMapping("admin/gameInformation")
@@ -35,7 +40,11 @@ public class AdminGameInformationController {
 	@Autowired
 	private DownloadRecordService downloadRecordService;
 	
+	@Autowired
+	private GameIndex gameIndex;
 	
+	@Autowired
+	private RedisUtil<GameInformation> redisUtil;
 	
     /**
      * 分页查询所有的游戏资源
@@ -70,7 +79,7 @@ public class AdminGameInformationController {
 	
 	
 	/**
-	 * 用户修改游戏信息
+	 * 修改游戏信息
 	 * @param article
 	 * @return
 	 * @throws Exception
@@ -96,6 +105,7 @@ public class AdminGameInformationController {
 		      gameInformation.setAuditStatus(1);	
 		    }
 		    gameInformationService.save(gameInformation);
+		    redisUtil.del("r_game"+gameInfo.getId());
 		    map.put("success", true);
 		}else{
 			map.put("success", false);
@@ -110,12 +120,16 @@ public class AdminGameInformationController {
 	 */
 	@RequestMapping("auditResourceAdopt")
 	@ResponseBody
-	public Map<String,Object>  auditResourceAdopt(String id){
+	public Map<String,Object>  auditResourceAdopt(String id,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		GameInformation gameInformation =  gameInformationService.getId(Integer.parseInt(id));
 		gameInformation.setAuditStatus(2);//审核通过
+		gameInformation.setReason("");
 		gameInformation.setAuditDate(new Date());
 		gameInformationService.save(gameInformation);
+		InitSystem.loadData(request.getServletContext());
+		gameIndex.updateIndex(gameInformation); 
+		redisUtil.del("r_game"+gameInformation.getId());
 		map.put("success", true);
 		return map;
 	}
@@ -126,7 +140,7 @@ public class AdminGameInformationController {
 	 */
 	@RequestMapping("auditResourceNotPass")
 	@ResponseBody
-	public Map<String,Object>  auditResourceNotPass(String id,String reason){
+	public Map<String,Object>  auditResourceNotPass(String id,String reason,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		GameInformation gameInformation =  gameInformationService.getId(Integer.parseInt(id));
 		gameInformation.setAuditStatus(3);//审核未通过
@@ -146,13 +160,17 @@ public class AdminGameInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping("/batchDelete")
-	public Map<String,Object> batchDelete(String ids)throws Exception{
+	public Map<String,Object> batchDelete(String ids,HttpServletRequest request)throws Exception{
 		String []idsStr=ids.split(",");
 		for(int i=0;i<idsStr.length;i++){
 			gameInformationService.delete(Integer.parseInt(idsStr[i])); // 删除游戏资源信息
 			userReviewsService.deleteUserReviews(Integer.parseInt(idsStr[i]),"A");//删除资源相关的评论
 			downloadRecordService.deleteDownloadRecord(Integer.parseInt(idsStr[i]),"A");//删除下载的资源信息
+			gameIndex.deleteIndex(String.valueOf(idsStr[i])); // 删除索引
+			redisUtil.del("r_game"+idsStr[i]);
 		}
+		InitSystem.loadData(request.getServletContext());
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("success", true);
 		return map;

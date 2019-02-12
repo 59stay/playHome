@@ -3,6 +3,8 @@ package com.jyb.controller.user;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -58,15 +60,16 @@ public class InvalidLinkController {
      */
     @ResponseBody
 	@RequestMapping("/modifyShareLink")
-    public Map<String,Object> modifyShareLink(InvalidLink invalidLink,HttpSession session)throws Exception{
+    public Map<String,Object> modifyShareLink(InvalidLink invalidLink,HttpSession session,HttpServletRequest request)throws Exception{
     	Map<String, Object> resultMap = new HashMap<>();
     	InvalidLink link = invalidLinkService.getId(invalidLink.getId());
     
     	if(link.getLargeCategory().equals("A")){//游戏
     		GameInformation gm = gameInformationService.getId(link.getResourceId());
-    		gm.setGameDownloadAddress(invalidLink.getGameDownloadAddress());
+    		gm.setGameDownloadAddress(invalidLink.getDownloadAddress());
     		gm.setLinkPwd(invalidLink.getLinkPwd());
-    		gm.setUseful(true);
+    		gm.setAuditStatus(2);
+    		gm.setIsUseful(1);
     		gameInformationService.save(gm);
     	}else if(link.getLargeCategory().equals("B")){ //电影
     		
@@ -74,6 +77,7 @@ public class InvalidLinkController {
     		
     	}
     	invalidLinkService.delete(link.getId());
+    	
     	resultMap.put("success", true);
     	return resultMap;
     	/*if(CheckShareLinkEnableUtil.check(invalidLink.getDownload1())){
