@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DataDictionary;
 import com.jyb.init.InitSystem;
@@ -32,13 +31,13 @@ public class AdminDataDictionaryController {
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
+	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,DataDictionary dataDictionary){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
-		List<DataDictionary> dataDictionary =   dataDictionaryService.listPage(null, page, limit,Sort.Direction.DESC,"dictionarySort");
+		List<DataDictionary> ddList =   dataDictionaryService.listPage(dataDictionary, page, limit,Sort.Direction.DESC,"dictionarySort");
 		Long count = dataDictionaryService.getCount(null);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
-		resultMap.put("data",dataDictionary);
+		resultMap.put("data",ddList);
 		return resultMap;
 	}
 	

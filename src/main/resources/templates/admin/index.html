@@ -83,9 +83,9 @@
 						<a href="javascript:;"><i class="iconfont icon-lock1"></i><cite>锁屏</cite></a>
 					</li>
 					<li class="layui-nav-item">
-						<a href="javascript:;">
-							<img class="layui-circle" width="35" height="35" th:src="${session.adminUserInfo.userHead}"></img>
-							<cite th:text="${session.adminUserInfo.userName}">来啦老弟!!!</cite>
+						<a href="javascript:;"><!--  ${session.adminUserInfo.userHead} -->
+							<img class="layui-circle" width="35" height="35" ></img>
+							<cite>来啦老弟!!!</cite>  <!-- th:text="${session.adminUserInfo.userName}" -->
 						</a>
 						<dl class="layui-nav-child">
 							<dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="iconfont icon-zhanghu" data-icon="icon-zhanghu"></i><cite>个人资料</cite></a></dd>
@@ -98,9 +98,9 @@
 		</div>
 		<!-- 左侧导航 -->
 		<div class="layui-side layui-bg-black">
-			<div class="user-photo">
-				<a class="img" title="我的头像" ><img th:src="${session.adminUserInfo.userHead}"></img></a>
-				<p>你好！<span class="userName" th:text="${session.adminUserInfo.userName}"></span>, 欢迎登录</p>
+			<div class="user-photo"> <!--  th:src="${session.adminUserInfo.userHead}" th:text="${session.adminUserInfo.userName}" -->
+				<a class="img" title="我的头像" ><img src=""></img></a>
+				<p>你好！<span class="userName" ></span>, 欢迎登录</p>
 			</div>
 			<div class="navBar layui-side-scroll"></div>
 		</div>

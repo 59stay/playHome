@@ -25,7 +25,7 @@
 	    elem: '#test1'
 	    ,arrow: 'always'
 	    ,width: '1170px'
-	    ,height: '270px'
+	    ,height: '300px'
 	    ,interval: 3000
 	  });
 	});
@@ -42,11 +42,10 @@
 	<div class="layui-carousel" id="test1" lay-filter="test1"
 		  lay-anim="" lay-indicator="inside" lay-arrow="always">
 		<div carousel-item="">
-			<a href="/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="http://image14.m1905.cn/uploadfile/2018/1130/thumb_1_1000_322_20181130080503783371.jpg" alt="影"></img></div></a>
-			<a href="/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="http://image14.m1905.cn/uploadfile/2018/1130/thumb_1_1000_322_20181130080503783371.jpg" alt="影"></img></div></a>
-			<a href="/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="http://image14.m1905.cn/uploadfile/2018/1130/thumb_1_1000_322_20181130080503783371.jpg" alt="影"></img></div></a>
-			<a href="/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="http://image14.m1905.cn/uploadfile/2018/1130/thumb_1_1000_322_20181130080503783371.jpg" alt="影"></img></div></a>
-			<a href="/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="http://image14.m1905.cn/uploadfile/2018/1130/thumb_1_1000_322_20181130080503783371.jpg" alt="影"></img></div></a>
+			<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="生化危机2"></img></div></a>
+		  	<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="生化危机2"></img></div></a>
+			<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="生化危机2"></img></div></a>
+		  
 		</div>
 		<div class="layui-carousel-ind">
 			<ul>
@@ -73,7 +72,7 @@
 						<ul class="imageUl">
 							<li th:each="game:${application.gameIndexList}" class="imageLi"><a target="_blank" th:href="'/user/gameInformation/listDetails/'+${game.id}" th:title="${game.gameName}">
 									<img th:src="${game.gamePicture}"></img>
-									<p  th:text="${game.gameName}"></p>
+									<p th:text="${#strings.length(game.gameName)>9} ? ${#strings.substring(game.gameName,0,9)} : ${game.gameName}"></p>
 							</a></li>
 						</ul>
 					</div>

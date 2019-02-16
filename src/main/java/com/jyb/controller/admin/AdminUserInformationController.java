@@ -13,6 +13,8 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jyb.entity.UserInformation;
 import com.jyb.service.UserInformationService;
 import com.jyb.specialEntity.Constant;
-import com.jyb.util.CryptographyUtil;
+import com.jyb.util.MD5Util;
 import com.jyb.util.StringUtil;
 
 @Controller
@@ -30,6 +32,9 @@ public class AdminUserInformationController {
 	@Autowired
 	private UserInformationService userInformationService;
 	
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	/**
 	 * 用户登录
 	 * @param userInformation
@@ -52,7 +57,7 @@ public class AdminUserInformationController {
 		}else{
 			try {
 				Subject subject=SecurityUtils.getSubject();
-				UsernamePasswordToken token=new UsernamePasswordToken(userInformation.getUserName(), CryptographyUtil.md5(userInformation.getUserPassword(),Constant.SALT));
+				UsernamePasswordToken token=new UsernamePasswordToken(userInformation.getUserName(), MD5Util.md5(userInformation.getUserPassword(),Constant.SALT));
 				subject.login(token); // 登录验证
 				String userName=(String) SecurityUtils.getSubject().getPrincipal();
 				UserInformation userInfo=userInformationService.findByUserName(userName);
@@ -82,10 +87,10 @@ public class AdminUserInformationController {
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
+	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,UserInformation userInfo){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
-		List<UserInformation> userInformation =   userInformationService.listPage(null, page, limit,Sort.Direction.DESC,"userCreationTime");
-		Long count = userInformationService.getCount(null);
+		List<UserInformation> userInformation =   userInformationService.listPage(userInfo, page, limit,Sort.Direction.DESC,"userCreationTime");
+		Long count = userInformationService.getCount(userInfo);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
 		resultMap.put("data",userInformation);
@@ -134,11 +139,13 @@ public class AdminUserInformationController {
 	private   Map<String,Object> resetPassword(UserInformation userInfo){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		UserInformation userInformation =   userInformationService.getById(userInfo.getId());
-		userInformation.setUserPassword(CryptographyUtil.md5(Constant.PWD,Constant.SALT));
+		userInformation.setUserPassword(MD5Util.md5(Constant.PWD,Constant.SALT));
 		userInformationService.save(userInformation);
 		map.put("success", true);
 		return map;
 	}
+	
+	
 	
 	
 }

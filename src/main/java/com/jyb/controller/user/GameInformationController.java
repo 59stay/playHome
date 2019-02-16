@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.UserInformation;
@@ -273,11 +274,11 @@ public class GameInformationController {
 		Map<String, Object> resultMap = new HashMap<>();
 		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		s_gameInformation.setUserInformation(userInformation);
-		List<GameInformation> articleList=gameInformationService.listPage(s_gameInformation, page, limit,Sort.Direction.DESC,"gameCreationTime");
+		List<GameInformation> gameList=gameInformationService.listPage(s_gameInformation, page, limit,Sort.Direction.DESC,"gameCreationTime");
 		Long count=gameInformationService.getCount(s_gameInformation);
 		resultMap.put("code", 0);
 		resultMap.put("count", count);
-		resultMap.put("data", articleList);
+		resultMap.put("data", JSONObject.toJSON(gameList));
 		return resultMap;
 	}
 

@@ -32,7 +32,7 @@ import redis.clients.jedis.JedisPoolConfig;
  *
  */
 @Configuration
-@PropertySource("classpath:config/redis.properties")
+//@PropertySource("classpath:config/redis.properties")
 public class RedisConfig {
 
 	@Value("${redis.maxIdle}")

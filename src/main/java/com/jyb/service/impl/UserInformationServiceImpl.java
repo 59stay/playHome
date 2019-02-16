@@ -63,7 +63,12 @@ public class UserInformationServiceImpl implements UserInformationService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(userInfo!=null){
-
+					if(StringUtil.isNotEmpty(userInfo.getUserName())){
+						predicate.getExpressions().add(cb.like(root.get("userName"), "%"+userInfo.getUserName().trim()+"%"));
+					}
+					if(StringUtil.isNotEmpty(userInfo.getEmail())){
+						predicate.getExpressions().add(cb.like(root.get("email"), "%"+userInfo.getEmail().trim()+"%"));
+					}
 
 				}
 				return predicate;
@@ -81,7 +86,12 @@ public class UserInformationServiceImpl implements UserInformationService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(userInfo!=null){
-				
+					if(StringUtil.isNotEmpty(userInfo.getUserName())){
+						predicate.getExpressions().add(cb.like(root.get("userName"), "%"+userInfo.getUserName().trim()+"%"));
+					}
+					if(StringUtil.isNotEmpty(userInfo.getEmail())){
+						predicate.getExpressions().add(cb.like(root.get("email"), "%"+userInfo.getEmail().trim()+"%"));
+					}
 				}
 				return predicate;
 			}

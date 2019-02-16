@@ -17,4 +17,9 @@ public class Constant {
      */
 	public final static String SALT="saltPwd"; 
 	
+	/**
+	 * 发件人邮箱
+	 */
+	public final static String QQEMAIL="166768601@qq.com"; 
+	
 }

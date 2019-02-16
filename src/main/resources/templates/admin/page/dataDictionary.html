@@ -23,7 +23,7 @@ display: none;
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		  $ = layui.jquery; // 使用jquery
-		  var table = layui.table;
+		  table = layui.table;
 		  table.render({
 		     elem: '#dataDictionaryTable'
 		    ,url:'/admin/dataDictionary/listPage'
@@ -53,7 +53,26 @@ display: none;
 			    }
 		});
 		
-		  
+	    form.on("select(search_dictionary_type)",function (data) {
+	       $.post("/admin/dataDictionary/getDataDictionaryList",{dictionaryType:data.value},function(result){
+	    		  if(result.success){
+		    			//var d=JSON.stringify(result.dataList); //将JSON对象转化为JSON字符
+		    			//var d= eval(result.dataList);//将JSON字符串转化为JSON对象
+	    			    //empty() 方法从被选元素移除所有内容
+	    			    $("select[name='dictionaryName']").empty();
+	    			    var html = "<option value=''>请选择类别</option>";
+	    			    $(result.dataList).each(function (v, k) {
+	                        html += "<option value='" + k.id + "'>" + k.dictionaryName + "</option>";
+	                    }); 
+	    			    //把遍历的数据放到select表里面
+	                    $("select[name='dictionaryName']").append(html);
+	                    //重新渲染下拉框
+	                    form.render('select');     
+	    		  }else{
+	    			  layer.alert("系统错误,请联系管理员");
+	    		  }
+	    	  },"json");
+	   }); 
 		  
 	});
 
@@ -105,6 +124,20 @@ display: none;
 		});
 	}
 	
+	  function search(){
+		    var s_large_category=$("#s_large_category").val();
+			var s_small_category=$("#s_small_category").val();
+			table.reload("dataDictionaryTable",{
+				page:{
+					curr:1 //重新从第 1 页开始
+				}
+				,where:{
+					dictionaryType:s_large_category,
+					id:s_small_category
+				}
+			});
+		}
+	
 /*]]>*/
 </script>
 
@@ -117,12 +150,39 @@ display: none;
 </head>
 
 <body>
-  
+ <div style="padding: 20px">
+	          	<div class="layui-form">
+					 <div class="layui-inline" >
+						   <label class="layui-form-label"  style="width: 100px;">大类别名称：</label>
+						    <div class="layui-input-inline">
+						     <select id="s_large_category" name="dictionaryType" lay-filter="search_dictionary_type">
+								<option value="">请选择大类别</option>
+								<option value="A">宅游戏</option>
+								<option value="B">宅电影</option>
+								<option value="C">宅软件</option>
+						    </select>
+						    </div>
+					  </div>
+			     
+		           <div class="layui-inline" >
+						   <label class="layui-form-label"  style="width: 100px;">类别名称：</label>
+						    <div class="layui-input-inline">
+						     <select id="s_small_category" name="dictionaryName" lay-filter="dictionaryName">
+								<option value="">请选择类别</option>
+						    </select>
+						    </div>
+					  </div>
+		        
+					
+		            <div class="layui-inline" style="margin-left: 10px;">
+		           <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search">
+		              <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+		            </button>
+		          </div>
+		        </div>
+</div> 
 <div style="margin: 10px 10px 0px 20px;">
- <table  id="dataDictionaryTable" lay-filter="dataDictionaryTable"></table>
+ <table  class="layui-hide" id="dataDictionaryTable" lay-filter="dataDictionaryTable"></table>
 </div>
-
-
-
 </body>
 </html>

@@ -191,9 +191,11 @@ public class GameIndex {
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
 		SmartChineseAnalyzer analyzer=new SmartChineseAnalyzer();//创建中文分词器
 		QueryParser parser=new QueryParser("gameName",analyzer);//创建查询对象
-		Query query=parser.parse(q);//创建解析对象
+		String s_game_name = parser.escape(q);
+		Query query=parser.parse(s_game_name);//创建解析对象
 		QueryParser parser2=new QueryParser("gameDescribe",analyzer);
-		Query query2=parser2.parse(q);
+		String s_game_describe = parser.escape(q);
+		Query query2=parser2.parse(s_game_describe);
 		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or 
 		booleanQuery.add(query2,BooleanClause.Occur.SHOULD);
 		long startDate = System.currentTimeMillis();

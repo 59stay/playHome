@@ -19,9 +19,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserMessage;
 import com.jyb.repository.UserMessageRepository;
 import com.jyb.service.UserMessageService;
+import com.jyb.util.StringUtil;
 
 @Service("userMessageService")
 @Transactional
@@ -34,7 +36,7 @@ public class UserMessageServiceImpl implements UserMessageService{
 	@Override
 	public List<UserMessage> listPage(UserMessage userMessage,Integer page, Integer pageSize, Direction direction, String... properties) {
 		// TODO Auto-generated method stub
-	/*	Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
+		/*Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
 		Page<UserMessage> pageUserMessage = userMessageRepository.findAll(pageable); 
 		return pageUserMessage.getContent();*/
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
@@ -43,7 +45,8 @@ public class UserMessageServiceImpl implements UserMessageService{
 			public Predicate toPredicate(Root<UserMessage> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
-				if(userMessage!=null){
+				if(userMessage!=null && userMessage.getUserInformation()!=null){
+					predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+userMessage.getUserInformation().getUserName()+"%"));
 				}
 				return predicate;
 			}
@@ -54,7 +57,18 @@ public class UserMessageServiceImpl implements UserMessageService{
 	@Override
 	public Long getCount(UserMessage userMessage) {
 		// TODO Auto-generated method stub
-		return userMessageRepository.count();
+		Long count = userMessageRepository.count(new Specification<UserMessage>() {
+			@Override
+			public Predicate toPredicate(Root<UserMessage> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+				// TODO Auto-generated method stub
+				Predicate predicate =  cb.conjunction();
+				if(userMessage!=null && userMessage.getUserInformation()!=null){
+					predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+userMessage.getUserInformation().getUserName()+"%"));
+				}
+				return predicate;
+			}
+		});
+		return count;
 	}
 	
 

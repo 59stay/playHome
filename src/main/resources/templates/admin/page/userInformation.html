@@ -22,15 +22,14 @@ display: none;
 </style>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/js/jquery.js"></script>
-<script type="text/javascript">
+<script th:inline="javascript">
 /*<![CDATA[*/  
-           
 	layui.use(['element','form','table'], function(){
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		  $ = layui.jquery; // 使用jquery
-		  var table = layui.table;
-		  table.render({
+		  table = layui.table;
+	      table.render({
 		     elem: '#userinfoTable'
 		    ,url:'/admin/userInfor/listPage'
 		    ,limits:[10,20,30]
@@ -48,12 +47,10 @@ display: none;
 		      ,{field:'userCreationTime',   title: '注册时间',align:'center' }
 		      ,{field:'hostIp',   title: '注册地址',align:'center'}
 		      ,{field:'remarks',   title: '备注',align:'center'}
-		      ,{field:'action',  width:300, title: '操作',align:'center',templet:formatAction}
+		      ,{field:'action',  width:210, title: '操作',align:'center',templet:formatAction}
 		    ]]
 		    ,page: true
 		  });
-
-		  
 			   //监听开关按钮操作
 			   form.on('switch(usefulSwitch)', function(obj){
 			   var accountStatus ;
@@ -72,8 +69,11 @@ display: none;
 					},"json"); 
 			   //  layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
 			  });
-		
+			   
+			   
 	});
+	
+	 
 	
 	
 	function formatUserHeadPicture(d){
@@ -104,7 +104,7 @@ display: none;
 			      return "<input type='checkbox'  lay-text='启用|禁用' name='cs2'  value="+d.id+" lay-skin='switch' lay-filter='usefulSwitch'></input>";
 			    }	
 		}else{
-			 return "无";
+			 return "";
 		}
 		    
 		
@@ -190,9 +190,22 @@ display: none;
 			   parent.layer.close(index); //当你在iframe页面关闭自身时
 			});
 	}
-	
-	
-	
+	  
+	  function search(){
+		    var s_userName=$("#s_user_name").val();
+			var s_userEmail=$("#s_user_email").val();
+			table.reload("userinfoTable",{
+				page:{
+					curr:1 //重新从第 1 页开始
+				}
+				,where:{
+					userName:s_userName,
+					email:s_userEmail
+				}
+			});
+		}
+	  
+	  
 /*]]>*/
 </script>
 
@@ -206,9 +219,31 @@ display: none;
 </head>
 
 <body>
-  
+ <div style="padding: 20px">
+	          	<div class="layui-form">
+		          <div class="layui-inline">
+		            <label class="layui-form-label">用户名称：</label>
+		            <div class="layui-input-inline">
+		              <input type="text" id="s_user_name" style="width: 200px" placeholder="请输入用户名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+		            </div>
+		          </div>
+		          <div class="layui-inline">
+		            <label class="layui-form-label">邮箱：</label>
+		            <div class="layui-input-inline">
+		              <input type="text" id="s_user_email" style="width: 200px" placeholder="请输入用户邮箱" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+		            </div>
+		          </div>
+		        
+					
+		          <div class="layui-inline" style="margin-left: 10px;">
+		           <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search">
+		              <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+		            </button>
+		          </div>
+		        </div>
+</div> 
 <div style="margin: 10px 10px 0px 20px;">
- <table  id="userinfoTable" lay-filter="userinfoTable"></table>
+ <table class="layui-hide" id="userinfoTable" ></table>
 </div>
 
 

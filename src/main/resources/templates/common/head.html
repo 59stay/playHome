@@ -4,30 +4,27 @@
 <ul class="layui-nav" lay-filter="">
 			<li class="layui-nav-item"><a href="/">首页</a></li>
 			<li class="layui-nav-item"><a href="/user/gameInformation/index">宅游戏</a></li>
-			<li class="layui-nav-item"><a
-				href="http://blog.java1234.com/blog/articles/427.html"
-				target="_blank">宅电影</a></li>
 			<!-- <li class="layui-nav-item"><a
-				href="http://blog.java1234.com/blog/articles/425.html"
-				target="_blank">宅书籍</a></li> -->
-			<li class="layui-nav-item"><a
+				href="http://blog.java1234.com/blog/articles/427.html"
+				target="_blank">宅电影</a></li> -->
+		<!-- 	<li class="layui-nav-item"><a
 				href="http://blog.java1234.com/blog/articles/428.html"
-				target="_blank">宅软件</a></li>
+				target="_blank">宅软件</a></li> -->
 			<li class="layui-nav-item"><a
 				href="/user/userMessage/index" >留言板</a></li>
 			<li class="layui-nav-item"><a
 				href="http://www.java1234.com/javaxuexiluxiantu.html"
 				target="_blank">关于我们</a></li>
 			<li class="layui-nav-item" style="float: right;"
-				th:if="${session.userInfo!=null}"><a href="/toUserCenterPage"><img
+				th:if="${session.userInfo!=null}"><a href="/personalCenter/toMain"><img
 					th:src="${session.userInfo.userHead}"
 					class='layui-nav-img' th:text="${session.userInfo.userName}"></img></a>
 				<dl class="layui-nav-child">
 					<dd>
-						<a onclick="showModifyPassword()">修改密码</a>
+						<a href="javascript:;" onclick="javascript:showModifyPassword();return false;" >修改密码</a>
 					</dd>
 					<dd>
-						<a onclick="showModifyUserImage()">修改头像</a>
+						<a href="/personalCenter/personalData" >个人资料</a>
 					</dd>
 					<dd>
 						<a href="/logout">安全退出</a>

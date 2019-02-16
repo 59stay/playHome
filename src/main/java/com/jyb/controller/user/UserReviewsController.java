@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.InvalidLink;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
@@ -43,10 +44,11 @@ public class UserReviewsController {
 	 * @param rows
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value = "/list")
 	public List<UserReviews> list(UserReviews s_userReviews,@RequestParam(value="page",required=false)Integer page){
-		List<UserReviews>  userReviewsList =  userReviewsService.listPage(s_userReviews, page, 6, Direction.DESC, "reviewsTime");
+		List<UserReviews> userReviewsList = (List<UserReviews>) JSONObject.toJSON(userReviewsService.listPage(s_userReviews, page, 6, Direction.DESC, "reviewsTime"));
 		return userReviewsList;
 	}
 	

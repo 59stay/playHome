@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 
-import com.jyb.filter.sessionFilter;
+import com.jyb.filter.SessionFilter;
 @ServletComponentScan
 @SpringBootApplication
 public class PlayHouseApplication {
@@ -17,10 +17,10 @@ public class PlayHouseApplication {
       @Bean
 	  public FilterRegistrationBean sessionFilter() {
 		  FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		  sessionFilter sessionFilter = new sessionFilter();
+		  SessionFilter sessionFilter = new SessionFilter();
 		  registrationBean.setFilter(sessionFilter);
 		  registrationBean.setOrder(Integer.MAX_VALUE);//数字越小，优先级越高；
-		  registrationBean.addUrlPatterns("/user/SignIn/*");
+		  registrationBean.addUrlPatterns("/user/signIn/*");
 		  return registrationBean;
 	  }
 }

@@ -30,6 +30,8 @@ public class UserInformation {
 	@NotEmpty(message="请输入用户名称！")
 	private String userName; // 用户名称
 	
+	private String sex; // 性别  1.男  2.女
+	
 	@NotEmpty(message="请输入密码！")
 	@Column(length=100)
 	private String userPassword; // 密码
@@ -48,14 +50,14 @@ public class UserInformation {
 	@Column(length=30)
 	private String userIdcard; // 用户身份证号
 	
-	private Integer accountStatus=0; // 账号状态 0表示可用 1表示禁用 （默认为0）
+	private Integer accountStatus; // 账号状态 0表示可用 1表示禁用 （默认为0）
 	
-	private Integer userRole=1; // 用户角色    0表示管理员 1表示普通用户 （默认为1）
+	private Integer userRole; // 用户角色    0表示管理员 1表示普通用户 （默认为1）
 	
 	@Column(length=100)
 	private String remarks; // 备注
 	
-    private Integer userIntegral=0;//用户积分
+    private Integer userIntegral;//用户积分
 	
     @JSONField(format="yyyy-mm-dd HH:mm:ss")
 	private Date userCreationTime; // 创建时间
@@ -168,14 +170,24 @@ public class UserInformation {
 		this.hostIp = hostIp;
 	}
 
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	@Override
 	public String toString() {
-		return "UserInformation [id=" + id + ", userName=" + userName + ", userPassword=" + userPassword + ", userHead="
-				+ userHead + ", email=" + email + ", userPhoneNumber=" + userPhoneNumber + ", userIdcard=" + userIdcard
-				+ ", accountStatus=" + accountStatus + ", userRole=" + userRole + ", remarks=" + remarks
-				+ ", userIntegral=" + userIntegral + ", userCreationTime=" + userCreationTime + ", hostIp=" + hostIp
-				+ "]";
+		return "UserInformation [id=" + id + ", userName=" + userName + ", sex=" + sex + ", userPassword="
+				+ userPassword + ", userHead=" + userHead + ", email=" + email + ", userPhoneNumber=" + userPhoneNumber
+				+ ", userIdcard=" + userIdcard + ", accountStatus=" + accountStatus + ", userRole=" + userRole
+				+ ", remarks=" + remarks + ", userIntegral=" + userIntegral + ", userCreationTime=" + userCreationTime
+				+ ", hostIp=" + hostIp + "]";
 	}
+
+
 
 	
 

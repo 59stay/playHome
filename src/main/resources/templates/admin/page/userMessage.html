@@ -26,7 +26,7 @@ max-height: 100%;
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		  $ = layui.jquery; // 使用jquery
-		  var table = layui.table;
+		  table = layui.table;
 		  table.render({
 		     elem: '#userMessageTable'
 		    ,url:'/admin/userMessage/listPage'
@@ -35,8 +35,8 @@ max-height: 100%;
 		    ,cols: [[
 		       {type:'checkbox'}
 			  ,{type:'numbers',width:40}
-			  ,{field:'', title: '用户头像',align:'center',templet:formatUserHeadPicture}
-			  ,{field:'', title: '用户名称',align:'center',templet:formatUserName}
+			  ,{field:'userInformation', title: '用户头像',align:'center',templet:formatUserHeadPicture}
+			  ,{field:'userInformation', title: '用户名称',align:'center',templet:formatUserName}
 		      ,{field:'messageInformation', align:'center',title: '留言内容',align:'center'}
 		      ,{field:'messageCreationTime', align:'center',title: '留言时间',align:'center'}
 		    ]]
@@ -90,6 +90,19 @@ max-height: 100%;
 	function formatAction(d){
 		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modify("+d.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button><button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+d.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
 	}
+	  function search(){
+		    var s_userName=$("#s_user_name").val();
+			//var s_userEmail=$("#s_user_email").val();
+			table.reload("userMessageTable",{
+				page:{
+					curr:1 //重新从第 1 页开始
+				}
+				,where:{
+					'userInformation.userName':s_userName
+					//email:s_userEmail
+				}
+			});
+		}
 
 /*]]>*/
 </script>
@@ -103,7 +116,22 @@ max-height: 100%;
 </head>
 
 <body>
-  
+ <div style="padding: 20px">
+	          	<div class="layui-form">
+		          <div class="layui-inline">
+		            <label class="layui-form-label">用户名称：</label>
+		            <div class="layui-input-inline">
+		              <input type="text" id="s_user_name" style="width: 200px" placeholder="请输入用户名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+		            </div>
+		          </div>
+					
+		          <div class="layui-inline" style="margin-left: 10px;">
+		           <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search">
+		              <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+		            </button>
+		          </div>
+		        </div>
+</div>   
 <div style="margin: 10px 10px 0px 20px;">
  <table  id="userMessageTable" lay-filter="userMessageTable"></table>
 </div>

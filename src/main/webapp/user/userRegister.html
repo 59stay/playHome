@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
-<title>用户注册页面</title>
 <link rel="stylesheet" href="/static/layui/css/layui.css"></link>
 
 <style type="text/css">
@@ -12,13 +11,12 @@
 </style>
 <script src="/static/js/jquery.js"></script>
 <script src="/static/layui/layui.js"></script>
-<script>
+<script type="text/javascript">
 	layui.use(['form','layer'], function(){
 		var form = layui.form;
 		var layer = layui.layer;
-
-
-	$('#register_button').on('click', function(){
+		var $ = layui.jquery; // 使用jquery
+	   $('#register_button').on('click', function(){
 		
 		 if($("#userName").val().trim()==""){
 			  $("#error_div").text("请输入用户名");
@@ -50,48 +48,122 @@
 		  }
 
 		  if($("#password").val().trim() != $("#confirmPassword").val().trim()){
-			  $("#error_div").text("两次密码输入的密码不相同");
+			  $("#error_div").text("两次密码输入的不相同");
 			  $("#password").focus();
 			  return false;
 
 		  }
 
-		  if($("#email").val().trim()==""){
-			  $("#error_div").text("请输入邮箱");
-			  $("#email").focus();
+		  if($("#user_email").val().trim()==""){
+			  $("#error_div").text("请输入QQ邮箱");
+			  $("#user_email").focus();
 			  return false;
 		  }
-		  var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //邮箱正则表达式
-		  if(!reg.test($("#email").val().trim())){
-			  $("#error_div").text("请输入正确的邮箱地址");
-			  $("#email").focus();
+		  //var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //邮箱正则表达式
+		   var reg = /^\d{5,12}@([q]{2}|[Q]{2})\.com$/;//验证QQ邮箱
+		  if(!reg.test($("#user_email").val().trim())){
+			  $("#error_div").text("请输入正确的QQ邮箱!");
+			  $("#user_email").focus();
 			  return false;
 		  }
+		  var verificationCode=$("#verification_code").val();
+		  if(verificationCode==""){
+			 $("#error_div").text("请输入验证码！");
+			 $("#verificationCode").focus();
+			  return false;
+		   }
 		  //设置防止重复提交注册
 		  var index = layer.load(0, {
 			  shade: [0.1,'#fff'] //0.1透明度的白色背景
 			});
 		  $("#register_button").attr('disabled',true);
-		  $.post("/user/userInformation/register",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#email").val().trim()},function(result){
-			  if(result.success){
-				   $("#register_button").attr('disabled',false);
-				   alert("注册成功！");
-				   var index = parent.layer.getFrameIndex(window.name);   
-				   parent.layer.close(index); //当你在iframe页面关闭自身时
-		
-			  }else{
-				  $("#error_div").text(result.errorInfo);
-			  }
-		  },"json");
+		    $.ajax({
+	           url : '/user/userInformation/register',
+	           type : "post",
+	           dataType: "json",
+	           data : {userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#user_email").val().trim(),yzm:verificationCode},
+	           async : true,
+	           success : function(data) {
+	        	   if(data.success){
+	        		   alert("注册成功！");
+	        		   parent.reloadPage();
+					  }else{
+						  $("#error_div").text(data.errorInfo);
+					  } 
+	        	   layer.close(index);
+	        	   $("#register_button").attr('disabled',false);
+	          }
+          });
+		   
 	   });
 	});
+	var countdown = 30;
+	  /**获取验证码*/
+	function sendEmail(val){
+		 var userEmail = $("#user_email").val();
+		 if(userEmail.trim()==""){
+			  $("#error_div").text("请输入QQ邮箱!");
+			  $("#user_email").focus();
+			  return false;
+		  }
+		  var reg = /^\d{5,12}@([q]{2}|[Q]{2})\.com$/;
+		  if(!reg.test(userEmail.trim())){
+			  $("#error_div").text("请输入正确的QQ邮箱!");
+			  $("#user_email").focus();
+			  return false;
+		  }
+		  
+		var falg = true; 
+		if (countdown == 0) {
+		        val.removeAttribute("disabled");//removeAttribute() 方法删除指定的属性。移除下一步按钮的disabled（禁用）属性
+				val.value = "获取验证码";
+				$('.layui-btn.vc').css({"background-color": "#009688"});
+				countdown = 30;
+			} else {
+				if (countdown == 30) {
+					 $.ajax({
+				           url : '/user/userInformation/checkEmail',
+				           type : "post",
+				           dataType: "json",
+				           data : {email:userEmail,userName:$("#userName").val().trim(),i:"1"},
+				           async : false,
+				           success : function(data) {
+				        	   if(data.success){
+				        		     falg = true;
+								  } else{
+									falg = false;
+									$("#error_div").text(data.errorInfo);
+								  }
+				          }
+			          });
+				}
+				 if(falg){
+					 if(countdown == 30){
+						 $.post("/user/userInformation/sendEmail",{email:userEmail,i:"1"},function(result){
+							  if(result.success){
+				        		   $("#error_div").text("");
+				        		   alert('验证码已发送到您的邮箱，请注意查收!');
+							  }
+						  },"json").error(function(){
+							  alert('获取验证码失败，请重新尝试！');
+						  }); 
+					 }
+					    val.setAttribute("disabled", true);  //给下一步按钮添加一个disabled属性
+						val.value = "重新发送(" + countdown + ")";
+						$('.layui-btn.vc').css({"background-color": "#e4edea"});
+						countdown--;
+						setTimeout(function() {
+							sendEmail(val);
+						}, 1000); 
+				 }
+			}
+	}
 </script>
 
 </head>
 
 <body>
 	<div style="padding: 20px">
-		<form name="myForm" class="layui-form" action="">
 	     <div class="div_one">
 	      <input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" maxlength="10"  class="layui-input" style="padding-left: 33px;"/>
 	        <i class="layui-icon  layui-icon-username" style="position: absolute;top:40px;left: 40px;" ></i>
@@ -108,15 +180,19 @@
 	     </div>
 
 	    <div class="div_one">
-	      <input type="text" id="email" name="email"  placeholder="请输入邮箱" class="layui-input" style="padding-left: 33px;" maxlength="30" />
+	      <input type="text" id="user_email" name="email"  placeholder="请输入QQ邮箱" class="layui-input" style="padding-left: 33px;" maxlength="30" />
 	       <i class="layui-icon layui-icon-release" style="position: absolute;top:184px;left: 40px;" ></i>
+	    </div>
+	    <div class="div_one">
+	       <input id="verification_code"  onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"   type="text"  style="width:220px;padding-left: 33px; display: inline;" placeholder="请输入验证码" class="layui-input"  maxlength="6"/>
+		        <input    class="layui-btn vc"  type="button" value="获取验证码" onclick="sendEmail(this);return false;" style="display:inline;"/>
+		      	<i class="layui-icon layui-icon-password" style="position: absolute;top:231px;left: 40px;" ></i>
 	    </div>
 
 		   <div class="div_one"  style="width: 350px; margin-left: 10px;">
 	          <button id="register_button" class="layui-btn layui-btn-fluid">注 册</button>
 	          <div id="error_div" style="margin:5px 0px 5px 0px; color:#ff0000; text-align: center;"> </div>
 	       </div>
-	  </form>
 	</div>
 
 </body>

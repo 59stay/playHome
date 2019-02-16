@@ -61,7 +61,7 @@
     				<a  th:href="'/user/gameInformation/listDetails/'+${hotGame.id}"><img th:src="${hotGame.gamePicture}"  style="width:90px; height:105px;"></img></a>
     				    <div style="position:relative;left:110px;bottom: 105px; width:670px;">
     					<span class="summary"><a  th:href="'/user/gameInformation/listDetails/'+${hotGame.id}"   target="_blank" th:utext="${hotGame.gameName}"></a></span>
-					  	<span class="summary" th:utext="'摘要: '+${hotGame.gameDescribe}+'...'"></span>
+					  	<span class="summary" th:utext="${#strings.length(hotGame.gameDescribe)>110} ? '摘要: '+${#strings.substring(hotGame.gameDescribe,0,110)}+'...':'摘要: '+ ${hotGame.gameDescribe}+'...'"></span>
 					  	<span class="summary"><a style="color: green" target="_blank" th:href="'/user/gameInformation/listDetails/'+${hotGame.id}" th:text="'http://www.59stay.com/user/'+${hotGame.id}"></a>&nbsp;&nbsp;&nbsp;&nbsp;<font th:text="'发布日期：'+${#dates.format(hotGame.gameCreationTime,'yyyy-MM-dd')}"></font></span>
     				    </div>
     				</li>

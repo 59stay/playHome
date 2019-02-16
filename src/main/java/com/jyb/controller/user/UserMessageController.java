@@ -114,7 +114,7 @@ public class UserMessageController {
     	UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
     	if(userInformation!=null){
     	 Integer num =userMessageService.getByDate(userInformation.getId(),DateUtil.getTodayStartTime(),DateUtil.getTodayEndTime());
-    	 if(num<11){
+    	 if(num<10){
     		 map.put("success",true);
     	 }else{
     		 map.put("success",false);

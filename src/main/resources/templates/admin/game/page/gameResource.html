@@ -29,7 +29,9 @@ display: none;
 	border: 1px solid #f84d28;
 	color: #FFF;
 }
-
+.layui-col-md3 {
+    width: 25%
+}
 </style>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/js/jquery.js"></script>
@@ -40,7 +42,7 @@ display: none;
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		  $ = layui.jquery; // 使用jquery
-		  var table = layui.table;
+		  table = layui.table;
 		  table.render({
 		     elem: '#gameTable'
 		    ,url:'/admin/gameInformation/listPage'
@@ -218,7 +220,23 @@ display: none;
 			});
 	}
 	
-		
+	  function search(){
+		    var s_name=$("#s_name").val();
+			var s_game_name=$("#s_game_name").val();
+			var s_state=$("#s_state").val();
+			var data_dictionary=$("#data_dictionary").val();
+			table.reload("gameTable",{
+				page:{
+					curr:1 //重新从第 1 页开始
+				}
+				,where:{
+					'userInformation.userName':s_name,
+					gameName:s_game_name,
+					auditStatus:s_state,
+					dataDictionary:data_dictionary
+				}
+			}); 
+		}	
 	
 /*]]>*/
 </script>
@@ -235,11 +253,20 @@ display: none;
 <body>
 <div class="layui-form" style="margin-top: 10px;">
   <div class="layui-row">
+   <div class="layui-col-md3">
+	  <div class="layui-inline">
+         <label class="layui-form-label">发布人：</label>
+         <div class="layui-input-inline">
+           <input type="text" id="s_name" style="width: 220px" placeholder="请输入发布人名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+          </div>
+       </div>
+    </div>
+  
     <div class="layui-col-md3">
 	  <div class="layui-inline">
          <label class="layui-form-label">游戏名称：</label>
          <div class="layui-input-inline">
-           <input type="text" id="s_name" style="width: 220px" placeholder="请输入游戏名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+           <input type="text" id="s_game_name" style="width: 220px" placeholder="请输入游戏名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
           </div>
        </div>
     </div>
@@ -261,7 +288,7 @@ display: none;
        <div class="layui-inline">
 		   <label class="layui-form-label">游戏类别：</label>
 		    <div class="layui-input-inline">
-		      <select   name="dataDictionary.id" lay-verify="required">
+		      <select   name="dataDictionary.id"  id="data_dictionary">
 		        <option value="">请选择游戏类别</option>
 		        <option th:each="gameDataDictionary:${application.gameDataDictionaryList}" th:value="${gameDataDictionary.id}" th:text="${gameDataDictionary.dictionaryName}"></option>
 			 </select>

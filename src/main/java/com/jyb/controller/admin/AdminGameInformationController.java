@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
 import com.jyb.init.InitSystem;
@@ -54,13 +55,13 @@ public class AdminGameInformationController {
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
+	private   Map<String,Object> listPage(GameInformation gameInfo,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
-		List<GameInformation> gameInformation =   gameInformationService.listPage(null, page, limit,Sort.Direction.DESC,"gameCreationTime");
+		List<GameInformation> gameInformation =   gameInformationService.listPage(gameInfo, page, limit,Sort.Direction.DESC,"gameCreationTime");
 		Long count = gameInformationService.getCount(null);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
-		resultMap.put("data",gameInformation);
+		resultMap.put("data",JSONObject.toJSON(gameInformation));
 		return resultMap;
 	}
 	/**

@@ -12,6 +12,7 @@ import com.jyb.entity.InvalidLink;
 import com.jyb.entity.UserInformation;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.InvalidLinkService;
+import com.jyb.service.UserInformationService;
 
 
 @Controller
@@ -24,6 +25,8 @@ public class PersonalCenterController {
 	@Autowired
 	private InvalidLinkService invalidLinkService;
 	
+	@Autowired
+	private UserInformationService userInformationService;
 	
 	/**
 	 * 个人中心-main页
@@ -32,15 +35,32 @@ public class PersonalCenterController {
 	 */
     @RequestMapping("toMain")
     public ModelAndView toPersonalCenterMain(HttpSession session){
-    	ModelAndView mav=new ModelAndView();
+    	ModelAndView mv=new ModelAndView();
     	UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
     	InvalidLink  invalidLink = new InvalidLink();
     	invalidLink.setUserId(userInformation.getId());
     	Long count=invalidLinkService.getCount(invalidLink);
     	session.setAttribute("invalidLinkCount", count);
-    	mav.setViewName("user/personalCenter/main");
-        return mav;
+    	mv.setViewName("user/personalCenter/main");
+        return mv;
     }
+    
+    /**
+	 * 个人中心-个人资料
+	 * @param session
+	 * @return
+	 */
+    @RequestMapping("personalData")
+    public ModelAndView personalData(HttpSession session){
+    	ModelAndView mv=new ModelAndView();
+    	UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+    	UserInformation userInfo = userInformationService.getById(userInformation.getId());
+    	mv.addObject("userInformation", userInfo);
+    	mv.setViewName("user/personalCenter/personalData");
+        return mv;
+    }
+    
+    
     
     /**
 	 * 个人中心-发布游戏资源

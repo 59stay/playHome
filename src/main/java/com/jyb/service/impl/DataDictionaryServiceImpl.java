@@ -63,8 +63,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(dataDictionary!=null){
-				     if(dataDictionary.getDictionaryType()!=null){
-							predicate.getExpressions().add(cb.equal(root.get("dictionaryName"),dataDictionary.getDictionaryName() ));
+				     if(dataDictionary.getId()!=null){
+							predicate.getExpressions().add(cb.equal(root.get("id"),dataDictionary.getId() ));
 					 }
 				     if(dataDictionary.getDictionaryType()!=null){
 							predicate.getExpressions().add(cb.equal(root.get("dictionaryType"),dataDictionary.getDictionaryType() ));
@@ -86,8 +86,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 				// TODO Auto-generated method stub
 				Predicate predicate =  cb.conjunction();
 				if(dataDictionary!=null){
-					 if(dataDictionary.getDictionaryType()!=null){
-							predicate.getExpressions().add(cb.equal(root.get("dictionaryName"),dataDictionary.getDictionaryName() ));
+					 if(dataDictionary.getId()!=null){
+							predicate.getExpressions().add(cb.equal(root.get("id"),dataDictionary.getId() ));
 					 }
 				     if(dataDictionary.getDictionaryType()!=null){
 							predicate.getExpressions().add(cb.equal(root.get("dictionaryType"),dataDictionary.getDictionaryType() ));

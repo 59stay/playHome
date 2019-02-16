@@ -34,7 +34,7 @@ public class PlayHouseApplicationTests {
 		SimpleMailMessage message = new SimpleMailMessage();
         // 设定邮件参数
 		message.setFrom("166768601@qq.com");
-		message.setTo("2469874170@qq.com");
+		message.setTo("1990009696@qq.com");
         message.setSubject("主题:邮件"); //主题
         message.setText("邮件内容"); //邮件内容
         // 发送邮件

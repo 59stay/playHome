@@ -10,6 +10,7 @@
     <script src="/static/layui/layui.js" charset="utf-8"></script>
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/common.js"></script>
+    
     <script th:inline="javascript">
         /*<![CDATA[*/
         layui.use(['element','layer'], function(){
@@ -84,7 +85,7 @@
                         <div class="list-cont">
                             <div th:each="userMessage:${userMessageList}" class="cont">
                                 <div class="img">
-                                    <img th:src="${userMessage.userInformation.userHead}" alt="用户头像"></img>
+                                    <img style="width: 40;height: 40px;"  th:src="${userMessage.userInformation.userHead}" alt="用户头像"></img>
                                 </div>
                                 <div class="text">
                                     <p class="tit"><span  class="name" th:text="${userMessage.userInformation.userName}"></span><span class="data" th:text="${#strings.substring(userMessage.messageCreationTime,0,19)}"></span></p>

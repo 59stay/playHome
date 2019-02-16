@@ -23,7 +23,7 @@ layui.use([ 'element','laypage','form' ], function() {
 
 /*<![CDATA[*/
  $(document).ready(function(){
-	 $.post("/user/SignIn/loadSignIn",{},function(result){   
+	 $.post("/user/signIn/loadSignIn",{},function(result){   
 		 if(result.success){
 			 if(result.alreadySignI!=null){
 				 $("#sign_in_div").empty();
@@ -45,7 +45,7 @@ function signIn(){
 		layer.msg("大佬登录后才能签到哟！");
 		return;
 	}else{
-		   $.post("/user/SignIn/loginSignIn",{},function(result){   
+		   $.post("/user/signIn/loginSignIn",{},function(result){   
 					 $("#sign_in_div").empty();
 					 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
 					 layer.msg("大佬您今天已签到成功了哟！");

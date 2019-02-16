@@ -33,26 +33,7 @@
 layui.use(['form','layer'], function(){
 	  var form=layui.form;
 	  var layer = layui.layer;
-	/*   form.on("select(search_dictionary_type)",function (data) {
-	       $.post("/admin/dataDictionary/getDictionaryName",{dictionaryType:data.value},function(result){
-	    		  if(result.success){
-	    			//var d=JSON.stringify(result.dataList); //将JSON对象转化为JSON字符
-	    			//var d= eval(result.dataList);//将JSON字符串转化为JSON对象
-	    			    //empty() 方法从被选元素移除所有内容
-	    			    $("select[name='dictionaryName']").empty();
-	    			    var html = "<option value=''>请选择类别</option>";
-	    			    $(result.dataList).each(function (v, k) {
-	                        html += "<option value='" + k.id + "'>" + k.dictionaryName + "</option>";
-	                    }); 
-	    			    //把遍历的数据放到select表里面
-	                    $("select[name='dictionaryName']").append(html);
-	                    //重新渲染下拉框
-	                    form.render('select');     
-	    		  }else{
-	    			  layer.alert("系统错误,请联系管理员");
-	    		  }
-	    	  },"json");
-	   }); */
+	
 	  
 	  //监听提交
 	  form.on('submit(submit_data)', function(data){

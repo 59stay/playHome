@@ -29,6 +29,18 @@ function showFindPassword(){
 		  content: '/user/findPassword.html' //iframe的url
 		}); 
 }
+/**
+ * 修改密码
+ */
+function showModifyPassword(){
+	layer.open({
+		  type: 2,
+		  title: '修改用户密码',
+		  area: ['400px', '330px'],
+		  content: '/user/modifyPassword.html' //iframe的url
+		}); 
+}
+
 
 /**
  * 获取父页面传给子页面的值

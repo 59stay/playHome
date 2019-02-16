@@ -22,7 +22,7 @@ import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
 
 @Controller
-@RequestMapping("user/SignIn")
+@RequestMapping("user/signIn")
 public class SignInController {
 
 	@Autowired

@@ -17,7 +17,7 @@ import com.jyb.entity.UserInformation;
  * @author jyb
  *
  */
-public class sessionFilter implements Filter {
+public class SessionFilter implements Filter {
 	
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
