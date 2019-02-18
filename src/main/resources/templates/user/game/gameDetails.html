@@ -63,6 +63,9 @@ layui.use([ 'element','laypage','form' ], function() {
 			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
 		 }
 	},"json"); 
+	//增加查看次数
+	$.post("/user/gameInformation/updateGameBrowseFrequency",{"id":[[${gameInformation.id}]]},function(result){});
+	 
 }); 
 
 function signIn(){
@@ -116,7 +119,7 @@ function download(){
 						  shadeClose: true,
 						  shade: 0.8,
 						  area: ['600px', '150px'],
-						  content: '/user/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/1' //iframe的url
+						  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/1' //iframe的url
 						}); 
 						
 					}, function(){
@@ -136,7 +139,7 @@ function download(){
 										  shadeClose: true,
 										  shade: 0.8,
 										  area: ['550px', '450'],
-										  content: '/user/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/2' //iframe的url
+										  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/2' //iframe的url
 										}); 
 									}, function(){
 									  
@@ -155,7 +158,7 @@ function download(){
 													  shadeClose: true,
 													  shade: 0.8,
 													  area: ['550px', '450'],
-													  content: '/user/downloadRecord/saveAndShowDownloadRecord/[[${gameInformation.id}]]/3' //iframe的url
+													  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/3' //iframe的url
 													}); 
 													
 												}, function(){
@@ -190,8 +193,7 @@ function download(){
 					<div class="title" th:text="${gameInformation.gameTitle}"></div>
 					<div class="info">
 						<font th:text="${gameInformation.userInformation.userName}"></font>&nbsp;&nbsp;
-						分享于&nbsp;&nbsp;<font
-							th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}"></font>
+						分享于&nbsp;&nbsp;<font th:text="${#strings.substring(gameInformation.gameCreationTime,0,19)}"></font>
 						&nbsp;&nbsp;查看次数：&nbsp;<font
 							th:text="${gameInformation.gameBrowseFrequency}"></font>&nbsp;次
 						&nbsp;&nbsp;所需：<font color="red"

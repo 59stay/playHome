@@ -78,7 +78,7 @@
 			});
 		  $("#register_button").attr('disabled',true);
 		    $.ajax({
-	           url : '/user/userInformation/register',
+	           url : '/user/userInformation/save',
 	           type : "post",
 	           dataType: "json",
 	           data : {userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),email:$("#user_email").val().trim(),yzm:verificationCode},

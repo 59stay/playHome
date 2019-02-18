@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -33,7 +31,6 @@ import com.jyb.lucene.GameIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
-import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
@@ -80,7 +77,7 @@ public class GameInformationController {
 		    GameInformation gameInfo  = new GameInformation();
 	    	gameInfo.setAuditStatus(2);//显示审核通过的
 	    	gameInfo.setIsUseful(1);//显示未失效的资源
-	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameInfo, 1, 20,Sort.Direction.DESC, "gameCreationTime");
+	    	List<GameInformation> indexGameInformationList = gameInformationService.listPage(gameInfo, 1, 20, Sort.Direction.DESC, "gameCreationTime");
 	    	Long total = gameInformationService.getCount(gameInfo);
 	    	Integer signInNumber= CommonMethodUtil.getSignInNumber();
 	    	ModelAndView mv = new ModelAndView();
@@ -158,20 +155,21 @@ public class GameInformationController {
      */
 	@ResponseBody
 	@RequestMapping("/uploadCoverImage")
-	public Map<String,Object> uploadCoverImage(MultipartFile file)throws Exception{
+	public Map<String,Object> uploadCoverImage(MultipartFile file,HttpSession session)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
+		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
 		if(!file.isEmpty()){
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
 			// 获取文件的后缀名
 			String suffixName = fileName.substring(fileName.lastIndexOf("."));
 			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameCoverImageFilePath+DateUtil.getCurrentDatePath()+newFileName));
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameCoverImageFilePath+userInformation.getEmail()+"/"+newFileName));
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
 			map2.put("title", newFileName);
-			map2.put("src", "/gameCoverImage/"+DateUtil.getCurrentDatePath()+newFileName);
+			map2.put("src", "/gameCoverImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
 		return map;
@@ -185,20 +183,21 @@ public class GameInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping("/uploadContentImage")
-	public Map<String,Object> uploadContentImage(MultipartFile file)throws Exception{
+	public Map<String,Object> uploadContentImage(MultipartFile file,HttpSession session)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
+		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
 		if(!file.isEmpty()){
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
 			// 获取文件的后缀名
 			String suffixName = fileName.substring(fileName.lastIndexOf("."));
 			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameContentImageFilePath+DateUtil.getCurrentDatePath()+newFileName));
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameContentImageFilePath+userInformation.getEmail()+"/"+newFileName));
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
 			map2.put("title", newFileName);
-			map2.put("src", "/gameContentImage/"+DateUtil.getCurrentDatePath()+newFileName);
+			map2.put("src", "/gameContentImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
 		return map;
@@ -214,7 +213,7 @@ public class GameInformationController {
 		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
 		userInformation.getId();
 		gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
-		gameInfo.setGameDownloadFrequency(StringUtil.randomInteger());
+		gameInfo.setGameDownloadFrequency(0);
 		gameInfo.setGameCreationTime(new Date());
 		gameInfo.setAuditStatus(1);
 		gameInfo.setIsUseful(1);
@@ -253,7 +252,7 @@ public class GameInformationController {
 	    gameInformationService.save(gameInformation);
 	    InitSystem.loadData(request.getServletContext());
 	    gameIndex.updateIndex(gameInformation);
-	    redisUtil.del("r_game"+gameInformation.getId());
+	    redisUtil.del("r_game_"+gameInformation.getId());
 		ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "修改游戏成功页面");
     	mav.setViewName("user/game/modifyGameSuccess");
@@ -283,7 +282,7 @@ public class GameInformationController {
 	}
 
 	/**
-	 * 根据id删除帖子
+	 * 根据id删除游戏资源
 	 * @param id
 	 * @return
 	 * @throws Exception
@@ -297,7 +296,7 @@ public class GameInformationController {
 		downloadRecordService.deleteDownloadRecord(id, "A");//删除下载的资源信息
 		InitSystem.loadData(request.getServletContext());
 		gameIndex.deleteIndex(String.valueOf(id));
-		redisUtil.del("r_game"+id);
+		redisUtil.del("r_game_"+id);
 		resultMap.put("success", true);
 		return resultMap;
 	}
@@ -328,6 +327,21 @@ public class GameInformationController {
 		return mav;
 	}
 	
+	
+	/**
+	 * 增加查看次数加 1
+	 * @param id
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/updateGameBrowseFrequency")
+	public void updateView(Integer id,HttpServletRequest request)throws Exception{
+		GameInformation gameInfo = gameInformationService.getId(id);
+		gameInfo.setGameBrowseFrequency(gameInfo.getGameBrowseFrequency()+1);
+		gameInformationService.save(gameInfo);
+		redisUtil.del("r_game_"+gameInfo.getId());
+		InitSystem.loadData(request.getServletContext());
+	}
 	
 	
 }

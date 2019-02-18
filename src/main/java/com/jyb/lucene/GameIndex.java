@@ -185,7 +185,8 @@ public class GameIndex {
 	 * @throws Exception
 	 */
 	public List<GameInformation> search(String q)throws Exception{
-		dir=FSDirectory.open(Paths.get(lucenePath));//获取索引路径
+		List<GameInformation> gameList=new LinkedList<GameInformation>();
+		/*dir=FSDirectory.open(Paths.get(lucenePath));//获取索引路径
 		IndexReader reader = DirectoryReader.open(dir);//读取索引
 		IndexSearcher is=new IndexSearcher(reader);//创建索引查询器
 		BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
@@ -244,7 +245,7 @@ public class GameIndex {
 				}
 				gameList.add(game);
 			}
-		}
+		}*/
 		return gameList;
 	}
 }

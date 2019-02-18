@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<style type="text/css">
+.layui-col-md3 {
+    width: 25%
+}
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/  
+           
+	layui.use(['element','form','table','laydate'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  var laydate = layui.laydate;
+		  $ = layui.jquery; // 使用jquery
+		  table = layui.table;
+		  table.render({
+		     elem: '#logTable'
+		    ,url:'/admin/log/listPage'
+		    ,limits:[10,20,30]
+		    ,cols: [[
+               {type:'checkbox'}
+			  ,{type:'numbers',width:40}
+			  ,{field:'userInformation', width:100, title: '操作人',align:'center',templet:formatUserName}
+			  ,{field:'requestAddress',  title: '请求地址',align:'center'}
+		      ,{field:'requestMode',  title: '请求方式',align:'center'}
+		      ,{field:'requestParams',  title: '请求参数',align:'center'}
+		      ,{field:'requestMethod',   title: '请求方法',align:'center'}
+		      ,{field:'returnContent',  title: '返回内容',align:'center'}
+		      ,{field:'exception',  title: '异常信息 ',align:'center'}
+		      ,{field:'runningTime',   title: '运行时间',align:'center'}
+		      ,{field:'logCreationTime',   title: '创建时间',align:'center',sort: true}
+		      ,{field:'type',  title: '日志类别',align:'center',templet:formatType}
+		    ]]
+		    ,page: true
+		  });
+		  
+		  laydate.render({
+			    elem: '#sd_time'
+			    ,type: 'datetime'
+			    ,range: '到'
+			    ,format: 'yyyy-MM-dd HH:mm:ss'
+			  });
+	});
+	
+	
+	function formatUserName(d){
+		if(d.userInformation==null){
+			return "";	
+		}else{
+			return d.userInformation.userName;			
+		}
+	}
+	
+	function formatType(d){
+		if(d.type==1){
+			return "正常";
+		}else{
+			return "异常";
+		}
+	}
+	
+	function search(){
+		var s_name=$("#s_name").val();
+		var s_state=$("#s_state").val();
+		var sd_time=$("#sd_time").val();
+		var arr = sd_time.split("到");
+		var start_time;
+		var end_time;
+		$.each(arr,function(index,value){
+			if(index==0){
+				start_time = value;	
+			}else{
+				end_time = value;
+			}
+		});
+	  	table.reload("logTable",{
+			page:{
+				curr:1 //重新从第 1 页开始
+			}
+			,where:{
+				'userInformation.userName':s_name,
+				type:s_state,
+				startTime:start_time,
+				endTime:end_time
+			}
+		});  
+		
+		
+	  
+   }
+	
+ 
+/*]]>*/
+</script>
+</head>
+
+<body>
+<div class="layui-form" style="margin-top: 10px;">
+  <div class="layui-row">
+   <div class="layui-col-md3">
+	  <div class="layui-inline">
+         <label class="layui-form-label">操作人：</label>
+         <div class="layui-input-inline">
+           <input type="text" id="s_name" style="width: 220px" placeholder="请输入操作人名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+          </div>
+       </div>
+    </div>
+   
+    <div class="layui-col-md3">
+	   <div class="layui-inline">
+		   <label class="layui-form-label">日志状态：</label>
+		    <div class="layui-input-inline">
+		      <select id="s_state" name="s_state">
+		        <option value="">请选择日志状态</option>
+		        <option value="1">正常</option>
+		        <option value="2">异常</option>
+		      </select>
+		    </div>
+	    </div>
+    </div>
+    
+    <div class="layui-col-md3">
+        <div class="layui-inline">
+	      <label class="layui-form-label">请选择范围</label>
+	      <div class="layui-input-inline">
+	        <input type="text" readonly="readonly" class="layui-input" id="sd_time" placeholder="开始 到 结束时间"/>
+	      </div>
+	    </div>
+		    
+	     <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+            </button>
+        </div>
+    </div>
+  </div>
+</div>  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="logTable" lay-filter="logTable"></table>
+</div>
+
+
+
+</body>
+</html>

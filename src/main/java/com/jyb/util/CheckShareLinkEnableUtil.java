@@ -9,7 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 /**
- * 检查分享链接是否有效
+ * 检查百度云分享链接是否有效
  * @author Administrator
  *
  */
@@ -35,8 +35,8 @@ public class CheckShareLinkEnableUtil {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		System.out.println(CheckShareLinkEnableUtil.check("https://pan.baidu.com/s/1phM4JTJVTl8SFrfU2JAf0Q"));
-		System.out.println(CheckShareLinkEnableUtil.check("https://pan.baidu.com/s/1phM4JTJVTl8SFrfU2JAf0Q2"));
+		System.out.println(CheckShareLinkEnableUtil.check("https://pan.baidu.com/s/1E9Vsksm8gELuQ5KBW5eDcA"));
+		//System.out.println(CheckShareLinkEnableUtil.check("https://pan.baidu.com/s/1QFW6GRekZ0OdFiB2t0pUKg"));
 	}
 	
 }

@@ -12,58 +12,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.jyb.entity.UserMessage;
-import com.jyb.service.UserInformationService;
-import com.jyb.service.UserMessageService;
+import com.jyb.entity.UserReviews;
+import com.jyb.service.UserReviewsService;
 import com.jyb.util.StringUtil;
 
 @Controller
-@RequestMapping("admin/userMessage")
-public class AdminUserMessageController {
+@RequestMapping("admin/userReviews")
+public class AdminUserReviewsController {
+
 	@Autowired
-	private UserMessageService userMessageService;
+	private UserReviewsService userReviewsService;
 	
-	@Autowired
-	private UserInformationService userInformationService ;
-    
 	/**
-     * 分页查询所有留言信息
+     * 分页查询所有评论信息
      * @param page
      * @param limit
      * @return
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	@RequiresPermissions(value={"后台-分页查询所有留言信息"})
-	public   Map<String,Object> listPage(UserMessage  userMessage ,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
+	@RequiresPermissions(value={"后台-分页查询所有评论信息"})
+	public   Map<String,Object> listPage(UserReviews  userReviews ,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
-		List<UserMessage> umList =   userMessageService.listPage(userMessage,page,limit,Sort.Direction.DESC,"id");
-		Long count = userMessageService.getCount(userMessage);
+		List<UserReviews> urList =   userReviewsService.listPage(userReviews,page,limit,Sort.Direction.DESC,"reviewsTime");
+		Long count = userReviewsService.getCount(userReviews);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
-		Object obj = JSONObject.toJSON(umList);
+		Object obj = JSONObject.toJSON(urList);
 		resultMap.put("data",obj);
 		return resultMap;
 	}
 	
+	
 	/**
-	 * 删除留言信息
+	 * 删除评论信息
 	 * @param id
 	 * @return
 	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping("/deleteMultiple")
-	@RequiresPermissions(value={"后台-删除留言信息"})
+	@RequiresPermissions(value={"后台-删除评论信息"})
 	public Map<String,Object> deleteMultiple(String ids)throws Exception{
 		Map<String, Object> map = new HashMap<>();
 		if(StringUtil.isNotEmpty(ids)){
 			String []idsStr=ids.split(",");
 			for(int i=0;i<idsStr.length;i++){
-				userMessageService.delete(Integer.parseInt(idsStr[i])); // 删除留言信息
+				userReviewsService.delete(Integer.parseInt(idsStr[i]));  
 			}
 			map.put("success", true);
 		}else{
@@ -71,5 +67,5 @@ public class AdminUserMessageController {
 		}
 		return map;
 	}
-
+	
 }

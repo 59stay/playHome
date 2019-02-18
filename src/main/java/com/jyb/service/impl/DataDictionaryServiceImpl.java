@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.jyb.entity.DataDictionary;
 import com.jyb.repository.DataDictionaryRepositroy;
 import com.jyb.service.DataDictionaryService;
+import com.jyb.util.StringUtil;
 
 @Service("dataDictionaryService")
 @Transactional
@@ -30,7 +31,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
    private DataDictionaryRepositroy dataDictionaryRepositroy;
 	
 	@Override
-	public List<DataDictionary> listAll(DataDictionary dataDictionary, Direction direction, String... properties) {
+	public List<DataDictionary> listAll(final DataDictionary dataDictionary, Direction direction, String... properties) {
 		// TODO Auto-generated method stub
 		Sort sort = new Sort(direction,properties);
 		List<DataDictionary> dataDictionaryList = dataDictionaryRepositroy.findAll(new Specification<DataDictionary>() {
@@ -40,7 +41,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 				// TODO Auto-generated method stub
 				  List<Predicate> list = new ArrayList<Predicate>();
 				  if(dataDictionary!=null){
-					  if(dataDictionary.getDictionaryType()!=null){
+					  if(StringUtil.isNotEmpty(dataDictionary.getDictionaryType())){
 						   list.add(cb.equal(root.get("dictionaryType"), dataDictionary.getDictionaryType()));
 					  }
 				  }
@@ -53,7 +54,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
 	
 	@Override
-	public List<DataDictionary> listPage(DataDictionary dataDictionary, Integer page, Integer pageSize,
+	public List<DataDictionary> listPage(final DataDictionary dataDictionary, Integer page, Integer pageSize,
 			Direction direction, String... properties) {
 		// TODO Auto-generated method stub
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
@@ -66,7 +67,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 				     if(dataDictionary.getId()!=null){
 							predicate.getExpressions().add(cb.equal(root.get("id"),dataDictionary.getId() ));
 					 }
-				     if(dataDictionary.getDictionaryType()!=null){
+				     if(StringUtil.isNotEmpty(dataDictionary.getDictionaryType())){
 							predicate.getExpressions().add(cb.equal(root.get("dictionaryType"),dataDictionary.getDictionaryType() ));
 					 }	
 				}
@@ -78,7 +79,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 	
 	
 	@Override
-	public Long getCount(DataDictionary dataDictionary) {
+	public Long getCount(final DataDictionary dataDictionary) {
 		// TODO Auto-generated method stub
 		Long count = dataDictionaryRepositroy.count(new Specification<DataDictionary>() {
 			@Override

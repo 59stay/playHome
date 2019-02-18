@@ -3,6 +3,8 @@ package com.jyb.controller.admin;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,8 @@ public class AdminFriendshipLinkController {
    */
     @ResponseBody
 	@RequestMapping(value="listAll")
-	private   Map<String,Object> listAll(){
+	@RequiresPermissions(value={"后台-查询所有的友情链接信息"})
+    public   Map<String,Object> listAll(){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<FriendshipLink> friendshipLink =   friendshipLinkService.listAll(Sort.Direction.DESC,"id");
 		resultMap.put("code",0);
@@ -38,7 +41,8 @@ public class AdminFriendshipLinkController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="saveFriendshipLink")
-	private  Map<String,Object> saveFriendshipLink(FriendshipLink friendshipLink){
+	@RequiresPermissions(value={"后台-保存友情链接信息"})
+	public  Map<String,Object> saveFriendshipLink(FriendshipLink friendshipLink){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		if(friendshipLink!=null){
 			friendshipLinkService.save(friendshipLink);
@@ -58,6 +62,7 @@ public class AdminFriendshipLinkController {
 	 */
 	@ResponseBody
 	@RequestMapping("/delete")
+	@RequiresPermissions(value={"后台-删除友情链接信息"})
 	public Map<String,Object> delete(Integer id)throws Exception{
 		Map<String, Object> map = new HashMap<>();
 		if(id!=null){

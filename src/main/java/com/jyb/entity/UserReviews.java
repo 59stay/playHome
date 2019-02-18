@@ -40,7 +40,7 @@ public class UserReviews {
 	@Column(length=30)
 	private String largeCategory;  //大类别
 	
-	@JSONField(format="yyyy-mm-dd HH:mm:ss")
+	 @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date reviewsTime;  //评论时间
     
     @Column(length=500)

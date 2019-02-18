@@ -54,7 +54,7 @@ public class GameInformation implements Serializable{
 	@Column(length = 500)
 	private String remarks;// 备注
 
-	@JSONField(format="yyyy-mm-dd HH:mm:ss")
+	 @JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date gameCreationTime;// 创建时间
 
 	@ManyToOne
@@ -70,7 +70,7 @@ public class GameInformation implements Serializable{
 	@Column(length = 200)
     private String reason;// 审核未通过原因
 	
-	@JSONField(format="yyyy-mm-dd HH:mm:ss")
+	 @JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date auditDate;// 审核日期
 	
 	private Integer isUseful; // 资源链接是否有效  true(1) 有效   false(2) 无效 

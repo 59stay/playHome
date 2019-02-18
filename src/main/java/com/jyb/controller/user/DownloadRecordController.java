@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jyb.entity.DownloadRecord;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.UserInformation;
+import com.jyb.init.InitSystem;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserInformationService;
@@ -98,16 +100,16 @@ public class DownloadRecordController {
 		}
 	}
 	/**
-	 * 
+	 * 记录用户下载的资源
 	 * @param id
 	 * @param type  1.表示用户查看自己发布的资源 2.表示用户已下载过该资源 3.表示其他用户查看别人发布的资源 
 	 * @param session
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/saveAndShowDownloadRecord/{id}/{type}")
-	public synchronized  ModelAndView saveAndShowDownloadRecord(@PathVariable("id") Integer id,@PathVariable("type") Integer type,HttpSession session) {
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+	@RequestMapping("/saveDownloadResources/{id}/{type}")
+	public synchronized  ModelAndView saveDownloadResources(@PathVariable("id") Integer id,@PathVariable("type") Integer type,HttpServletRequest request) {
+		UserInformation userInformation=(UserInformation)request.getSession().getAttribute("userInfo");
 		GameInformation gameInfo = gameInformationService.getId(id);
 		UserInformation publisher =  gameInfo.getUserInformation();
 		DownloadRecord dr = new DownloadRecord();
@@ -133,10 +135,11 @@ public class DownloadRecordController {
 			dr.setUserInformation(userInformation);
 			dr.setDownloadDate(new Date());
 			downloadRecordService.save(dr);
+			gameInfo.setGameDownloadFrequency(gameInfo.getGameDownloadFrequency()+1);//增加下载次数
+	    	gameInformationService.save(gameInfo);
 			mav.addObject("gameInfo", gameInfo);
 	    	mav.setViewName("common/downloadRecordShow");
 		}
-		
         return mav;
 	}
 	

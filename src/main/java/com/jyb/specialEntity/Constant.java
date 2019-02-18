@@ -22,4 +22,9 @@ public class Constant {
 	 */
 	public final static String QQEMAIL="166768601@qq.com"; 
 	
+	/**
+	 * session中用户的对象变量
+	 */
+	public final static String USERINFO="userInfo"; 
+	
 }

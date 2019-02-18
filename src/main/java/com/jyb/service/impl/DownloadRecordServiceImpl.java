@@ -28,7 +28,7 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 	private DownloadRecordRepositroy downloadRecordRepositroy; 
 	
 	@Override
-	public List<DownloadRecord> listPage(DownloadRecord downloadRecord, Integer page, Integer pageSize,
+	public List<DownloadRecord> listPage(final DownloadRecord downloadRecord, Integer page, Integer pageSize,
 			Direction direction, String... properties) {
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
 		Page<DownloadRecord> pageDownloadRecord = downloadRecordRepositroy.findAll(new Specification<DownloadRecord>() {
@@ -41,12 +41,12 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),downloadRecord.getUserInformation().getId()));
 					}
 					if(downloadRecord.getUserInformation()!=null && StringUtil.isNotEmpty(downloadRecord.getUserInformation().getUserName())){
-						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+downloadRecord.getUserInformation().getUserName()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("userInformation").<String>get("userName"), "%"+downloadRecord.getUserInformation().getUserName()+"%"));
 					}
 					if(StringUtil.isNotEmpty(downloadRecord.getResourceName())){
-						predicate.getExpressions().add(cb.like(root.get("resourceName"), "%"+downloadRecord.getResourceName().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("resourceName"), "%"+downloadRecord.getResourceName().trim()+"%"));
 					}
-			     	if(downloadRecord.getLargeCategory()!=null   ){
+			     	if(StringUtil.isNotEmpty(downloadRecord.getLargeCategory())){
 						predicate.getExpressions().add(cb.equal(root.get("largeCategory"),downloadRecord.getLargeCategory()));
 					}	
 				}
@@ -57,7 +57,7 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 	}
 
 	@Override
-	public Long getCount(DownloadRecord downloadRecord) {
+	public Long getCount(final DownloadRecord downloadRecord) {
 		// TODO Auto-generated method stub
 		Long count = downloadRecordRepositroy.count(new Specification<DownloadRecord>() {
 			@Override
@@ -69,12 +69,12 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),downloadRecord.getUserInformation().getId()));
 					}
 					if(downloadRecord.getUserInformation()!=null && StringUtil.isNotEmpty(downloadRecord.getUserInformation().getUserName())){
-						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+downloadRecord.getUserInformation().getUserName()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("userInformation").<String>get("userName"), "%"+downloadRecord.getUserInformation().getUserName()+"%"));
 					}
 					if(StringUtil.isNotEmpty(downloadRecord.getResourceName())){
-						predicate.getExpressions().add(cb.like(root.get("resourceName"), "%"+downloadRecord.getResourceName().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("resourceName"), "%"+downloadRecord.getResourceName().trim()+"%"));
 					}
-			     	if(downloadRecord.getLargeCategory()!=null   ){
+					if(StringUtil.isNotEmpty(downloadRecord.getLargeCategory())){
 						predicate.getExpressions().add(cb.equal(root.get("largeCategory"),downloadRecord.getLargeCategory()));
 					}	
 				}

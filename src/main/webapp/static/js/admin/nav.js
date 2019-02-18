@@ -49,6 +49,12 @@ var navs = [{
 			"icon" : "icon-text",
 			"href" : "/admin/userMessage",
 			"spread" : false
+		},
+		{
+			"title" : "评论信息",
+			"icon" : "icon-text",
+			"href" : "/admin/userReviews",
+			"spread" : false
 		}
 	]
 }
@@ -65,7 +71,7 @@ var navs = [{
 			"spread" : false
 		},
 		{
-			"title" : "电影资源",
+			"title" : "软件资源",
 			"icon" : "&#xe631;",
 			"href" : "",
 			"spread" : false
@@ -85,21 +91,15 @@ var navs = [{
 	"spread" : false,
 	"children" : [
 		{
-			"title" : "日志管理",
+			"title" : "日志信息",
 			"icon" : "&#xe631;",
-			"href" : " ",
+			"href" : "/admin/logInfo",
 			"spread" : false
 		},
 		{
-			"title" : "定时器管理",
+			"title" : "定时器信息",
 			"icon" : "&#xe631;",
 			"href" : "",
-			"spread" : false
-		},
-		{
-			"title" : "失效资源",
-			"icon" : "&#xe631;",
-			"href" : " ",
 			"spread" : false
 		}
 	]

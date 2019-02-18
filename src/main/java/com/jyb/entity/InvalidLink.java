@@ -33,7 +33,7 @@ public class InvalidLink {
 	
 	private Integer downloadType;//资源地址类别    1.百度云盘地址  2.其他地址 
 	
-	@JSONField(format="yyyy-mm-dd HH:mm:ss")
+	 @JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date creationTime; // 失效链接创建时间
 	
 	private String largeCategory;// 失效链接大类别

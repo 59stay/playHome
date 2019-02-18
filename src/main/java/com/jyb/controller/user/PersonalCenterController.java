@@ -67,7 +67,7 @@ public class PersonalCenterController {
 	 * @return
 	 */
     @RequestMapping("/toPublishGameResources")
-    public ModelAndView toPublishGameResources(){
+    private ModelAndView toPublishGameResources(){
     	ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "发布游戏资源信息页面");
     	mav.setViewName("user/game/publishGameResource");
@@ -92,7 +92,7 @@ public class PersonalCenterController {
      * @return
      */
     @RequestMapping("/toGameResourceManagement")
-    public ModelAndView toGameResourceManagement(){
+    private ModelAndView toGameResourceManagement(){
     	ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "游戏资源信息管理页面");
     	mav.setViewName("user/game/gameResourceManagement");
@@ -104,7 +104,7 @@ public class PersonalCenterController {
      * @return
      */
     @RequestMapping("/toInvalidLinkManagement")
-    public ModelAndView toInvalidLinkManagement(){
+    private ModelAndView toInvalidLinkManagement(){
     	ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "失效链接信息管理页面");
     	mav.setViewName("user/personalCenter/InvalidLinkManagement");
@@ -115,7 +115,7 @@ public class PersonalCenterController {
      * @return
      */
     @RequestMapping("/toUserReviewsManagement")
-    public ModelAndView  toUserReviewsManagement(){
+    private ModelAndView  toUserReviewsManagement(){
        ModelAndView mv  =  new ModelAndView();
        mv.addObject("title","用户评论管理页面");
        mv.setViewName("user/personalCenter/userReviewsManagement");
@@ -128,7 +128,7 @@ public class PersonalCenterController {
      * @return
      */
     @RequestMapping("/toUserDownloadRecordManagement")
-    public ModelAndView  toUserDownloadRecordManagement(){
+    private ModelAndView  toUserDownloadRecordManagement(){
        ModelAndView mv  =  new ModelAndView();
        mv.addObject("title","用户已下载资源信息");
        mv.setViewName("user/personalCenter/userDownloadRecordManagement");

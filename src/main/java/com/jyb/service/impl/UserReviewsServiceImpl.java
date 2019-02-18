@@ -16,9 +16,11 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.repository.UserReviewsRepositroy;
 import com.jyb.service.UserReviewsService;
+import com.jyb.util.StringUtil;
 
 @Service("userReviewsService")
 @Transactional
@@ -28,7 +30,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 	private UserReviewsRepositroy userReviewsRepositroy;
 
 	@Override
-	public List<UserReviews> listPage(UserReviews userReviews, Integer page, Integer pageSize, Direction direction,
+	public List<UserReviews> listPage(final UserReviews userReviews, Integer page, Integer pageSize, Direction direction,
 			String... properties) {
 		// TODO Auto-generated method stub
 		Pageable pageable = new PageRequest(page - 1, pageSize, direction, properties);
@@ -39,14 +41,23 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 				Predicate predicate = cb.conjunction();
 				if (userReviews != null) {
 					if (userReviews.getUserInformation() != null
-							&& userReviews.getUserInformation().getId() != null) {
+							&& userReviews.getUserInformation().getId() != null&& userReviews.getUserInformation().getUserRole()!=0) {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),
 								userReviews.getUserInformation().getId()));
 					}
-					if (userReviews.getLargeCategory() != null && userReviews.getResourceId() != null) {
-						predicate.getExpressions()
-								.add(cb.equal(root.get("largeCategory"), userReviews.getLargeCategory()));
+					if (userReviews.getUserInformation() != null && StringUtil.isNotEmpty(userReviews.getUserInformation().getUserName())) {
+						predicate.getExpressions().add(cb.like(root.<UserInformation>get("userInformation").<String>get("userName"),"%"+userReviews.getUserInformation().getUserName()+"%"));
+					}
+					if (StringUtil.isNotEmpty(userReviews.getLargeCategory())) {
+						predicate.getExpressions().add(cb.equal(root.get("largeCategory"), userReviews.getLargeCategory()));
+					
+					}
+					if(userReviews.getResourceId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
+					}
+					
+					if(StringUtil.isNotEmpty(userReviews.getReviewsContent())){
+						predicate.getExpressions().add(cb.like(root.<String>get("reviewsContent"), "%"+userReviews.getReviewsContent().trim()+"%"));
 					}
 				}
 				return predicate;
@@ -56,7 +67,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 	}
 
 	@Override
-	public Long getCount(UserReviews userReviews) {
+	public Long getCount(final UserReviews userReviews) {
 		// TODO Auto-generated method stub
 		Long count = userReviewsRepositroy.count(new Specification<UserReviews>() {
 
@@ -65,14 +76,23 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 				Predicate predicate = cb.conjunction();
 				if (userReviews != null) {
 					if (userReviews.getUserInformation() != null
-							&& userReviews.getUserInformation().getId() != null) {
+							&& userReviews.getUserInformation().getId() != null&& userReviews.getUserInformation().getUserRole()!=0) {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),
 								userReviews.getUserInformation().getId()));
 					}
-					if (userReviews.getLargeCategory() != null && userReviews.getResourceId() != null) {
-						predicate.getExpressions()
-								.add(cb.equal(root.get("largeCategory"), userReviews.getLargeCategory()));
+					if (userReviews.getUserInformation() != null && StringUtil.isNotEmpty(userReviews.getUserInformation().getUserName())) {
+						predicate.getExpressions().add(cb.like(root.<UserInformation>get("userInformation").<String>get("userName"),"%"+userReviews.getUserInformation().getUserName()+"%"));
+					}
+					if (StringUtil.isNotEmpty(userReviews.getLargeCategory())) {
+						predicate.getExpressions().add(cb.equal(root.get("largeCategory"), userReviews.getLargeCategory()));
+					
+					}
+					if(userReviews.getResourceId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
+					}
+					
+					if(StringUtil.isNotEmpty(userReviews.getReviewsContent())){
+						predicate.getExpressions().add(cb.like(root.<String>get("reviewsContent"), "%"+userReviews.getReviewsContent().trim()+"%"));
 					}
 				}
 				return predicate;

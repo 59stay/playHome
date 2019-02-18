@@ -23,15 +23,15 @@ $(document).ready(function(){
 <body>
 <table style="padding: 10px;padding-top: 20px; width: 500px;" >
 <tr  id="tr1" style="display:none;">
-   <td style="width: 150px;">百度云盘下载地址：</td>
-   <td style="width: 200px;" align="left"><a th:href="${gameInfo.gameDownloadAddress}" target="_blank" th:text="${gameInfo.gameDownloadAddress}"></a></td>
+   <td style="width: 150px;">百度云盘下载地址：</td>                          
+   <td style="width: 200px;" align="left"><a th:href="${gameInfo.gameDownloadAddress}" target="_blank" th:text="${#strings.length(gameInfo.gameDownloadAddress)>23} ? ${#strings.substring(gameInfo.gameDownloadAddress,0,23)}+'...' : ${gameInfo.gameDownloadAddress}"></a></td>
    <td style="width: 50px;">密码：</td>
    <td style="width: 50px;"><font color="red" th:text="${gameInfo.linkPwd}"></font></td>
 </tr>
 
 <tr id="tr2"  style="display:none;">
-   <td style="width: 150px;">其他下载地址：</td>
-   <td style="width: 200px;"><a th:href="${gameInfo.gameDownloadAddress}" target="_blank" th:text="${gameInfo.gameDownloadAddress}"></a></td>
+   <td style="width: 70px;">其他下载地址：</td>
+   <td style="width: 200px;"><a th:href="${gameInfo.gameDownloadAddress}" target="_blank" th:text="${#strings.length(gameInfo.gameDownloadAddress)>23} ? ${#strings.substring(gameInfo.gameDownloadAddress,0,23)}+'...' : ${gameInfo.gameDownloadAddress}"></a></td>
 </tr>
 </table>
 

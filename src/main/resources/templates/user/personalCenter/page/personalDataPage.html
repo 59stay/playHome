@@ -1,0 +1,67 @@
+<!-- 个人中心-首页 -->
+<meta charset="UTF-8"/>
+<div id="pdPage">
+   	<fieldset class="layui-elem-field layui-field-title">
+	  <legend>个人资料</legend>
+	</fieldset>
+     <form class="layui-form" action="/user/userInformation/modifyUserInfo" method="post">
+		<div class="user_left">
+			<div class="layui-form-item">
+			    <label class="layui-form-label">用户名</label>
+			    <div class="layui-input-block">
+			    	<input type="text" th:value="${userInformation.userName}" name="userName" class="layui-input" disabled="disabled" /></div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">积分</label>
+			    <div class="layui-input-block">
+			    	<input type="text" th:value="${userInformation.userIntegral}" name="userIntegral"  class="layui-input" disabled="disabled" /></div>
+			</div>
+			<div class="layui-form-item" pane="">
+			    <label class="layui-form-label">性别</label>
+			    <div class="layui-input-block"> 
+			    	<input type="radio" name="sex" value="1" title="男"  th:field="*{userInformation.sex}" />
+	     			<input type="radio" name="sex" value="2" title="女" th:field="*{userInformation.sex}"/>
+			    </div>
+			</div> 
+			<div class="layui-form-item">
+			    <label class="layui-form-label">手机号码</label>
+			    <div class="layui-input-block">
+			    	<input  id="user_phone_number" th:value="${userInformation.userPhoneNumber}"  oninput = "value=value.replace(/[^\d]/g,'')"  placeholder="请输入手机号码"  class="layui-input" maxlength="11"/>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">身份证号</label>
+			    <div class="layui-input-block">
+			    	<input    th:value="${userInformation.userIdcard}"  id="user_idcard"  placeholder="请输入身份证号码"  oninput="value=value.replace(/[\W]/g,'')"  class="layui-input" maxlength="18"/>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">邮箱</label>
+			    <div class="layui-input-block">
+			    	<input disabled="disabled"  type="text" th:value="${userInformation.email}" name="email"  class="layui-input"/>
+			    </div>
+			</div> 
+		</div>
+		
+		<div class="user_right">
+						<div class="layui-upload" style="float: left; margin-top: 10px;">
+							<button type="button" class="layui-btn" id="upload_user_head"> 掐指一算，我要换一个头像了</button>
+							<div class="layui-inline layui-word-aux"></div>
+						</div>
+						<div class="layui-upload-list" style="float: left;">
+						 <img class="layui-upload-img" id="upload_image"  style="width:220px; height:200px;" th:src="${userInformation.userHead}"></img>
+							<p id="demo_text"></p>
+						</div>
+		</div>
+		
+		<div class="layui-form-item" style="margin-left: 5%;">
+		    <div class="layui-input-block">
+		        <input type="hidden" id="user_id"   th:value="${userInformation.id}"></input>
+		        <input type="hidden"  id="head_picture"  name="userHead" th:value="${userInformation.userHead}"></input>
+		    	<button class="layui-btn layui-btn-fluid" onclick="submitData();return false;" style="width:320px; ">提交</button>
+		    </div>
+		</div>	
+			
+			
+	</form>
+</div>

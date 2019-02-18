@@ -25,7 +25,7 @@ private  Integer id; //编号
 @JoinColumn(name="userId")
 private UserInformation userInformation;  //签到用户
 
-@JSONField(format="yyyy-mm-dd HH:mm:ss")
+@JSONField(format="yyyy-MM-dd HH:mm:ss")
 private String signInTime ;//签到时间
 
 private Integer signInRanking;//签到排名

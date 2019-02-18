@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jyb.entity.DataDictionary;
 import com.jyb.init.InitSystem;
 import com.jyb.service.DataDictionaryService;
-
+/**
+ * 后台-类别Controller
+ * @author jyb
+ *
+ */
 @Controller
 @RequestMapping("admin/dataDictionary")
 public class AdminDataDictionaryController {
@@ -31,7 +36,8 @@ public class AdminDataDictionaryController {
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,DataDictionary dataDictionary){
+	@RequiresPermissions(value={"后台-分页查询所有的类别信息"})
+	public   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,DataDictionary dataDictionary){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<DataDictionary> ddList =   dataDictionaryService.listPage(dataDictionary, page, limit,Sort.Direction.DESC,"dictionarySort");
 		Long count = dataDictionaryService.getCount(null);
@@ -49,7 +55,8 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="getDataDictionary")
-	private Map<String,Object>  getDataDictionary(String id){
+	@RequiresPermissions(value={"后台-根据id查找类别信息"})
+	public Map<String,Object>  getDataDictionary(String id){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		DataDictionary dataDictionary =  dataDictionaryService.getId(Integer.parseInt(id));
 		map.put("dataDictionary",dataDictionary);
@@ -63,7 +70,8 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="getDataDictionaryList")
-	private Map<String,Object>  getDataDictionaryList(String dictionaryType){
+	@RequiresPermissions(value={"后台-根据大类别获取类别名称"})
+	public Map<String,Object>  getDataDictionaryList(String dictionaryType){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		List<DataDictionary> dataDictionary =  dataDictionaryService.findByDictionaryType(dictionaryType);
 		if(dataDictionary!=null){
@@ -82,7 +90,8 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="saveDataDictionary")
-	private  Map<String,Object> saveDataDictionary(DataDictionary dataDictionary,HttpServletRequest request){
+	@RequiresPermissions(value={"后台-保存或修改类别信息"})
+	public  Map<String,Object> saveDataDictionary(DataDictionary dataDictionary,HttpServletRequest request){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		if(dataDictionary.getId()!=null){
 			DataDictionary dd = dataDictionaryService.getId(dataDictionary.getId());
@@ -109,6 +118,7 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping("/delete")
+	@RequiresPermissions(value={"后台-删除类别信息"})
 	public Map<String,Object> delete(Integer id,HttpServletRequest request)throws Exception{
 		Map<String, Object> map = new HashMap<>();
 		if(id!=null){

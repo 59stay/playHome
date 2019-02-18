@@ -10,12 +10,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +38,7 @@ public class AdminUserInformationController {
 	@Autowired
 	private JavaMailSender mailSender;
 	/**
-	 * 用户登录
+	 * 管理员登录
 	 * @param userInformation
 	 * @param session
 	 * @return
@@ -80,14 +82,15 @@ public class AdminUserInformationController {
 	
 	
 	 /**
-     * 分页查询所有的游戏资源
+     * 分页查询所有用户信息
      * @param page
      * @param limit
      * @return
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,UserInformation userInfo){
+	@RequiresPermissions(value={"后台-分页查询所有用户信息"})
+	public   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,UserInformation userInfo){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<UserInformation> userInformation =   userInformationService.listPage(userInfo, page, limit,Sort.Direction.DESC,"userCreationTime");
 		Long count = userInformationService.getCount(userInfo);
@@ -104,7 +107,8 @@ public class AdminUserInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="updateAccountStatus")
-	private   Map<String,Object> updateAccountStatus(UserInformation userInfo){
+	@RequiresPermissions(value={"后台-设置账号是否禁用"})
+	public   Map<String,Object> updateAccountStatus(UserInformation userInfo){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		UserInformation userInformation =   userInformationService.getById(userInfo.getId());
 		userInformation.setAccountStatus(userInfo.getAccountStatus());
@@ -120,7 +124,8 @@ public class AdminUserInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="addIntegral")
-	private   Map<String,Object> addIntegral(UserInformation userInfo){
+	@RequiresPermissions(value={"后台-充值积分"})
+	public   Map<String,Object> addIntegral(UserInformation userInfo){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		UserInformation userInformation =   userInformationService.getById(userInfo.getId());
 		userInformation.setUserIntegral(userInfo.getUserIntegral()+userInformation.getUserIntegral());
@@ -135,8 +140,9 @@ public class AdminUserInformationController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="resetPassword")
-	private   Map<String,Object> resetPassword(UserInformation userInfo){
+	@RequestMapping(value="updatePassword")
+	@RequiresPermissions(value={"后台-重置用户密码"})
+	public   Map<String,Object> updatePassword(UserInformation userInfo){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		UserInformation userInformation =   userInformationService.getById(userInfo.getId());
 		userInformation.setUserPassword(MD5Util.md5(Constant.PWD,Constant.SALT));
@@ -146,6 +152,15 @@ public class AdminUserInformationController {
 	}
 	
 	
-	
+	/**
+	 * 安全退出
+	 * @return
+	 */
+	@RequiresPermissions(value={"后台-安全退出"})
+	@GetMapping("/logout")
+	public String logout(HttpSession session){
+		SecurityUtils.getSubject().logout();
+		return "redirect:/adminLogin.html";
+	}
 	
 }

@@ -28,7 +28,7 @@ public class UserMessage {
 	@Column(length=500)
 	private String messageInformation; // 留言信息
 	
-    @JSONField(format="yyyy-mm-dd HH:mm:ss")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date  messageCreationTime;//留言时间
 
 	@ManyToOne

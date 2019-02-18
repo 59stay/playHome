@@ -175,7 +175,7 @@ display: none;
 			  icon:6,
 			  btn: ['确定','取消']//按钮
 			}, function(){
-				  $.post("/admin/userInfor/resetPassword",{
+				  $.post("/admin/userInfor/updatePassword",{
 						id:id,
 					 },function(result){
 						 var index = parent.layer.getFrameIndex(window.name); 

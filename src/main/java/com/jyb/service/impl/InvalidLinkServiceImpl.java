@@ -27,7 +27,7 @@ public class InvalidLinkServiceImpl implements InvalidLinkService{
 	private InvalidLinkRepositroy invalidLinkRepositroy;
 	
 	@Override
-	public List<InvalidLink> listPage(InvalidLink invalidLink, Integer page, Integer pageSize, Direction direction,
+	public List<InvalidLink> listPage(final InvalidLink invalidLink, Integer page, Integer pageSize, Direction direction,
 			String... properties) {
 		// TODO Auto-generated method stub
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
@@ -48,7 +48,7 @@ public class InvalidLinkServiceImpl implements InvalidLinkService{
 	}
 
 	@Override
-	public Long getCount(InvalidLink invalidLink) {
+	public Long getCount(final InvalidLink invalidLink) {
 		// TODO Auto-generated method stub
 		Long count = invalidLinkRepositroy.count(new Specification<InvalidLink>() {
 			@Override

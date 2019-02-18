@@ -47,12 +47,49 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
+		
+		<dependency>
+		   <groupId>org.springframework.boot</groupId>
+		   <artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		
+		 <dependency>
+	       <groupId>org.aspectj</groupId>
+	       <artifactId>aspectjweaver</artifactId>
+	          <version>1.9.2</version>
+	    </dependency>
+	
+	
+	   <dependency>
+	       <groupId>org.aspectj</groupId>
+	       <artifactId>aspectjrt</artifactId>
+	       <version>1.8.9</version>
+	   </dependency>    
+	    
+	      <dependency>
+	    	<groupId>cglib</groupId>
+	    	<artifactId>cglib</artifactId>
+	    	<version>2.1</version>
+	    </dependency>
+	    
+	   <dependency>
+	    	<groupId>org.springframework</groupId>
+	    	<artifactId>spring-aop</artifactId>
+	    </dependency>
+	    
+   
+	    <dependency>
+	     <groupId>aopalliance</groupId>
+	     <artifactId>aopalliance</artifactId>
+	     <version>1.0</version>
+	   </dependency>
+ 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.47</version>
 		</dependency>
+		
 		<dependency>        
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-annotations</artifactId>
@@ -86,6 +123,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<!-- 连接池 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
@@ -171,10 +209,12 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>net.sourceforge.nekohtml</groupId>
 			<artifactId>nekohtml</artifactId>
@@ -189,6 +229,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			 <plugin>    
+                  <groupId>org.apache.maven.plugins</groupId>    
+                  <artifactId>maven-compiler-plugin</artifactId>    
+                 <configuration>    
+                      <source>1.7</source>    
+                      <target>1.7</target>    
+                 </configuration>    
+             </plugin>    
 		</plugins>
 	</build>
 

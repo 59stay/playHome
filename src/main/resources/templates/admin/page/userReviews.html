@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<style type="text/css">
+.layui-col-md3 {
+    width: 25%
+}
+.layui-table-tool-self{
+display: none;
+}
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/  
+           
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  table = layui.table;
+		  table.render({
+		     elem: '#userReviewsTable'
+		    ,url:'/admin/userReviews/listPage'
+		    ,toolbar: '#toolbar'
+		    ,limits:[10,20,30]
+		    ,cols: [[
+               {type:'checkbox'}
+			  ,{type:'numbers',width:40}
+			  ,{field:'userInformation', width:100, title: '评论人',align:'center',templet:formatUserName}
+			  ,{field:'resourceName',  title: '资源名称',align:'center'}
+			  ,{field:'largeCategory',  title: '大类别',align:'center',templet:formatLargeCategory}
+		      ,{field:'reviewsContent',  title: '评论内容',align:'center'}
+		      ,{field:'reviewsTime',  title: '评论时间',align:'center'}
+		    ]]
+		    ,page: true
+		  });
+		  
+		  //头工具栏事件
+		  table.on('toolbar(userReviewsTable)', function(obj){
+		    var checkStatus = table.checkStatus(obj.config.id);
+		    var rows = checkStatus.data;
+		    switch(obj.event){
+		      case 'del':
+		        if(rows.length==0){
+		        	 layer.msg('请选择需要删除的信息');
+		        	 return;
+		        }else{
+		        	var strIds=[];
+		        	for(var i=0;i<rows.length;i++){
+		    			strIds.push(rows[i].id);
+		    		}
+		    		var ids=strIds.join(",");
+		    		layer.confirm("您确定要删除这<font color=red>"+checkStatus.data.length+"</font>条记录吗？", {
+		  		       title:"系统提示"
+		  		      ,icon: 6
+		  			  ,btn: ['确定','取消'] //按钮
+		  			}, function(){
+		  				layer.closeAll('dialog');
+		  				$.post("/admin/userReviews/deleteMultiple",{"ids":ids},function(result){
+		  					if(result.success){
+		  						layer.msg("删除成功！");
+		  						table.reload("userReviewsTable",{});
+		  					}else{
+		  						layer.msg("删除失败，请联系管理员！");
+		  					}
+		  				},"json");
+		  			}, function(){
+		  			  
+		  			});
+		        }
+		      break;
+		    }
+		  }); 
+		  
+	});
+	
+	
+	function formatUserName(d){
+		if(d.userInformation==null){
+			return "";	
+		}else{
+			return d.userInformation.userName;			
+		}
+	}
+	
+	function formatLargeCategory(d){
+		if(d.largeCategory=="A"){
+			return "宅游戏";
+		}else if(d.largeCategory=="B"){
+			return "宅软件";
+		}else{
+			return "";
+		}
+		
+	}
+	
+	function search(){
+		var s_name=$("#s_name").val().trim();
+		var s_large_category=$("#s_large_category").val().trim();
+		var s_reviews_content=$("#s_reviews_content").val().trim();
+	  	table.reload("userReviewsTable",{
+			page:{
+				curr:1 //重新从第 1 页开始
+			}
+			,where:{
+				'userInformation.userName':s_name,
+				largeCategory:s_large_category,
+				reviewsContent:s_reviews_content
+			}
+		});  
+		
+		
+	  
+   }
+	
+ 
+/*]]>*/
+</script>
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="del">批量删除</button>
+  </div>
+</script>
+</head>
+
+<body>
+<div class="layui-form" style="margin-top: 10px;">
+  <div class="layui-row">
+   <div class="layui-col-md3">
+	  <div class="layui-inline">
+         <label class="layui-form-label">评论人：</label>
+         <div class="layui-input-inline">
+           <input type="text" id="s_name" style="width: 220px" placeholder="请输入评论人名称" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+          </div>
+       </div>
+    </div>
+    
+    <div class="layui-col-md3">
+	  <div class="layui-inline">
+         <label class="layui-form-label">评论内容：</label>
+         <div class="layui-input-inline">
+           <input type="text" id="s_reviews_content" style="width: 220px" placeholder="请输入评论内容" autocomplete="off" class="layui-input" onkeydown="if(event.keyCode==13) search()"/>
+          </div>
+       </div>
+    </div>
+   
+    <div class="layui-col-md3">
+		 <div class="layui-inline">
+			   <label class="layui-form-label">大类别：</label>
+			    <div class="layui-input-inline">
+			      <select id="s_large_category" >
+			        <option value="">请选择大类别</option>
+			        <option value="A">宅游戏</option>
+			        <option value="B">宅软件</option>
+			      </select>
+			    </div>
+		    </div>
+	    
+	     <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-list"  lay-submit="" onclick="search()" lay-filter="LAY-app-contlist-search">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn" ></i>
+            </button>
+        </div>
+    </div>
+    
+  </div>
+</div>  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="userReviewsTable" lay-filter="userReviewsTable"></table>
+</div>
+
+
+
+</body>
+</html>

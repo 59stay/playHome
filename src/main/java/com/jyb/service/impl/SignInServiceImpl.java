@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.jyb.entity.SignIn;
 import com.jyb.repository.SignInRepositroy;
 import com.jyb.service.SignInService;
+import com.jyb.util.StringUtil;
 
 @Service("signInService")
 @Transactional
@@ -22,7 +23,7 @@ public class SignInServiceImpl implements SignInService {
 	@Autowired
 	private SignInRepositroy signInRepositroy;
 	@Override
-	public Long getCount(SignIn signIn) {
+	public Long getCount(final SignIn signIn) {
 		// TODO Auto-generated method stub
 		Long count = signInRepositroy.count(new Specification<SignIn>() {
 			@Override
@@ -35,8 +36,8 @@ public class SignInServiceImpl implements SignInService {
 						predicate.getExpressions().add(cb.equal(root.get("userInformation").get("id"),
 								signIn.getUserInformation().getId()));
 					}
-					if(signIn.getSignInTime()!=null ){
-							predicate.getExpressions().add(cb.like(root.get("signInTime"),signIn.getSignInTime()+"%"));
+					if(StringUtil.isNotEmpty(signIn.getSignInTime())){
+							predicate.getExpressions().add(cb.like(root.<String>get("signInTime"),signIn.getSignInTime()+"%"));
 					}
 				}
 				return predicate;

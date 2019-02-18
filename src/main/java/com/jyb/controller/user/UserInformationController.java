@@ -99,9 +99,9 @@ public class UserInformationController {
 	 * @param bindingResult
 	 * @return
 	 */
-	@RequestMapping("register")
+	@RequestMapping("save")
 	@ResponseBody
-	public Map<String,Object> register(@Valid UserInformation userInformation,BindingResult bindingResult,HttpServletRequest request,String yzm){
+	public Map<String,Object> save(@Valid UserInformation userInformation,BindingResult bindingResult,HttpServletRequest request,String yzm){
 		Map<String,Object> map = new HashMap<String,Object>();
 		String mailCode=(String) request.getSession().getAttribute("mailCode");
 		if(bindingResult.hasErrors()){
@@ -196,20 +196,21 @@ public class UserInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping("/uploadUserHead")
-	public Map<String,Object> uploadUserHead(MultipartFile file)throws Exception{
+	public Map<String,Object> uploadUserHead(MultipartFile file,HttpSession session)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
+		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
 		if(!file.isEmpty()){
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
 			// 获取文件的后缀名
 			String suffixName = fileName.substring(fileName.lastIndexOf("."));
 			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(userHeadFilePath+DateUtil.getCurrentDatePath()+newFileName));
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(userHeadFilePath+userInformation.getEmail()+"/"+newFileName));
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
 			map2.put("title", newFileName);
-			map2.put("src", "/userHeadImage/"+DateUtil.getCurrentDatePath()+newFileName);
+			map2.put("src", "/userHeadImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
 		return map;

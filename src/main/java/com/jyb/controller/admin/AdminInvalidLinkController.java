@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -20,12 +21,13 @@ public class AdminInvalidLinkController {
 	private InvalidLinkService invalidLinkService;
 	
 	 /**
-	   * 查询所有的失效链接资源
+	   * 分页查询所有的失效链接资源
 	   * @return
 	   */
 	    @ResponseBody
 		@RequestMapping(value="listPage")
-		private   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
+	    @RequiresPermissions(value={"后台-分页查询所有的失效链接资源"})
+	    public   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 			Map<String,Object>   resultMap = new HashMap<String,Object>();
 			List<InvalidLink> invalidLinkList=invalidLinkService.listPage(null, page,limit,Sort.Direction.DESC,"creationTime");
 			Long count = invalidLinkService.getCount(null);

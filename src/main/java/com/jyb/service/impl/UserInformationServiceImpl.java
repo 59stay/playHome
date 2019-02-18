@@ -53,7 +53,7 @@ public class UserInformationServiceImpl implements UserInformationService {
 	}
 
 	@Override
-	public List<UserInformation> listPage(UserInformation userInfo, Integer page, Integer pageSize, Direction direction,
+	public List<UserInformation> listPage(final UserInformation userInfo, Integer page, Integer pageSize, Direction direction,
 			String... properties) {
 		// TODO Auto-generated method stub
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
@@ -64,10 +64,10 @@ public class UserInformationServiceImpl implements UserInformationService {
 				Predicate predicate =  cb.conjunction();
 				if(userInfo!=null){
 					if(StringUtil.isNotEmpty(userInfo.getUserName())){
-						predicate.getExpressions().add(cb.like(root.get("userName"), "%"+userInfo.getUserName().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("userName"), "%"+userInfo.getUserName().trim()+"%"));
 					}
 					if(StringUtil.isNotEmpty(userInfo.getEmail())){
-						predicate.getExpressions().add(cb.like(root.get("email"), "%"+userInfo.getEmail().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("email"), "%"+userInfo.getEmail().trim()+"%"));
 					}
 
 				}
@@ -78,7 +78,7 @@ public class UserInformationServiceImpl implements UserInformationService {
 	}
 
 	@Override
-	public Long getCount(UserInformation userInfo) {
+	public Long getCount(final UserInformation userInfo) {
 		// TODO Auto-generated method stub
 		Long count = userInformationRepositroy.count(new Specification<UserInformation>() {
 			@Override
@@ -87,10 +87,10 @@ public class UserInformationServiceImpl implements UserInformationService {
 				Predicate predicate =  cb.conjunction();
 				if(userInfo!=null){
 					if(StringUtil.isNotEmpty(userInfo.getUserName())){
-						predicate.getExpressions().add(cb.like(root.get("userName"), "%"+userInfo.getUserName().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("userName"), "%"+userInfo.getUserName().trim()+"%"));
 					}
 					if(StringUtil.isNotEmpty(userInfo.getEmail())){
-						predicate.getExpressions().add(cb.like(root.get("email"), "%"+userInfo.getEmail().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("email"), "%"+userInfo.getEmail().trim()+"%"));
 					}
 				}
 				return predicate;

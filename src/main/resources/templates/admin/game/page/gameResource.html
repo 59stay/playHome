@@ -108,7 +108,7 @@ display: none;
 		  			  ,btn: ['确定','取消'] //按钮
 		  			}, function(){
 		  				layer.closeAll('dialog');
-		  				$.post("/admin/gameInformation/batchDelete",{"ids":ids},function(result){
+		  				$.post("/admin/gameInformation/deleteMultiple",{"ids":ids},function(result){
 		  					if(result.success){
 		  						layer.msg("删除成功！");
 		  						table.reload("gameTable",{});

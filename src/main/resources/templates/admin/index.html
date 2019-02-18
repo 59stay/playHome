@@ -73,34 +73,34 @@
 			    	<!-- <li class="layui-nav-item showNotice" id="showNotice">
 						<a href="javascript:;"><i class="iconfont icon-gonggao"></i><cite>系统公告</cite></a>
 					</li> -->
-			    	<li class="layui-nav-item" >
+			    <!-- 	<li class="layui-nav-item" >
 			    		<a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>设置</cite></a>
-			    	</li>
+			    	</li> -->
 			    	<li class="layui-nav-item" >
-			    		<a href="/logout"><i class="iconfont icon-loginout"></i>退出</a>
+			    		<a href="javascript:;" onclick="javascript:logout();return false;"><i class="iconfont icon-loginout"></i>退出</a>
 			    	</li>
 					<li class="layui-nav-item lockcms">
 						<a href="javascript:;"><i class="iconfont icon-lock1"></i><cite>锁屏</cite></a>
 					</li>
 					<li class="layui-nav-item">
-						<a href="javascript:;"><!--  ${session.adminUserInfo.userHead} -->
-							<img class="layui-circle" width="35" height="35" ></img>
-							<cite>来啦老弟!!!</cite>  <!-- th:text="${session.adminUserInfo.userName}" -->
+						<a href="javascript:;"> 
+							<img class="layui-circle" width="35" height="35" th:src="${session.adminUserInfo.userHead}"></img>
+							<cite th:text="${session.adminUserInfo.userName}" ></cite>  
 						</a>
-						<dl class="layui-nav-child">
+						<!-- <dl class="layui-nav-child">
 							<dd><a href="javascript:;" data-url="page/user/userInfo.html"><i class="iconfont icon-zhanghu" data-icon="icon-zhanghu"></i><cite>个人资料</cite></a></dd>
 							<dd><a href="javascript:;" data-url="page/user/changePwd.html"><i class="iconfont icon-shezhi1" data-icon="icon-shezhi1"></i><cite>修改密码</cite></a></dd>
 							<dd><a href="/logout"><i class="iconfont icon-loginout"></i><cite>退出</cite></a></dd>
-						</dl>
+						</dl> -->
 					</li>
 				</ul>
 			</div>
 		</div>
 		<!-- 左侧导航 -->
 		<div class="layui-side layui-bg-black">
-			<div class="user-photo"> <!--  th:src="${session.adminUserInfo.userHead}" th:text="${session.adminUserInfo.userName}" -->
-				<a class="img" title="我的头像" ><img src=""></img></a>
-				<p>你好！<span class="userName" ></span>, 欢迎登录</p>
+			<div class="user-photo">
+				<a class="img" title="我的头像" ><img th:src="${session.adminUserInfo.userHead}"></img></a>
+				<p>你好！<span class="userName" th:text="${session.adminUserInfo.userName}"></span>, 欢迎登录</p>
 			</div>
 			<div class="navBar layui-side-scroll"></div>
 		</div>
@@ -120,7 +120,7 @@
 		</div>
 		<!-- 底部 -->
 		<div class="layui-footer footer">
-			<p>copyright @2017 请叫我马哥 更多模板：<a href="http://www.mycodes.net/" target="_blank">源码之家</a>　　<a onclick="donation()" class="layui-btn layui-btn-danger l·ayui-btn-small">捐赠作者</a></p>
+			<p>copyright @2019 后台管理-宅着玩资源站点：<a href="http://www.baidu.com/" target="_blank">宅着玩</a>　　<!-- <a onclick="donation()" class="layui-btn layui-btn-danger l·ayui-btn-small">捐赠作者</a> --></p>
 		</div>
 	</div>
 
@@ -142,6 +142,20 @@
 	<script type="text/javascript" src="/static/js/admin/nav.js"></script>
 	<script type="text/javascript" src="/static/js/admin/leftNav.js"></script>
 	<script type="text/javascript" src="/static/js/admin/index.js"></script>
-	
 </body>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/  
+	   function logout(){
+		layer.confirm("您确定退出系统吗", {
+		       title:"系统提示"
+			  ,btn: ['确定','取消'] //按钮
+			}, function(){
+				window.location.href="/admin/userInfor/logout";
+			}, function(){
+			  
+			});
+	}        
+	/*]]>*/
+</script>	           
 </html>

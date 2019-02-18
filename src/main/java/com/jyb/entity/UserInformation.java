@@ -59,7 +59,7 @@ public class UserInformation {
 	
     private Integer userIntegral;//用户积分
 	
-    @JSONField(format="yyyy-mm-dd HH:mm:ss")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date userCreationTime; // 创建时间
 	
 	@Column(length=30)

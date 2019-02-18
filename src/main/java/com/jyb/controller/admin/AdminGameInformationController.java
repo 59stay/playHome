@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -55,7 +56,8 @@ public class AdminGameInformationController {
      */
 	@ResponseBody
 	@RequestMapping(value="listPage")
-	private   Map<String,Object> listPage(GameInformation gameInfo,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
+	@RequiresPermissions(value={"后台-分页查询所有的游戏资源"})
+	public   Map<String,Object> listPage(GameInformation gameInfo,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<GameInformation> gameInformation =   gameInformationService.listPage(gameInfo, page, limit,Sort.Direction.DESC,"gameCreationTime");
 		Long count = gameInformationService.getCount(null);
@@ -70,7 +72,8 @@ public class AdminGameInformationController {
 	 * @return
 	 */
 	@RequestMapping(value="getGameInformation")
-	private ModelAndView getGameInformation(String id){
+	@RequiresPermissions(value={"后台-根据id查找游戏资源信息"})
+	public ModelAndView getGameInformation(String id){
 		ModelAndView mv = new ModelAndView();
 	    GameInformation gameInfo =  gameInformationService.getId(Integer.parseInt(id));
 		mv.addObject("gameInformation",gameInfo);
@@ -87,6 +90,7 @@ public class AdminGameInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
+	@RequiresPermissions(value={"后台-修改游戏信息"})
 	public Map<String,Object> update(GameInformation gameInfo,String gameTypeId,HttpSession session)throws Exception{
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(gameInfo!=null && gameInfo.getId()!=null){
@@ -106,7 +110,7 @@ public class AdminGameInformationController {
 		      gameInformation.setAuditStatus(1);	
 		    }
 		    gameInformationService.save(gameInformation);
-		    redisUtil.del("r_game"+gameInfo.getId());
+		    redisUtil.del("r_game_"+gameInfo.getId());
 		    map.put("success", true);
 		}else{
 			map.put("success", false);
@@ -121,6 +125,7 @@ public class AdminGameInformationController {
 	 */
 	@RequestMapping("auditResourceAdopt")
 	@ResponseBody
+	@RequiresPermissions(value={"后台-审核通过"})
 	public Map<String,Object>  auditResourceAdopt(String id,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		GameInformation gameInformation =  gameInformationService.getId(Integer.parseInt(id));
@@ -130,7 +135,7 @@ public class AdminGameInformationController {
 		gameInformationService.save(gameInformation);
 		InitSystem.loadData(request.getServletContext());
 		gameIndex.updateIndex(gameInformation); 
-		redisUtil.del("r_game"+gameInformation.getId());
+		redisUtil.del("r_game_"+gameInformation.getId());
 		map.put("success", true);
 		return map;
 	}
@@ -141,6 +146,7 @@ public class AdminGameInformationController {
 	 */
 	@RequestMapping("auditResourceNotPass")
 	@ResponseBody
+	@RequiresPermissions(value={"后台-审核被驳回"})
 	public Map<String,Object>  auditResourceNotPass(String id,String reason,HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		GameInformation gameInformation =  gameInformationService.getId(Integer.parseInt(id));
@@ -160,15 +166,16 @@ public class AdminGameInformationController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping("/batchDelete")
-	public Map<String,Object> batchDelete(String ids,HttpServletRequest request)throws Exception{
+	@RequestMapping("/deleteMultiple")
+	@RequiresPermissions(value={"后台-批量删除游戏资源"})
+	public Map<String,Object> deleteMultiple(String ids,HttpServletRequest request)throws Exception{
 		String []idsStr=ids.split(",");
 		for(int i=0;i<idsStr.length;i++){
 			gameInformationService.delete(Integer.parseInt(idsStr[i])); // 删除游戏资源信息
 			userReviewsService.deleteUserReviews(Integer.parseInt(idsStr[i]),"A");//删除资源相关的评论
 			downloadRecordService.deleteDownloadRecord(Integer.parseInt(idsStr[i]),"A");//删除下载的资源信息
 			gameIndex.deleteIndex(String.valueOf(idsStr[i])); // 删除索引
-			redisUtil.del("r_game"+idsStr[i]);
+			redisUtil.del("r_game_"+idsStr[i]);
 		}
 		InitSystem.loadData(request.getServletContext());
 		

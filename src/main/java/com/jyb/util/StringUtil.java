@@ -93,7 +93,10 @@ public class StringUtil {
 		}
 		return result;
 	}
-	
+	/**
+	 * 生成三位随机数
+	 * @return
+	 */
 	public static Integer randomInteger(){
 		Random random = new Random();
 		return 100+random.nextInt(100);

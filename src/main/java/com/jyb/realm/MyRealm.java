@@ -34,49 +34,66 @@ public class MyRealm extends AuthorizingRealm{
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		return null;
-		/*	String userName=(String) SecurityUtils.getSubject().getPrincipal();
+		String userName=(String) SecurityUtils.getSubject().getPrincipal();
 		UserInformation user=userInformationService.findByUserName(userName);
 		SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
 		Set<String> roles=new HashSet<String>();
 		if(user.getUserRole()==0){
 			roles.add("0");
-			info.addStringPermission("进入管理员主页");
-			info.addStringPermission("生成所有帖子索引");
-			info.addStringPermission("分页查询资源帖子信息");
-			info.addStringPermission("跳转到修改帖子页面");
-			info.addStringPermission("修改帖子");
-			info.addStringPermission("图片上传");
-			info.addStringPermission("删除帖子");
-			info.addStringPermission("跳转到帖子审核页面");
-			info.addStringPermission("修改状态");
-			info.addStringPermission("修改热门状态");
+			info.addStringPermission("后台-首页");
+			info.addStringPermission("后台-游戏资源");
+			info.addStringPermission("后台-用户信息");
+			info.addStringPermission("后台-类别信息");
+			info.addStringPermission("后台-友情链接");
+			info.addStringPermission("后台-留言板");
+			info.addStringPermission("后台-失效链接");
+			info.addStringPermission("后台-日志信息");
+			info.addStringPermission("后台-评论信息");
+
+			/********AdminDataDictionaryController**********/
+			info.addStringPermission("后台-分页查询所有的类别信息");
+			info.addStringPermission("后台-根据id查找类别信息");
+			info.addStringPermission("后台-根据大类别获取类别名称");
+			info.addStringPermission("后台-保存或修改类别信息");
+			info.addStringPermission("后台-删除类别信息");
 			
-			info.addStringPermission("分页查询评论信息");
-			info.addStringPermission("修改评论状态");
-			info.addStringPermission("删除评论");
+			/********AdminFriendshipLinkController**********/
+			info.addStringPermission("后台-查询所有的友情链接信息");
+			info.addStringPermission("后台-保存友情链接信息");
+			info.addStringPermission("后台-删除友情链接信息");
 			
-			info.addStringPermission("分页查询用户信息");
-			info.addStringPermission("修改用户VIP状态");
-			info.addStringPermission("修改用户状态");
-			info.addStringPermission("重置用户密码");
-			info.addStringPermission("用户积分充值");
+			/********AdminGameInformationController**********/
+			info.addStringPermission("后台-分页查询所有的游戏资源");
+			info.addStringPermission("后台-根据id查找游戏资源信息");
+			info.addStringPermission("后台-修改游戏信息");
+			info.addStringPermission("后台-审核通过");
+			info.addStringPermission("后台-审核被驳回");
+			info.addStringPermission("后台-批量删除游戏资源");
 			
-			info.addStringPermission("分页查询资源类别信息");
-			info.addStringPermission("添加或者修改类别信息");
-			info.addStringPermission("删除类别信息");
-			info.addStringPermission("根据id查询资源类别实体");
+			/********AdminInvalidLinkController**********/
+			info.addStringPermission("后台-分页查询所有的失效链接资源");
 			
-			info.addStringPermission("分页查询友情链接");
-			info.addStringPermission("添加或者修改友情链接");
-			info.addStringPermission("删除友情链接");
-			info.addStringPermission("根据id查询友情链接实体");
+			/********AdminLogController**********/
+			info.addStringPermission("后台-分页查询所有的日志信息");
+			info.addStringPermission("后台-保存日志信息");
 			
-			info.addStringPermission("修改管理员密码"); 
-			info.addStringPermission("安全退出");
+			/********AdminUserInformationController**********/
+			info.addStringPermission("后台-分页查询所有用户信息");
+			info.addStringPermission("后台-设置账号是否禁用");
+			info.addStringPermission("后台-充值积分");
+			info.addStringPermission("后台-重置用户密码"); 
+			
+			/********AdminUserMessageController**********/
+			info.addStringPermission("后台-分页查询所有留言信息"); 
+			info.addStringPermission("后台-删除留言信息"); 
+			
+			/********AdminUserReviewsController**********/
+			info.addStringPermission("后台-分页查询所有评论信息"); 
+			info.addStringPermission("后台-删除评论信息"); 
+			info.addStringPermission("后台-安全退出");
 		}
 		info.setRoles(roles);
-		return info;*/
+		return info;
 	}
 
 	/**

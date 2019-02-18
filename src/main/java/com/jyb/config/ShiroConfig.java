@@ -51,8 +51,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/userRegister.html", "anon");
         filterChainDefinitionMap.put("/user/findPassword.html", "anon");
         filterChainDefinitionMap.put("/admin/adminLogin.html", "anon");
+        
         filterChainDefinitionMap.put("/admin/userInfor/login", "anon");
-       
         filterChainDefinitionMap.put("/user/gameInformation/**", "anon");
         filterChainDefinitionMap.put("/user/userInformation/**", "anon");
         filterChainDefinitionMap.put("/user/userMessage/**", "anon");

@@ -33,7 +33,7 @@ public class GameInformationServiceImpl implements GameInformationService {
 	
 	
 	@Override
-	public List<GameInformation> listAll(GameInformation gameInfo, Direction direction, String... properties) {
+	public List<GameInformation> listAll(final GameInformation gameInfo, Direction direction, String... properties) {
 		// TODO Auto-generated method stub
 		Sort sort = new Sort(direction,properties);
 		List<GameInformation> result = gameInformationRepository.findAll(new Specification<GameInformation>() {
@@ -55,7 +55,7 @@ public class GameInformationServiceImpl implements GameInformationService {
  
 	
 	@Override
-	public List<GameInformation> listPage(GameInformation gameInfo, Integer page, Integer pageSize, Direction direction,
+	public List<GameInformation> listPage(final GameInformation gameInfo, Integer page, Integer pageSize, Direction direction,
 			String... properties) {
 		// TODO Auto-generated method stub
 		Pageable pageable = new PageRequest(page-1, pageSize, direction, properties);
@@ -66,10 +66,10 @@ public class GameInformationServiceImpl implements GameInformationService {
 				Predicate predicate =  cb.conjunction();
 				if(gameInfo!=null){
 					if(gameInfo.getUserInformation()!=null && StringUtil.isNotEmpty(gameInfo.getUserInformation().getUserName())){
-						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+gameInfo.getUserInformation().getUserName()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("userInformation").<String>get("userName"), "%"+gameInfo.getUserInformation().getUserName()+"%"));
 					}
 					if(StringUtil.isNotEmpty(gameInfo.getGameName())){
-						predicate.getExpressions().add(cb.like(root.get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
 					}
 					if(gameInfo.getAuditStatus()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("auditStatus"), gameInfo.getAuditStatus()));
@@ -88,7 +88,7 @@ public class GameInformationServiceImpl implements GameInformationService {
 	}
 
 	@Override
-	public Long getCount(GameInformation gameInfo) {
+	public Long getCount(final GameInformation gameInfo) {
 		// TODO Auto-generated method stub
 		Long count = gameInformationRepository.count(new Specification<GameInformation>() {
 			@Override
@@ -97,13 +97,13 @@ public class GameInformationServiceImpl implements GameInformationService {
 				Predicate predicate =  cb.conjunction();
 				if(gameInfo!=null){
 					if(gameInfo.getUserInformation()!=null && StringUtil.isNotEmpty(gameInfo.getUserInformation().getUserName())){
-						predicate.getExpressions().add(cb.like(root.get("userInformation").get("userName"), "%"+gameInfo.getUserInformation().getUserName()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("userInformation").<String>get("userName"), "%"+gameInfo.getUserInformation().getUserName()+"%"));
 					}
 					if(gameInfo.getAuditStatus()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("auditStatus"), gameInfo.getAuditStatus()));
 					}
 					if(StringUtil.isNotEmpty(gameInfo.getGameName())){
-						predicate.getExpressions().add(cb.like(root.get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
+						predicate.getExpressions().add(cb.like(root.<String>get("gameName"), "%"+gameInfo.getGameName().trim()+"%"));
 					}
 					if(gameInfo.getIsUseful()!=null){
 						predicate.getExpressions().add(cb.equal(root.get("isUseful"), gameInfo.getIsUseful()));
