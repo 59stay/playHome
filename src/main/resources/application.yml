@@ -50,7 +50,8 @@ gameCoverImageFilePath: D://phImage/gameCoverImage/
 gameContentImageFilePath: D://phImage/gameContentImage/
 # 用户头像路径
 userHeadFilePath: D://phImage/userHeadFilePath/
-# 索引存储路径
+# 索引存储路径-游戏
 lucenePath: C://lucene
-
+# 索引存储路径-软件
+lucenePath2: C://lucene2
 

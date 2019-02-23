@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+<meta charset="UTF-8" />
+<title th:text="${title}"></title>
+<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/css/gameInformation.css" />
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/common.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+layui.use([ 'element','laypage','form' ], function() {
+	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+	  var $ = layui.jquery; // 使用jquery
+	  var laypage = layui.laypage;
+	  laypage.render({
+	     elem: 'articlePage'
+	    ,limit:6
+	    ,count: [[${userReviewsCount}]]
+	    ,jump: function(obj){
+	      $("#userReviewsList").empty();
+	      $.post("/user/userReviews/list",{"resourceId":[[${software.id}]],"largeCategory":[[${software.largeCategory}]],"page":obj.curr},function(result){
+			  var rows=result;
+			  if(rows.length==0){
+				  $("#userReviewsList").html("<p align='center'>暂无评论</p>");
+			  }else{
+				  for(var i=0;i<rows.length;i++){
+					  var row=rows[i];
+					  $("#userReviewsList").append("<div class='comment'>"+
+							  "<div class='left_img'>"+
+								  "<img src='"+row.userInformation.userHead+"' class='layui-nav-img'/>"+
+								  "</div>"+
+								  "<div class='right'>"+
+									  "<dt class='top'>"+
+									  row.userInformation.userName+
+									  "<span class='time'>"+row.reviewsTime+"</span>"+
+									  "</dt>"+
+									  "<dd class='bottom'>"+row.reviewsContent+"</dd>"+
+								  "</div>"+
+							  "</div>");
+				  } 
+			  }
+		  },"json");
+	    }
+	  });
+});
+
+ $(document).ready(function(){
+	 $.post("/user/signIn/loadSignIn",{},function(result){   
+		 if(result.success){
+			 if(result.alreadySignI!=null){
+				 $("#sign_in_div").empty();
+				 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
+			 }else{
+				 $("#sign_in_div").empty();
+				 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+					 
+			 }
+		 }else{
+			 $("#sign_in_div").empty();
+			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+		 }
+	},"json"); 
+	//增加查看次数
+	//$.post("/user/gameInformation/updateGameBrowseFrequency",{"id":[[${software.id}]]},function(result){});
+	 
+}); 
+
+function signIn(){
+	if([[${session.userInfo}]]==null){//未登录
+		layer.msg("大佬登录后才能签到哟！");
+		return;
+	}else{
+		   $.post("/user/signIn/loginSignIn",{},function(result){ 
+			   $("#sign_in_div").empty();
+			  $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+			},"json"); 
+	}
+}
+
+function submitData(){
+	var userReviews=$("#reviewsInformation").val();
+	if([[${session.userInfo}]]==null){//未登录
+		layer.msg("登录后才能评论哟！");
+		return;
+	}
+	if(userReviews==""){
+		layer.msg("请填写评论内容！");
+		return false;
+	}
+	$.post("/user/userReviews/add",{"resourceId":[[${software.id}]],"resourceName":[[${software.name}]],"reviewsContent":userReviews,"largeCategory":[[${software.largeCategory}]]},function(result){
+		if(result.success){
+			$("#reviewsInformation").val("");
+			 window.location.reload();
+			//layer.msg("评论成功，稍后显示！");
+		}
+	},"json");
+}
+
+
+function download(){
+ 	if([[${session.userInfo}]]==null){//未登录
+		layer.msg("登录后才能下载资源！");
+		return;
+	}else{//已登录
+		var sessionUserId = $("#session_user_id").val();
+		var resourceUserId =[[${software.userInformation.id}]];
+		var largeCategory  = [[${software.largeCategory}]];
+	 	if(sessionUserId==resourceUserId){//下载的资源为当前登录用户自己发布的
+	 		layer.confirm('来啦老弟，这是您发布的资源可以直接查看哟！', {
+					title:"下载提示"
+					  ,btn: ['确定','取消'] //按钮
+					}, function(){
+						layer.closeAll('dialog');
+						layer.open({
+						  type: 2,
+						  title: '资源下载地址',
+						  shadeClose: true,
+						  shade: 0.8,
+						  area: ['600px', '150px'],
+						  content: '/user/downloadRecord/saveDownloadResources/[[${software.id}]]/B/1'
+						}); 
+						
+					}, function(){
+					  
+					});
+			}else{//下载的资源不是当前登录用户自己发布的
+				$.post("/user/downloadRecord/exist",{"resourceId":[[${software.id}]],"largeCategory":"B"},function(result){	
+				 		  if(result){//已下载资源
+				 			 layer.confirm('来啦老弟，该资源您已下载过可以直接查看哟！', {
+									title:"下载提示"
+									  ,btn: ['确定','取消'] //按钮
+									}, function(){
+										layer.closeAll('dialog');
+										layer.open({
+										  type: 2,
+										  title: '资源下载地址',
+										  shadeClose: true,
+										  shade: 0.8,
+										  area: ['550px', '450'],
+										  content: '/user/downloadRecord/saveDownloadResources/[[${software.id}]]/B/2' //iframe的url
+										}); 
+									}, function(){
+									  
+									});
+							}else{//未下载资源
+								$.post("/user/downloadRecord/isIntegralEnough",{"integral":[[${software.integral}]]},function(result){
+									 if(result){
+											layer.confirm('来啦老弟，该资源下载需要 <font color="red">[[${software.integral}]]</font> 积分,您确定要下载这个资源吗？', {
+												title:"下载提示"
+												  ,btn: ['确定','取消'] //按钮
+												}, function(){
+													layer.closeAll('dialog');
+													layer.open({
+													  type: 2,
+													  title: '资源下载地址',
+													  shadeClose: true,
+													  shade: 0.8,
+													  area: ['550px', '450'],
+													  content: '/user/downloadRecord/saveDownloadResources/[[${software.id}]]/B/3' //iframe的url
+													}); 
+													
+												}, function(){
+												  
+												});
+									 }else{
+										 alert("积分不够");  
+									 }
+								},"json"); 
+							}
+					},"json");  
+			}  
+	   }
+} 
+/*]]>*/
+</script>
+
+<body onload="ResizeImages()">
+	<!-- 导航区 -->
+	<div class="w1170" style="padding-bottom: 10px; overflow: visible;"
+		th:include="common/head::#head"></div>
+	<div class="w1170">
+		<div class="pLeft">
+				<div class="data_list_resources">
+						<div class="data_list_title">
+							<i class="layui-icon layui-icon-app"></i> <span class="head">资源信息</span>
+						</div>
+						<div class="article">
+							<div class="title" th:text="${software.title}"></div>
+					<div class="info">
+						<font th:text="${software.userInformation.userName}"></font>&nbsp;&nbsp;
+						分享于&nbsp;&nbsp;<font
+							th:text="${#strings.substring(software.creationTime,0,19)}"></font>
+						&nbsp;&nbsp;查看次数：&nbsp;<font th:text="${software.browseFrequency}"></font>&nbsp;次
+						&nbsp;&nbsp;所需：<font color="red" th:text="${software.integral}"></font>&nbsp;积分
+					</div>
+
+					<div align="center">
+						<div class="bshare-custom">
+							<div class="bsPromo bsPromo2"></div>
+							<a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博"
+								class="bshare-sinaminiblog"></a><a title="分享到人人网"
+								class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a
+								title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台"
+								class="bshare-more bshare-more-icon more-style-addthis"></a><span
+								class="BSHARE_COUNT bshare-share-count" style="float: none;">0</span>
+						</div>
+						<script type="text/javascript" charset="utf-8"
+							src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
+						<script type="text/javascript" charset="utf-8"
+							src="http://static.bshare.cn/b/bshareC0.js"></script>
+					</div>
+
+					<div class="downloadBtn">
+					        	<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
+								<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
+							</div>
+							<div id="content" class="content" th:utext="${software.resourcesDescribe}"></div>
+						</div>
+				</div>
+				 <!-- 用户评论区 -->
+				<div class="data_list_resources" style="margin-top: 10px">
+					<div class="data_list_title">
+						<i class="layui-icon layui-icon-dialogue"></i> <span class="head">评论信息</span>&nbsp;&nbsp;<font
+							style="color: #999;" ></font>
+					</div>
+					<div  class="userReviews">
+						<textarea id="reviewsInformation" placeholder="请输入评论信息"
+							class="layui-textarea"></textarea>
+						<button class="layui-btn layui-btn-radius  layui-btn-sm"
+							onclick="submitData()">&nbsp;&nbsp;提交评论&nbsp;&nbsp;</button>
+					</div>
+					<div id="userReviewsList" class="userReviewsList"></div>
+					<div id="articlePage" class="articlePage"  align="center"></div>
+				</div>
+		</div>
+		<div class="pRight">
+		    <!--签到处-->
+			<div class="data_list"  th:include="common/signIn::#sI"></div> 
+			<div class="data_list">
+				<div class="data_list_title">
+					<i class="layui-icon layui-icon-fire"></i> <span class="head">热门软件</span>
+				</div>
+				<div class="datas">
+					<ul>
+						<li th:each="softwareBrowseFrequency,iterStat:${application.softwareBrowseFrequencyList}">
+							<em th:text="${iterStat.index}+1" ></em> 
+							<a  style="margin-left: 10px;" target="_blank" th:href="'/user/software/listDetails/'+${softwareBrowseFrequency.id}"
+							th:title="${softwareBrowseFrequency.name}" th:text="${softwareBrowseFrequency.name}"> </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+	</div>
+		
+</body>
+
+</head>

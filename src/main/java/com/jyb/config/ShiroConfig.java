@@ -53,14 +53,19 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/admin/adminLogin.html", "anon");
         
         filterChainDefinitionMap.put("/admin/userInfor/login", "anon");
+        
         filterChainDefinitionMap.put("/user/gameInformation/**", "anon");
         filterChainDefinitionMap.put("/user/userInformation/**", "anon");
         filterChainDefinitionMap.put("/user/userMessage/**", "anon");
         filterChainDefinitionMap.put("/user/downloadRecord/**", "anon");
         filterChainDefinitionMap.put("/user/invalidLink/**", "anon");
         filterChainDefinitionMap.put("/user/userReviews/**", "anon");
+        filterChainDefinitionMap.put("/user/software/**", "anon");
         filterChainDefinitionMap.put("/user/signIn/loadSignIn", "anon");
         
+        
+        
+        filterChainDefinitionMap.put("/userHeadImage/**", "anon");
         filterChainDefinitionMap.put("/gameContentImage/**", "anon");
         filterChainDefinitionMap.put("/gameCoverImage/**", "anon");
        

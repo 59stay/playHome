@@ -73,7 +73,7 @@ var navs = [{
 		{
 			"title" : "软件资源",
 			"icon" : "&#xe631;",
-			"href" : "",
+			"href" : "/admin/softwareResource",
 			"spread" : false
 		},
 		{

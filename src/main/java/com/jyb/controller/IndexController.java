@@ -52,7 +52,19 @@ public class IndexController {
 		mv.setViewName("admin/game/page/gameResource");
 		return mv;
 	}
-
+	
+	/**
+	 * 后台-软件资源
+	 */
+	@RequestMapping("admin/softwareResource")
+	@RequiresPermissions(value={"后台-游戏资源"})
+	private ModelAndView softwareResource() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("admin/software/page/softwareResource");
+		return mv;
+	}
+	
+	
 	/**
 	 * 后台-用户信息
 	 */

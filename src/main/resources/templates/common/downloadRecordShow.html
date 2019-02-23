@@ -2,13 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"></meta>
-<title th:text="${title}+'-Java1234下载'"></title>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/js/jquery.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/  
 $(document).ready(function(){
-		  var downloadType = [[${gameInfo.downloadType}]];
+	      var downloadType;
+	      var largeCategory = [[${resource.largeCategory}]];
+	      if(largeCategory=="A"){
+	    	    downloadType = [[${resource.downloadType}]];
+	      }
+          if(largeCategory=="B"){
+        	    downloadType = [[${resource.downloadType}]];
+          }
+		
 		  if(downloadType=="1"){
 			  $("#tr1").show(); 
 			  $("#tr2").hide();
@@ -24,14 +31,31 @@ $(document).ready(function(){
 <table style="padding: 10px;padding-top: 20px; width: 500px;" >
 <tr  id="tr1" style="display:none;">
    <td style="width: 150px;">百度云盘下载地址：</td>                          
-   <td style="width: 200px;" align="left"><a th:href="${gameInfo.gameDownloadAddress}" target="_blank" th:text="${#strings.length(gameInfo.gameDownloadAddress)>23} ? ${#strings.substring(gameInfo.gameDownloadAddress,0,23)}+'...' : ${gameInfo.gameDownloadAddress}"></a></td>
+   <td style="width: 200px;" align="left" th:if="${resource.largeCategory} eq A">
+     <a  th:href="${resource.gameDownloadAddress}" target="_blank" th:text="${#strings.length(resource.gameDownloadAddress)>23} ? ${#strings.substring(resource.gameDownloadAddress,0,23)}+'...' : ${resource.gameDownloadAddress}"></a>
+   </td>
+   <td style="width: 200px;" align="left" th:if="${resource.largeCategory} eq B">
+     <a  th:href="${resource.downloadAddress}" target="_blank" th:text="${#strings.length(resource.downloadAddress)>23} ? ${#strings.substring(resource.downloadAddress,0,23)}+'...' : ${resource.downloadAddress}"></a>
+   </td>
+   
+   
    <td style="width: 50px;">密码：</td>
-   <td style="width: 50px;"><font color="red" th:text="${gameInfo.linkPwd}"></font></td>
+   <td style="width: 50px;" th:if="${resource.largeCategory} eq A">
+   <font color="red" th:text="${resource.linkPwd}"></font>
+   </td>
+   <td style="width: 50px;" th:if="${resource.largeCategory} eq B">
+   <font color="red" th:text="${resource.linkPwd}"></font>
+   </td>
 </tr>
 
 <tr id="tr2"  style="display:none;">
    <td style="width: 70px;">其他下载地址：</td>
-   <td style="width: 200px;"><a th:href="${gameInfo.gameDownloadAddress}" target="_blank" th:text="${#strings.length(gameInfo.gameDownloadAddress)>23} ? ${#strings.substring(gameInfo.gameDownloadAddress,0,23)}+'...' : ${gameInfo.gameDownloadAddress}"></a></td>
+   <td style="width: 200px;" th:if="${resource.largeCategory} eq A">
+      <a th:href="${resource.gameDownloadAddress}" target="_blank" th:text="${#strings.length(resource.gameDownloadAddress)>23} ? ${#strings.substring(resource.gameDownloadAddress,0,23)}+'...' : ${resource.gameDownloadAddress}"></a>
+   </td>
+   <td style="width: 200px;" th:if="${resource.largeCategory} eq B">
+      <a th:href="${resource.downloadAddress}" target="_blank" th:text="${#strings.length(resource.downloadAddress)>23} ? ${#strings.substring(resource.downloadAddress,0,23)}+'...' : ${resource.downloadAddress}"></a>
+   </td>
 </tr>
 </table>
 

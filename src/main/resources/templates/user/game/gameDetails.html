@@ -90,7 +90,7 @@ function submitData(){
 		layer.msg("请填写评论内容！");
 		return false;
 	}
-	$.post("/user/userReviews/add",{"resourceId":[[${gameInformation.id}]],"resourceName":[[${gameInformation.gameName}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
+	$.post("/user/userReviews/addUserReviews",{"publisherId":[[${gameInformation.userInformation.id}]],"resourceId":[[${gameInformation.id}]],"resourceName":[[${gameInformation.gameName}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
 		if(result.success){
 			$("#reviewsInformation").val("");
 			 window.location.reload();
@@ -115,11 +115,11 @@ function download(){
 						layer.closeAll('dialog');
 						layer.open({
 						  type: 2,
-						  title: '资源下载页面',
+						  title: '资源下载地址',
 						  shadeClose: true,
 						  shade: 0.8,
 						  area: ['600px', '150px'],
-						  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/1' //iframe的url
+						  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/A/1' //iframe的url
 						}); 
 						
 					}, function(){
@@ -135,11 +135,11 @@ function download(){
 										layer.closeAll('dialog');
 										layer.open({
 										  type: 2,
-										  title: '资源下载页面',
+										  title: '资源下载地址',
 										  shadeClose: true,
 										  shade: 0.8,
 										  area: ['550px', '450'],
-										  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/2' //iframe的url
+										  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/A/2' //iframe的url
 										}); 
 									}, function(){
 									  
@@ -154,11 +154,11 @@ function download(){
 													layer.closeAll('dialog');
 													layer.open({
 													  type: 2,
-													  title: '资源下载页面',
+													  title: '资源下载地址',
 													  shadeClose: true,
 													  shade: 0.8,
 													  area: ['550px', '450'],
-													  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/3' //iframe的url
+													  content: '/user/downloadRecord/saveDownloadResources/[[${gameInformation.id}]]/A/3' //iframe的url
 													}); 
 													
 												}, function(){
@@ -187,7 +187,7 @@ function download(){
 		    <!-- 资源信息区 -->
 			<div class="data_list_resources">
 				<div class="data_list_title">
-					<i class="layui-icon layui-icon-app"></i> <span class="head">帖子信息</span>
+					<i class="layui-icon layui-icon-app"></i> <span class="head">资源信息</span>
 				</div>
 				<div class="article">
 					<div class="title" th:text="${gameInformation.gameTitle}"></div>
@@ -199,7 +199,7 @@ function download(){
 						&nbsp;&nbsp;所需：<font color="red"
 							th:text="${gameInformation.integral}"></font>&nbsp;积分
 					</div>
-				<!-- 	<div align="center">
+					<div align="center">
 						<div class="bshare-custom">
 							<div class="bsPromo bsPromo2"></div>
 							<a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博"
@@ -213,15 +213,14 @@ function download(){
 							src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
 						<script type="text/javascript" charset="utf-8"
 							src="http://static.bshare.cn/b/bshareC0.js"></script>
-					</div> -->
+					</div> 
 					<div class="downloadBtn">
-				<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
+			        	<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
 						<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
 						<!-- <button class="layui-btn layui-btn-radius" onclick="vipDownload()"
 							style="background-color: red">&nbsp;&nbsp;VIP免积分下载&nbsp;&nbsp;</button> -->
 					</div>
-					<div id="content" class="content"
-						th:utext="${gameInformation.gameDescribe}"></div>
+					<div id="content" class="content" th:utext="${gameInformation.gameDescribe}"></div>
 				</div>
 			</div>
             <!-- 用户评论区 -->

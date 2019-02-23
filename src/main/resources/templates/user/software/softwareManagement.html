@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title th:text="${title}+'-宅着玩'"></title>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<link rel="stylesheet" href="/static/css/personalCenter.css" />
+<script src="/static/layui/layui.js"></script>
+<script src="/static/js/jquery.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/  
+ $(document).ready(function(){  
+    	  $("#li2").addClass("layui-nav-itemed");
+    	  $("#li2_d2").addClass("layui-this");
+     });   
+layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  table = layui.table;
+		  table.render({
+		     elem: '#softwareListTable'
+		    ,width:960
+		    ,limits:[10,20,30]
+		    ,url:'/user/software/softwareList'
+		    ,cols: [[
+		       {type:'numbers',width:40}
+		      ,{field:'name', width:260, title: '软件名称'}
+		      ,{field:'dataDictionary', width:100, title: '所属类别',templet:formatTypeName}
+		      ,{field:'integral', width:60, title: '积分',align:'center'}
+		      ,{field:'auditStatus', width:120, title: '审核状态',align:'center',templet:formatAuditStatus}
+		      ,{field:'creationTime', width:200, title: '发布日期', sort: true,align:'center'}
+		      ,{field:'action', width:170, title: '操作',align:'center',templet:formatAction}
+		    ]]
+		    ,page: true
+		  });
+		  
+	});
+	
+
+
+function formatTypeName(data){
+	if(data.dataDictionary==null){
+		return "";
+	}else{
+		return data.dataDictionary.dictionaryName;			
+	}
+}
+ 
+function formatAuditStatus(data){
+	if(data.auditStatus==1){
+		return "待审核";
+	}else if(data.auditStatus==2){
+		return "<font color=blue>审核通过</font>";
+	}else if(data.auditStatus==3){
+		return "<a href='#' title='审核未通过原因："+data.reason+"''><font color=red>审核未通过</font></a><br/>";
+	}
+}
+
+function formatAction(data){
+	return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modify("+data.id+")'><i class='layui-icon layui-icon-edit'></i>编辑</button><button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+data.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+}
+
+function modify(id){
+	window.location.href="/personalCenter/toModifySoftware/"+id;
+}
+
+function del(id){
+	layer.confirm('您确定要删除这条记录吗？', {
+      title:"系统提示"
+	  ,btn: ['确定','取消'] //按钮
+	}, function(){
+		layer.closeAll('dialog');
+		$.post("/user/software/delete",{"id":id},function(result){
+			if(result.success){
+				layer.msg("删除成功！");
+				table.reload("softwareListTable",{});
+			}else{
+				layer.msg("删除失败，请联系管理员！");
+			}
+		},"json");
+	}, function(){
+	  
+	});
+}
+
+function search(){
+	var s_name=$("#s_name").val();
+	var s_auditStatus=$("#s_state").val();
+	table.reload("softwareListTable",{
+		page:{
+			curr:1 //重新从第 1 页开始
+		}
+		,where:{
+			name:s_name,
+			auditStatus:s_auditStatus
+		}
+	});
+}
+
+/*]]>*/
+</script>
+
+</head>
+<body >
+	<div class="w1170" th:include="common/head::#head"
+		style="padding-bottom: 10px; overflow: visible;"></div>
+	<div class="w1170">
+		<div style="float: left; width: 200px"
+			th:include="user/personalCenter/leftMenu::#lm"></div>
+		<div style="float: right; width: 970px"
+			th:include="user/software/page/softwareManagementPage::#smPage"></div>
+
+	</div>
+	
+	
+</body>
+</html>

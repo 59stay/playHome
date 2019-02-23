@@ -37,9 +37,9 @@ width: 90px;
 			       {type:'numbers',width:40}
 			      ,{field:'invalidName',  title: '资源名称' ,width:220}
 			      ,{field:'largeCategory',  title: '资源类别' ,width:120 ,templet:formatLargeCategory}
-			      ,{field:'largeCategory',  title: '失效链接类型' ,width:171 ,templet:formatDownloadType}
+			      ,{field:'downloadType',  title: '失效链接类型' ,width:171 ,templet:formatDownloadType}
 			      ,{field:'creationTime', width:200, title: '发布日期', sort: true,align:'center'}
-			      ,{field:'action', width:150, title: '操作',align:'center',templet:formatAction}
+			      ,{field:'action',  title: '操作',align:'center',templet:formatAction}
 			    ]]
 			    ,page: true
 			  });
@@ -49,8 +49,6 @@ width: 90px;
 		if(data.largeCategory=="A"){
 			return "宅游戏";
 		}else if(data.largeCategory=="B"){
-			return "宅电影";
-		}else if(data.largeCategory=="C"){
 			return "宅软件";
 		}else{
 			return "";
@@ -67,7 +65,7 @@ width: 90px;
 		}
 	}
    function formatAction(data){
-		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyLink("+data.id+","+data.downloadType+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
+		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='detail("+data.resourceId+",\""+data.largeCategory+"\")'><i class='layui-icon layui-icon-edit'></i>查看详情</button><button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyLink("+data.id+","+data.downloadType+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
 	}
    
    /**
@@ -82,6 +80,29 @@ width: 90px;
    		  content: '/user/common/modifyShareLink.html?id='+id+'&downloadType='+downloadType//iframe的url
    		});
    }
+   
+   /**
+    * 查看失效资源详情
+    * @param id
+    */
+   function detail(resourceId,largeCategory){
+   if(largeCategory=="A"){
+	 	layer.open({
+	   		  type: 2,
+	   		  title: '资源详细信息',
+	   		  area: ['45%','70%'],
+	   		  content: '/admin/gameInformation/getGameInformation?id='+resourceId
+	   		});  
+	   }
+   if(largeCategory=="B"){
+	 	layer.open({
+	   		  type: 2,
+	   		  title: '资源详细信息',
+	   		  area: ['45%','70%'],
+	   		 content: '/admin/software/getSoftware?id='+resourceId
+	   		});  
+	   } 
+   } 
 
 /*]]>*/
 	

@@ -12,7 +12,6 @@
 </head>
 <body>
 <div style="padding: 20px">
-	<!--  <input type="hidden"  id="download_type" th:value="${downloadType}"> </input> -->
 		<table>
 			<tr id="tr1">
 				<td>分享地址：</td>
@@ -35,6 +34,7 @@
 <script type="text/javascript">
 var id=getQueryVariable("id");
 var downloadType=getQueryVariable("downloadType");
+var largeCategory=getQueryVariable("largeCategory");
  $(document).ready(function(){
 	 if(downloadType==1){
 		 $("#tr1").show();
@@ -46,7 +46,7 @@ var downloadType=getQueryVariable("downloadType");
 });
 
 	function submitData(){
-     var gameDownloadAddress;
+     var downloadAddress;
 	 var download1=$("#download1").val().trim();
 	 var download2=$("#download2").val().trim();
 	 var password=$("#password").val().trim();
@@ -61,24 +61,24 @@ var downloadType=getQueryVariable("downloadType");
 					  $("#password").focus();
 			　　　　　return false; 
 			　　　}
-			gameDownloadAddress = download1;
+			downloadAddress = download1;
 		}else{
 			if(download2=="") { 
 			　　　　  $("#errorInfo").text("请输入其他分享地址！");
 					  $("#download2").focus();
 			　　　　  return false; 
 			　　　} 
-			gameDownloadAddress = download2;
-		}	 
+			downloadAddress = download2;
+		}	
 	    if(id){
-		   $.post("/user/invalidLink/modifyShareLink",{id:id,gameDownloadAddress:gameDownloadAddress,linkPwd:password,downloadType:downloadType},function(result){
+		   $.post("/user/invalidLink/modifyShareLink",{id:id,downloadAddress:downloadAddress,linkPwd:password,downloadType:downloadType},function(result){
 			  if(result.success){
 				  alert("提交成功！");
 				  parent.reloadPage();
 			  }else{
 				  $("#errorInfo").text(result.errorInfo);
 			  }
-		  },"json");
+		  },"json");  
 	   } 
 	}
 	

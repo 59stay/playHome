@@ -12,8 +12,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.Software;
 import com.jyb.lucene.GameIndex;
+import com.jyb.lucene.SoftwareIndex;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.SoftwareService;
 
 @RunWith(SpringRunner.class)	
 @SpringBootTest
@@ -28,7 +31,12 @@ public class PlayHouseApplicationTests {
 	@Autowired
 	private GameInformationService gameInformationService;
 	
-
+	@Autowired
+	private SoftwareIndex softwareIndex;
+	
+	@Autowired
+	private SoftwareService softwareService;
+	
 	@Test
 	public void sendSimpleMail() throws Exception {
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -46,15 +54,22 @@ public class PlayHouseApplicationTests {
     * @return
     */
     @Test
-	public void generateIndex(){
+	public void generateIndex1(){
     	//GameInformation gameInformation = new GameInformation();
     	//gameInformation.setAuditStatus(2);//显示审核通过的
     	//gameInformation.setIsUseful(1);//显示未失效的资源
 		List<GameInformation> gameList=gameInformationService.listAll(null,Sort.Direction.DESC, "gameBrowseFrequency");
-		System.out.println(gameList.size());
 		for(GameInformation game:gameList){
 				gameIndex.addIndex(game);
 		}
 	}
+    
+    @Test
+  	public void generateIndex2(){
+  		List<Software> softwareList=softwareService.listAll(null,Sort.Direction.DESC, "browseFrequency");
+  		for(Software software:softwareList){
+  			softwareIndex.addIndex(software);
+  		}
+  	}
 
 }

@@ -17,9 +17,11 @@ import org.springframework.stereotype.Component;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.FriendshipLink;
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.Software;
 import com.jyb.service.DataDictionaryService;
 import com.jyb.service.FriendshipLinkService;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.SoftwareService;
 
 
 /**
@@ -35,30 +37,46 @@ public class InitSystem implements ServletContextListener,ApplicationContextAwar
 	public static Map<Integer,DataDictionary> dataDictionaryMap = new HashMap<Integer,DataDictionary>();
 	
 	
-		/**
-		 * 加载数据到application缓存中
-		 * @param application
-		 */
+	/**
+	 * 加载数据到application缓存中
+	 * @param application
+	 */
 	public static void loadData(ServletContext application){
 		FriendshipLinkService friendshipLinkService=(FriendshipLinkService) applicationContext.getBean("friendshipLinkService");
 		GameInformationService gameInformationService = (GameInformationService)applicationContext.getBean("gameInformationService");
+		SoftwareService softwareService = (SoftwareService)applicationContext.getBean("softwareService");
 		DataDictionaryService  dataDictionaryService = (DataDictionaryService)applicationContext.getBean("dataDictionaryService");
 		GameInformation gameInfo = new GameInformation();
 		gameInfo.setAuditStatus(2);//显示审核通过的
 		gameInfo.setIsUseful(1);//显示未失效的资源
 		List<GameInformation> gameIndexList = gameInformationService.listPage(gameInfo, 1, 14, Sort.Direction.DESC, "gameCreationTime");
 		List<GameInformation> gameBrowseFrequencyList =  gameInformationService.listPage(gameInfo, 1, 14, Sort.Direction.DESC,"gameBrowseFrequency");
+		
+		Software software = new Software(2,1);
+		List<Software> softwareIndexList = softwareService.listPage(software, 1, 14, Sort.Direction.DESC, "creationTime");
+		List<Software> softwareBrowseFrequencyList =  softwareService.listPage(software, 1, 14, Sort.Direction.DESC,"browseFrequency");
+	
 		List<FriendshipLink> friendshipLinkList=friendshipLinkService.listAll(Sort.Direction.ASC, "id");
-		DataDictionary gameDataDictionary = new DataDictionary();
-		gameDataDictionary.setDictionaryType("A");
-		List<DataDictionary> gameDataDictionaryList = dataDictionaryService.listAll(gameDataDictionary, Sort.Direction.ASC, "dictionarySort");
+		DataDictionary  dataDictionary = new DataDictionary();
+		dataDictionary.setDictionaryType("A");
+		List<DataDictionary> gameDataDictionaryList = dataDictionaryService.listAll(dataDictionary, Sort.Direction.ASC, "dictionarySort");
 		for (DataDictionary gddl : gameDataDictionaryList) {
 			dataDictionaryMap.put(gddl.getId(),gddl);
 		}
+		dataDictionary.setDictionaryType("B");
+		List<DataDictionary> softwareDataDictionaryList = dataDictionaryService.listAll(dataDictionary, Sort.Direction.ASC, "dictionarySort");
+		for (DataDictionary sddl : softwareDataDictionaryList) {
+			dataDictionaryMap.put(sddl.getId(),sddl);
+		}
 		application.setAttribute("gameIndexList", gameIndexList); // 主页游戏信息
-		application.setAttribute("friendshipLinkList", friendshipLinkList); // 所有友情链接
 		application.setAttribute("gameBrowseFrequencyList", gameBrowseFrequencyList); // 最热门游戏链接
 		application.setAttribute("gameDataDictionaryList", gameDataDictionaryList);//游戏分类列表
+		
+		application.setAttribute("softwareIndexList", softwareIndexList); // 主页软件信息
+		application.setAttribute("softwareBrowseFrequencyList", softwareBrowseFrequencyList); // 最热门软件链接
+		application.setAttribute("softwareDataDictionaryList", softwareDataDictionaryList);//软件分类列表
+		
+		application.setAttribute("friendshipLinkList", friendshipLinkList); // 所有友情链接
 		
 	}
 

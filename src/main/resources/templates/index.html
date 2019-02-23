@@ -72,13 +72,31 @@
 						<ul class="imageUl">
 							<li th:each="game:${application.gameIndexList}" class="imageLi"><a target="_blank" th:href="'/user/gameInformation/listDetails/'+${game.id}" th:title="${game.gameName}">
 									<img th:src="${game.gamePicture}"></img>
-									<p th:text="${#strings.length(game.gameName)>9} ? ${#strings.substring(game.gameName,0,9)} : ${game.gameName}"></p>
+									<p th:text="${#strings.length(game.gameName)>8} ? ${#strings.substring(game.gameName,0,8)} : ${game.gameName}"></p>
 							</a></li>
 						</ul>
 					</div>
 				</div>
 	</div>
 
+	<div class="data_list_condition">
+				<div class="data_list_resources">
+					<div class="data_list_title">
+						<i class="layui-icon layui-icon-component"></i> <span class="head">软件资源列表</span>
+						<a style="margin-left:970px;"  href=""><span class="head">更多...</span></a>
+					</div>
+				   <div class="datas imageDatas">
+						<ul class="imageUl">
+							<li th:each="softwareBrowseFrequency:${application.softwareBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${softwareBrowseFrequency.id}" th:title="${softwareBrowseFrequency.name}">
+									<img th:src="${softwareBrowseFrequency.picture}"></img>
+									  <p  th:text="${softwareBrowseFrequency.name}"></p>
+							</a></li>
+						</ul>
+					</div>  
+				</div>
+	</div>
+	
+	
 	<!-- <div class="data_list_condition">
 				<div class="data_list_resources">
 					<div class="data_list_title">
@@ -95,23 +113,6 @@
 					</div> 
 				</div>
 	</div> -->
-
-	<div class="data_list_condition">
-				<div class="data_list_resources">
-					<div class="data_list_title">
-						<i class="layui-icon layui-icon-component"></i> <span class="head">软件资源列表</span>
-						<a style="margin-left:970px;"  href=""><span class="head">更多...</span></a>
-					</div>
-					<!-- <div class="datas imageDatas">
-						<ul class="imageUl">
-							<li th:each="gameBrowseFrequency:${application.gameBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${gameBrowseFrequency.id}" title="毒液">
-									<img th:src="${gameBrowseFrequency.gamePicture}"></img>
-									<p  th:text="${gameBrowseFrequency.gameName}"></p>
-							</a></li>
-						</ul>
-					</div> -->
-				</div>
-	</div>
 </div>
 <!-- 友情链接 -->
 <div class="w1170" th:include="common/link::#link"></div>

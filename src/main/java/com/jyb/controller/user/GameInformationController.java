@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.init.InitSystem;
@@ -31,6 +33,7 @@ import com.jyb.lucene.GameIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
@@ -55,6 +58,7 @@ public class GameInformationController {
 	
 	@Autowired
 	private RedisUtil<GameInformation> redisUtil;
+	
 	
 	
 	@Value("${gameContentImageFilePath}")
@@ -122,7 +126,11 @@ public class GameInformationController {
 		return mv;
 	}
 	
-	
+	/**
+	 * 查看游戏详细信息
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("listDetails/{id}")
 	public ModelAndView listDetails(@PathVariable("id") Integer id){
 		ModelAndView mv = new ModelAndView();
@@ -208,23 +216,26 @@ public class GameInformationController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public ModelAndView addGameInformation(GameInformation gameInfo,HttpSession session){
-		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
-		userInformation.getId();
-		gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
-		gameInfo.setGameDownloadFrequency(0);
-		gameInfo.setGameCreationTime(new Date());
-		gameInfo.setAuditStatus(1);
-		gameInfo.setIsUseful(1);
-		gameInfo.setUserInformation(userInformation);
-		gameInfo.setDataDictionary(gameInfo.getDataDictionary());
-		gameInformationService.save(gameInfo);
-		gameIndex.addIndex(gameInfo);
-		ModelAndView mav=new ModelAndView();
-    	mav.addObject("title", "发布游戏成功页面");
-    	mav.setViewName("user/game/publishGameSuccess");
-		return mav;
+	@ResponseBody
+	@RequestMapping("/addGameInformation")
+	public  Map<String, Object>  addGameInformation(GameInformation gameInfo,HttpSession session){
+		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(gameInfo!=null && gameInfo.getDataDictionary()!=null ){
+			gameInfo.setGameBrowseFrequency(StringUtil.randomInteger());
+			gameInfo.setGameDownloadFrequency(0);
+			gameInfo.setGameCreationTime(new Date());
+			gameInfo.setAuditStatus(1);
+			gameInfo.setIsUseful(1);
+			gameInfo.setUserInformation(userInformation);
+			gameInfo.setDataDictionary(gameInfo.getDataDictionary());
+			gameInformationService.save(gameInfo);
+			gameIndex.addIndex(gameInfo);
+			map.put("success", true);
+		}else{
+			map.put("success", false);
+		}
+		  return map;
 	}
 	
 	
@@ -234,7 +245,9 @@ public class GameInformationController {
 	 * @return
 	 * @throws Exception
 	 */
+	@ResponseBody
 	@RequestMapping("/update")
+	@Transactional
 	public ModelAndView update(GameInformation gameInfo,HttpServletRequest request)throws Exception{
 	    GameInformation gameInformation=gameInformationService.getId(gameInfo.getId());
 	    gameInformation.setGameName(gameInfo.getGameName());
@@ -268,8 +281,8 @@ public class GameInformationController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/userGameList")
-	public Map<String,Object> userGame(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
+	@RequestMapping(value = "/gameList")
+	public Map<String,Object> gameLists(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
 		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
 		s_gameInformation.setUserInformation(userInformation);

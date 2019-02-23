@@ -72,12 +72,11 @@ public class AdminGameInformationController {
 	 * @return
 	 */
 	@RequestMapping(value="getGameInformation")
-	@RequiresPermissions(value={"后台-根据id查找游戏资源信息"})
 	public ModelAndView getGameInformation(String id){
 		ModelAndView mv = new ModelAndView();
 	    GameInformation gameInfo =  gameInformationService.getId(Integer.parseInt(id));
 		mv.addObject("gameInformation",gameInfo);
-    	mv.setViewName("admin/game/page/saveGameResource");
+    	mv.setViewName("admin/game/page/gameDetails");
 		return mv;
 	}
 	

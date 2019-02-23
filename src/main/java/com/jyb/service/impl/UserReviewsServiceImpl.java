@@ -55,6 +55,9 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 					if(userReviews.getResourceId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
 					}
+					if(userReviews.getResourceId() != null){
+						predicate.getExpressions().add(cb.equal(root.get("publisherId"), userReviews.getPublisherId()));
+					}
 					
 					if(StringUtil.isNotEmpty(userReviews.getReviewsContent())){
 						predicate.getExpressions().add(cb.like(root.<String>get("reviewsContent"), "%"+userReviews.getReviewsContent().trim()+"%"));
@@ -90,7 +93,9 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 					if(userReviews.getResourceId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
 					}
-					
+					if(userReviews.getResourceId() != null){
+						predicate.getExpressions().add(cb.equal(root.get("publisherId"), userReviews.getPublisherId()));
+					}
 					if(StringUtil.isNotEmpty(userReviews.getReviewsContent())){
 						predicate.getExpressions().add(cb.like(root.<String>get("reviewsContent"), "%"+userReviews.getReviewsContent().trim()+"%"));
 					}

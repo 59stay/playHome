@@ -1,5 +1,6 @@
 package com.jyb.controller.user;
 
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.jyb.entity.InvalidLink;
 import com.jyb.entity.UserInformation;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.InvalidLinkService;
+import com.jyb.service.SoftwareService;
 import com.jyb.service.UserInformationService;
 
 
@@ -27,7 +29,9 @@ public class PersonalCenterController {
 	
 	@Autowired
 	private UserInformationService userInformationService;
-	
+
+	@Autowired
+	private SoftwareService softwareService;
 	/**
 	 * 个人中心-main页
 	 * @param session
@@ -60,6 +64,17 @@ public class PersonalCenterController {
         return mv;
     }
     
+    /**
+     *  个人中心-用户发布资源信息
+     * @return
+     */
+    @RequestMapping("/toPublishingResources")
+    private ModelAndView  toPublishingResources(){
+       ModelAndView mv  =  new ModelAndView();
+       mv.addObject("title","发布资源信息");
+       mv.setViewName("user/personalCenter/publishingResources");
+       return mv;
+    }
     
     
     /**
@@ -88,6 +103,19 @@ public class PersonalCenterController {
     }
     
     /**
+     * 个人中心-修改软件资源
+     * @return
+     */
+    @RequestMapping("/toModifySoftware/{id}")
+    public ModelAndView toModifySoftware(@PathVariable("id") Integer id){
+    	ModelAndView mav=new ModelAndView();
+    	mav.addObject("title", "修软件资源信息页面");
+    	mav.addObject("software", softwareService.getId(id));
+    	mav.setViewName("user/software/modifySoftware");
+        return mav;
+    } 
+    
+    /**
      * 个人中心-游戏资源管理
      * @return
      */
@@ -98,6 +126,20 @@ public class PersonalCenterController {
     	mav.setViewName("user/game/gameResourceManagement");
         return mav;
     }
+    
+    
+    /**
+     * 个人中心-软件资源管理
+     * @return
+     */
+    @RequestMapping("/toSoftwareManagement")
+    private ModelAndView toSoftwareManagement(){
+    	ModelAndView mav=new ModelAndView();
+    	mav.addObject("title", "软件资源信息管理页面");
+    	mav.setViewName("user/software/softwareManagement");
+        return mav;
+    }
+    
     
     /**
      * 个人中心-失效链接管理
@@ -134,5 +176,7 @@ public class PersonalCenterController {
        mv.setViewName("user/personalCenter/userDownloadRecordManagement");
        return mv;
     }
+    
+    
     
 }

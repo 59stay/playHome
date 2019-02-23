@@ -137,7 +137,7 @@ function submitData(){
 							target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameInfo.id}"
 							th:title="${gameInfo.gameName}"> 
 							<img th:src="${gameInfo.gamePicture}"></img>
-								<p th:text="${#strings.length(gameInfo.gameName)>9} ? ${#strings.substring(gameInfo.gameName,0,9)} : ${gameInfo.gameName}"></p>
+								<p th:text="${#strings.length(gameInfo.gameName)>8} ? ${#strings.substring(gameInfo.gameName,0,8)} : ${gameInfo.gameName}"></p>
 						</a></li>
 
 					</ul>

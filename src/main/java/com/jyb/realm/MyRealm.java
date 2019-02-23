@@ -38,7 +38,7 @@ public class MyRealm extends AuthorizingRealm{
 		UserInformation user=userInformationService.findByUserName(userName);
 		SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
 		Set<String> roles=new HashSet<String>();
-		if(user.getUserRole()==0){
+		if(user.getUserRole()==0){//管理员
 			roles.add("0");
 			info.addStringPermission("后台-首页");
 			info.addStringPermission("后台-游戏资源");
@@ -53,7 +53,6 @@ public class MyRealm extends AuthorizingRealm{
 			/********AdminDataDictionaryController**********/
 			info.addStringPermission("后台-分页查询所有的类别信息");
 			info.addStringPermission("后台-根据id查找类别信息");
-			info.addStringPermission("后台-根据大类别获取类别名称");
 			info.addStringPermission("后台-保存或修改类别信息");
 			info.addStringPermission("后台-删除类别信息");
 			
@@ -64,11 +63,15 @@ public class MyRealm extends AuthorizingRealm{
 			
 			/********AdminGameInformationController**********/
 			info.addStringPermission("后台-分页查询所有的游戏资源");
-			info.addStringPermission("后台-根据id查找游戏资源信息");
 			info.addStringPermission("后台-修改游戏信息");
 			info.addStringPermission("后台-审核通过");
 			info.addStringPermission("后台-审核被驳回");
 			info.addStringPermission("后台-批量删除游戏资源");
+			
+			/********AdminSoftwareController**********/
+			info.addStringPermission("后台-分页查询所有的软件资源");
+			info.addStringPermission("后台-批量删除软件资源");
+			
 			
 			/********AdminInvalidLinkController**********/
 			info.addStringPermission("后台-分页查询所有的失效链接资源");

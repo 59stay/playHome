@@ -70,7 +70,6 @@ public class AdminDataDictionaryController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="getDataDictionaryList")
-	@RequiresPermissions(value={"后台-根据大类别获取类别名称"})
 	public Map<String,Object>  getDataDictionaryList(String dictionaryType){
 		Map<String,Object>   map = new HashMap<String,Object>();
 		List<DataDictionary> dataDictionary =  dataDictionaryService.findByDictionaryType(dictionaryType);

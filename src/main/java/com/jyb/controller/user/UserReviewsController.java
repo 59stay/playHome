@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jyb.entity.GameInformation;
 import com.jyb.entity.InvalidLink;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.specialEntity.Constant;
 
 @Controller
 @RequestMapping("user/userReviews")
@@ -31,10 +33,6 @@ public class UserReviewsController {
 
 	@Autowired
 	private UserReviewsService userReviewsService;
-	
-	@Autowired
-	private GameInformationService gameInformationService;
-	
 	
 	
 	/**
@@ -53,10 +51,10 @@ public class UserReviewsController {
 	}
 	
 	@ResponseBody
-    @PostMapping("/add")
-	public Map<String,Object> addGameInformation(UserReviews userReviews,HttpSession session){
+    @PostMapping("/addUserReviews")
+	public Map<String,Object> addUserReviews(UserReviews userReviews,HttpSession session){
 		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
 		userReviews.setReviewsTime(new Date());
 		userReviews.setUserInformation(userInformation);
 		userReviewsService.save(userReviews);
@@ -77,13 +75,13 @@ public class UserReviewsController {
 	@RequestMapping(value = "/userReviewsList")
 	public Map<String,Object> userReviews(UserReviews s_userReviews,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
-		s_userReviews.setUserInformation(userInformation);
+		UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
+		s_userReviews.setPublisherId(userInformation.getId());
 		List<UserReviews> userReviewsList=userReviewsService.listPage(s_userReviews, page, limit, Direction.DESC, "reviewsTime");
 		Long count=userReviewsService.getCount(s_userReviews);
 		resultMap.put("code", 0);
 		resultMap.put("count", count);
-		resultMap.put("data", userReviewsList);
+		resultMap.put("data", JSONObject.toJSON(userReviewsList));
 		return resultMap;
 	}
 	

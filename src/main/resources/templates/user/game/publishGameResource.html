@@ -36,7 +36,7 @@ width: 90px;
 	      form.on('select(search_type)', function(data) {
 			// console.log(data.elem); //得到select原始DOM对象
 			// console.log(data.value); //得到被选中的值
-			//  console.log(data.othis); //得到美化后的DOM对象
+			// console.log(data.othis); //得到美化后的DOM对象
 			
 	         if (data.value == 1) {
                    $("#addr1").show(); 
@@ -44,18 +44,27 @@ width: 90px;
                    $("#game_download_address1").val("");
 		    	   $("#link_pwd").val(""); 
 			       $("#game_download_address2").val("");
+			       $("#game_download_address1").attr("lay-verify",'required|url');
+			       $("#link_pwd").attr("lay-verify",'required');
+			       $("#game_download_address2").removeAttr("lay-verify");
 				}else if (data.value == 2) {
 				   $("#addr2").show(); 
 				   $("#addr1").hide();
 				   $("#game_download_address1").val("");
 		    	   $("#link_pwd").val(""); 
 			       $("#game_download_address2").val("");
+			       $("#game_download_address2").attr("lay-verify",'required|url');
+			       $("#game_download_address1").removeAttr("lay-verify");
+			       $("#link_pwd").removeAttr("lay-verify");
 			    }else{
 		    	   $("#addr1").hide();
 		    	   $("#addr2").hide();
 		    	   $("#game_download_address1").val("");
 		    	   $("#link_pwd").val(""); 
 			       $("#game_download_address2").val("");
+			       $("#game_download_address1").removeAttr("lay-verify");
+			       $("#game_download_address2").removeAttr("lay-verify");
+			       $("#link_pwd").removeAttr("lay-verify");
 			    }
 
 		});

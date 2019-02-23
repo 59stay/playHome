@@ -1,9 +1,9 @@
 /**
-
+ 
  @Name: layuiSimpleBlog - 极简博客模板
  @Author: xuzhiwen
  @Copyright: layui.com
-
+ 
  */
 
 
@@ -24,6 +24,7 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
 .header .header-down-nav{display: none;}
 
 
+.banner{height: 600px; width: 100%; background: url(../img/banner.jpg) no-repeat; background-size:cover;}
 .banner .cont{position: relative;}
 .banner .title{color: #fff; position: absolute; top: 152px; left: 0;}
 .banner .title h3{font-size: 80px; line-height: 88px;}
@@ -42,6 +43,7 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
 .content .cont .list-item .item{margin-bottom: 80px; overflow: hidden;}
 .content .cont .list-item .item .img img{width: 100%;}
 .content .cont .list-item .item .item-cont{padding-left: 100px;}
+.content .cont .list-item .item .item-cont .go-icon{width: 33px; height: 11px; background: url(../img/jiantou.png) center center no-repeat; display: block; padding:10px 0; margin-top: 16px;}
 .content .cont .list-item .item .item-cont h3{font-size: 24px; margin:20px 0;}
 .content .cont .list-item .item .item-cont h3 .new-icon{width: 36px; height: 18px; line-height: 18px; text-align: center; padding:0; margin: -3px 0 0 10px;}
 .content .cont .list-item .item .item-cont h5{font-size: 12px; color: #ff7f21; margin-bottom: 32px;}
@@ -62,9 +64,9 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
 .content .review-version .form .layui-input-block .layui-btn{width: 100px; height: 40px; line-height: 40px; background: #ff7f21;}
 .content .review-version .list-cont .cont{padding:40px 0 30px 0; border-bottom: 1px solid #e5e5e5;}
 .content .review-version .list-cont .cont:last-child{border-bottom: 0;}
-.content .review-version .list-cont .cont .text{padding-left: 70px; line-height: 22px; color: #333; }
+.content .review-version .list-cont .cont .text{padding-left: 70px; line-height: 22px; color: #333; } 
 .content .review-version .list-cont .cont .text .tit{margin-bottom: 18px;}
-.content .review-version .list-cont .cont .text .data{float: right;}
+.content .review-version .list-cont .cont .text .data{float: right;} 
 
 
 .footer-wrap{border-top: 1px solid #402863;}
@@ -83,8 +85,8 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
 
 
 /*whisper*/
-.whisper-content{padding:5px 0 5px 0;}
- .item-box{background: #f9f9f9; margin-bottom: 20px;}
+.whisper-content{padding:40px 0 100px 0;}
+.whisper-content .item-box{background: #f9f9f9; margin-bottom: 20px;}
 .whisper-content .cont{max-width: 800px; margin:0 auto;}
 .whisper-content .cont .item-box .item{padding:50px 46px 20px 54px;}
 .whisper-content .cont .whisper-list .whisper-title{height: 20px; line-height: 20px; margin-bottom: 20px;}
@@ -109,11 +111,15 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
 /*end-whisper*/
 
 
+
+
+
+
 /*leacots*/
 .leacots-content .review-version{padding:0; border-top: 0;}
 .leacots-content .review-version .form .layui-form-item{clear: both;}
 .leacots-content .item-box{background: transparent;}
-.leacots-content .review-version .form{margin: 20px 0;}
+.leacots-content .review-version .form{margin: 70px 0;}
 .leacots-content .review-version .form textarea{border-color: #402760;}
 .leacots-content .review-version .form .layui-input-block{margin-left: 0;}
 .leacots-content .review-version .banner-img{float: none;  width: 100%;}
@@ -207,7 +213,7 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
   .banner .amount{left: 20px; top: 210px; line-height: 30px;}
   .whisper-content .cont .item{padding:30px;}
   .whisper-content .cont .item-box .item{padding:30px;}
-  .content .review-version .list-cont .cont .text{padding-left:0; line-height: 22px; color: #333; }
+  .content .review-version .list-cont .cont .text{padding-left:0; line-height: 22px; color: #333; } 
   .content .review-version .list-cont .cont .text .tit{line-height: 50px; margin-bottom: 0;}
   .content .review-version .list-cont .cont .text .tit .name{margin-left: 20px;}
   .content .review-version .list-cont .cont .text .ct{margin-top: 20px;}
@@ -235,5 +241,4 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
   .header .header-down-nav li a{font-size: 16px;}
 @media screen and (max-width: 320px){
   .whisper-content .cont .item img{width: 100%;}
-}
 }

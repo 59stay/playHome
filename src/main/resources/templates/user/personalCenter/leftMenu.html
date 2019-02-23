@@ -1,47 +1,25 @@
 <!-- 个人中心-首页右功能菜单 -->
 <meta charset="UTF-8" />
 <div id="lm">
-	<!-- 	<ul class="layui-nav layui-nav-tree layui-inline"  style="margin-right: 10px;">
-	  <li class="layui-nav-item layui-nav-itemed">
-	    <a href="javascript:;">功能菜单</a>
-	    <dl class="layui-nav-child">
-	      <dd><a href="/personalCenter/toReleaseResource">发布资源</a></dd>
-	      <dd><a href="/user/article/toArticleManagePage">资源管理</a></dd>
-	      <dd><a href="/user/article/toUnUsefulArticleManagePage" >失效资源管理<span class="layui-badge" id="unUsefulArticleCount" th:if="${session.unUsefulArticleCount!=0}"  th:text="${session.unUsefulArticleCount}"></span></a></dd>
-	      <dd><a href="/user/comment/toCommentManagePage">评论管理</a></dd>
-	      <dd><a href="/user/userDownload/list/1">已下载资源</a></dd>
-	      <dd><a href="/user/message/list/1">系统消息</a></dd>
-	    </dl>
-	  </li>
-	</ul> -->
 	<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo"
 		style="margin-right: 10px;">
 			<li  class="layui-nav-item" style="font-size: 20px; text-align: center;" > 功能菜单 </li>
 	</ul>
 	<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" 
 		style="margin-right: 10px;">
-		<li id="li1" class="layui-nav-item"><a
-			href="javascript:;">发布资源 </a>
-			<dl  class="layui-nav-child">
-				<dd id="li1_d1"> 
-					 <a href="/personalCenter/toPublishGameResources">游戏资源</a>
-				</dd>
-				<dd id="li1_d2">
-					<a href="javascript:;">电影资源</a>
-				</dd>
-			</dl></li>
+		<li id="li1" class="layui-nav-item"><a href="/personalCenter/toPublishingResources">发布资源</a></li>
 		<li id="li2" class="layui-nav-item"><a href="javascript:;">资源管理</a>
 			<dl class="layui-nav-child">
 				<dd id="li2_d1">
 					<a href="/personalCenter/toGameResourceManagement">游戏管理</a>
 				</dd>
 				<dd id="li2_d2">
-					<a href="">电影管理</a>
+				<a href="/personalCenter/toSoftwareManagement">软件管理</a>
 				</dd>
 			</dl></li>
 	    <li class="layui-nav-item"><a href="/personalCenter/toInvalidLinkManagement">失效链接管理<span style="margin:-10px 6px 0px 5px" class="layui-badge"  th:if="${session.invalidLinkCount!=0}"  th:text="${session.invalidLinkCount}">12</span></a></li>
 		<li class="layui-nav-item"><a href="/personalCenter/toUserReviewsManagement">评论管理</a></li>
 		<li class="layui-nav-item"><a href="/user/downloadRecord/listPage/1">已下载资源</a></li>
-		<li class="layui-nav-item"><a href="">系统消息</a></li>
+		<!-- <li class="layui-nav-item"><a href="">系统消息</a></li> -->
 	</ul>
 </div>

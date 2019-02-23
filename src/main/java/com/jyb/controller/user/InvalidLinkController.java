@@ -16,9 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.InvalidLink;
+import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
+import com.jyb.init.InitSystem;
+import com.jyb.lucene.GameIndex;
+import com.jyb.lucene.SoftwareIndex;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.InvalidLinkService;
+import com.jyb.service.SoftwareService;
+import com.jyb.util.CheckUrlUtil;
+import com.jyb.util.RedisUtil;
 
 @Controller
 @RequestMapping("user/invalidLink")
@@ -29,6 +36,23 @@ public class InvalidLinkController {
 	
 	@Autowired
 	private GameInformationService gameInformationService;
+	
+	@Autowired
+	private SoftwareService softwareService;
+	
+	@Autowired
+	private GameIndex gameIndex;
+	
+	@Autowired
+	private  SoftwareIndex softwareIndex;
+	
+	@Autowired
+	private RedisUtil<GameInformation> redisUtilGame;
+	
+	@Autowired
+	private RedisUtil<Software> redisUtilSoftware;
+	
+	
 	/**
 	 * 根据条件分页查询失效链接资源信息
 	 * @param s_invalidLink
@@ -63,41 +87,37 @@ public class InvalidLinkController {
     public Map<String,Object> modifyShareLink(InvalidLink invalidLink,HttpSession session,HttpServletRequest request)throws Exception{
     	Map<String, Object> resultMap = new HashMap<>();
     	InvalidLink link = invalidLinkService.getId(invalidLink.getId());
-    
-    	if(link.getLargeCategory().equals("A")){//游戏
-    		GameInformation gm = gameInformationService.getId(link.getResourceId());
-    		gm.setGameDownloadAddress(invalidLink.getDownloadAddress());
-    		gm.setLinkPwd(invalidLink.getLinkPwd());
-    		gm.setAuditStatus(2);
-    		gm.setIsUseful(1);
-    		gameInformationService.save(gm);
-    	}else if(link.getLargeCategory().equals("B")){ //电影
-    		
-    	}else{//软件
-    		
-    	}
-    	invalidLinkService.delete(link.getId());
-    	
-    	resultMap.put("success", true);
-    	return resultMap;
-    	/*if(CheckShareLinkEnableUtil.check(invalidLink.getDownload1())){
-    		Article oldArticle=articleService.get(article.getId());
-    		oldArticle.setDownload1(article.getDownload1());
-    		oldArticle.setPassword1(article.getPassword1());
-    		oldArticle.setUseful(true);
-    		articleService.save(oldArticle);
-    		resultMap.put("success", true);
-    		
-    		User user=(User)session.getAttribute("currentUser");
-        	Article s_article=new Article();
-        	s_article.setUseful(false);
-        	s_article.setUser(user);
-        	session.setAttribute("unUsefulArticleCount", articleService.getCount(s_article));
-        	redisUtil.del("article_"+article.getId());
-    	}else{
+    	if(!CheckUrlUtil.checkBDY(invalidLink.getDownloadAddress())&&link.getDownloadType()==1){
     		resultMap.put("success", false);
-    		resultMap.put("errorInfo", "百度云分享链接已经失效 ，请重新发布");
-    	}*/
+    		resultMap.put("errorInfo", "百度云分享链接已经失效 ，请重新修改链接");
+    	}else if(!CheckUrlUtil.checkUrl(invalidLink.getDownloadAddress(), 3000)&&link.getDownloadType()==2){
+    		resultMap.put("success", false);
+    		resultMap.put("errorInfo", "其他分享链接已经失效 ，请重新修改链接");
+    	}else{
+    		if(link.getLargeCategory().equals("A")){//游戏
+        		GameInformation gm = gameInformationService.getId(link.getResourceId());
+        		gm.setGameDownloadAddress(invalidLink.getDownloadAddress());
+        		gm.setLinkPwd(invalidLink.getLinkPwd());
+        		gm.setAuditStatus(2);
+        		gm.setIsUseful(1);
+        		gameInformationService.save(gm);
+        		gameIndex.updateIndex(gm);
+        		redisUtilGame.del("r_game_"+gm.getId());
+        	}
+    		if(link.getLargeCategory().equals("B")){//软件
+        		Software  software =  softwareService.getId(link.getResourceId());
+        		software.setDownloadAddress(invalidLink.getDownloadAddress());
+        		software.setLinkPwd(invalidLink.getLinkPwd());
+        		software.setAuditStatus(2);
+        		software.setIsUseful(1);
+        		softwareService.save(software);
+        		softwareIndex.updateIndex(software);
+        		redisUtilSoftware.del("r_software_"+software.getId());
+        	}
+        	invalidLinkService.delete(link.getId());
+        	resultMap.put("success", true);
+    	}
+    	return resultMap;
     }
 	
 }

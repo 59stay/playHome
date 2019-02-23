@@ -21,11 +21,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jyb.entity.DownloadRecord;
 import com.jyb.entity.GameInformation;
+import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
 import com.jyb.init.InitSystem;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.SoftwareService;
 import com.jyb.service.UserInformationService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.PageUtil;
 
 @Controller
@@ -41,6 +44,9 @@ public class DownloadRecordController {
 	
 	@Autowired
 	private UserInformationService userInformationService;
+	
+	@Autowired
+	private SoftwareService softwareService;
 	
 	/**
 	 *  分页查询用户资源下载信息
@@ -107,37 +113,87 @@ public class DownloadRecordController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/saveDownloadResources/{id}/{type}")
-	public synchronized  ModelAndView saveDownloadResources(@PathVariable("id") Integer id,@PathVariable("type") Integer type,HttpServletRequest request) {
-		UserInformation userInformation=(UserInformation)request.getSession().getAttribute("userInfo");
-		GameInformation gameInfo = gameInformationService.getId(id);
-		UserInformation publisher =  gameInfo.getUserInformation();
+	@RequestMapping("/saveDownloadResources/{id}/{largeCategory}/{type}")
+	@Transactional
+	public synchronized  ModelAndView saveDownloadResources(@PathVariable("id") Integer id,@PathVariable("type") Integer type,@PathVariable("largeCategory") String largeCategory,HttpServletRequest request) {
+		UserInformation userInformation=(UserInformation)request.getSession().getAttribute(Constant.USERINFO);
 		DownloadRecord dr = new DownloadRecord();
+		GameInformation gameInfo=null;
+		UserInformation publisher =null;
+		Software software = null;
 		ModelAndView mav=new ModelAndView();
 		if(type==1){
-	    	mav.addObject("gameInfo", gameInfo);
-	    	mav.setViewName("common/downloadRecordShow");
+			if(largeCategory.equals("A")){
+				 gameInfo = gameInformationService.getId(id);
+				 publisher =  gameInfo.getUserInformation();
+				 mav.addObject("resource", gameInfo);
+		    	 mav.setViewName("common/downloadRecordShow");
+			}
+			if(largeCategory.equals("B")){
+				software = softwareService.getId(id);
+				publisher=software.getUserInformation();
+				mav.addObject("resource", software);
+		    	mav.setViewName("common/downloadRecordShow");
+			}
 		}
 		if(type==2){
-			mav.addObject("gameInfo", gameInfo);
-	    	mav.setViewName("common/downloadRecordShow");
+			if(largeCategory.equals("A")){
+				 gameInfo = gameInformationService.getId(id);
+				 publisher =  gameInfo.getUserInformation();
+				 mav.addObject("resource", gameInfo);
+		    	 mav.setViewName("common/downloadRecordShow");
+			}
+			if(largeCategory.equals("B")){
+				software = softwareService.getId(id);
+				publisher=software.getUserInformation();
+				mav.addObject("resource", software);
+		    	mav.setViewName("common/downloadRecordShow");
+			}
 		}
 		if(type==3){
-			//减去当前登录用户的积分
-			userInformation.setUserIntegral(userInformation.getUserIntegral() - gameInfo.getIntegral());
-			//给当前资源发布者加积分
-			publisher.setUserIntegral(publisher.getUserIntegral()+gameInfo.getIntegral());
+			if(largeCategory.equals("A")){
+				 gameInfo = gameInformationService.getId(id);
+				 publisher =  gameInfo.getUserInformation();
+				//减去当前登录用户的积分
+				userInformation.setUserIntegral(userInformation.getUserIntegral() - gameInfo.getIntegral());
+				//给当前资源发布者加积分
+				publisher.setUserIntegral(publisher.getUserIntegral()+gameInfo.getIntegral());
+				
+			}
+			if(largeCategory.equals("B")){
+				software = softwareService.getId(id);
+				publisher=software.getUserInformation();
+				//减去当前登录用户的积分
+				userInformation.setUserIntegral(userInformation.getUserIntegral() - software.getIntegral());
+				//给当前资源发布者加积分
+				publisher.setUserIntegral(publisher.getUserIntegral()+software.getIntegral());
+				
+			}
 			userInformationService.save(userInformation);
 			userInformationService.save(publisher);
-			dr.setResourceId(id);
-			dr.setLargeCategory(gameInfo.getLargeCategory()); 
-			dr.setResourceName(gameInfo.getGameName());
-			dr.setUserInformation(userInformation);
-			dr.setDownloadDate(new Date());
-			downloadRecordService.save(dr);
-			gameInfo.setGameDownloadFrequency(gameInfo.getGameDownloadFrequency()+1);//增加下载次数
-	    	gameInformationService.save(gameInfo);
-			mav.addObject("gameInfo", gameInfo);
+			if(largeCategory.equals("A")){
+				dr.setResourceId(id);
+				dr.setLargeCategory(gameInfo.getLargeCategory()); 
+				dr.setResourceName(gameInfo.getGameName());
+				dr.setUserInformation(userInformation);
+				dr.setDownloadDate(new Date());
+				downloadRecordService.save(dr);
+			    gameInfo.setGameDownloadFrequency(gameInfo.getGameDownloadFrequency()+1);//增加下载次数
+				gameInformationService.save(gameInfo);
+				mav.addObject("resource", gameInfo);
+			}
+            if(largeCategory.equals("B")){
+            	dr.setResourceId(id);
+				dr.setLargeCategory(software.getLargeCategory()); 
+				dr.setResourceName(software.getName());
+				dr.setUserInformation(userInformation);
+				dr.setDownloadDate(new Date());
+				downloadRecordService.save(dr);
+				software.setDownloadFrequency(software.getDownloadFrequency()+1);//增加下载次数
+				softwareService.save(software);
+				mav.addObject("resource", software);
+			}
+          
 	    	mav.setViewName("common/downloadRecordShow");
 		}
         return mav;

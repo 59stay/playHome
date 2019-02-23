@@ -46,38 +46,33 @@ max-height: 100%;
 		    ,page: true
 		  });
 		  
-		  table.on('toolbar(userMessageTable)', function(obj){
+		  table.on('toolbar(userInvalidLink)', function(obj){
 			    var checkStatus = table.checkStatus(obj.config.id);
 			    var rows = checkStatus.data;
 			    switch(obj.event){
-			      case 'del':
-			    	  if(rows.length==0){
-				        	 layer.msg('请选择需要删除的信息');
-				        	 return;
-				        }else{
-				        	var strIds=[];
-				        	for(var i=0;i<rows.length;i++){
-				    			strIds.push(rows[i].id);
-				    		}
-				    		var ids=strIds.join(",");
-				    		layer.confirm("您确定要删除这<font color=red>"+checkStatus.data.length+"</font>条记录吗？", {
-				  		       title:"系统提示"
-				  		      ,icon: 6
-				  			  ,btn: ['确定','取消'] //按钮
-				  			}, function(){
-				  				//layer.closeAll('dialog');
-				  				$.post("/admin/userMessage/deleteMultiple",{"ids":ids},function(result){
-				  					if(result.success){
-				  						layer.msg("删除成功！");
-				  						table.reload("userInvalidLink",{});
-				  					}else{
-				  						layer.msg("删除失败，请联系管理员！");
-				  					}
-				  				},"json");
-				  			}, function(){
-				  			  
-				  			});
-				        }
+			    case 'detail':
+			        if(rows.length==0){
+			        	 layer.msg('请选择需要查看的信息');
+			        }else if(rows.length>1){
+			        	 layer.msg('只能选一行信息查看呦');	
+			        }else{
+			        	if(rows[0].largeCategory=="A"){
+			        		layer.open({
+					            type:2,
+					            title:"资源详细信息",
+					            area: ['45%','70%'],
+					            content: '/admin/gameInformation/getGameInformation?id='+rows[0].resourceId
+				        	});	
+			        	}
+                        if(rows[0].largeCategory=="B"){
+                        	layer.open({
+    				            type:2,
+    				            title:"资源详细信息",
+    				            area: ['45%','70%'],
+    				            content: '/admin/software/getSoftware?id='+rows[0].resourceId
+    			        	});
+			        	}
+			        }
 			      break;
 			    }
 		});
@@ -97,9 +92,7 @@ max-height: 100%;
 		if(d.largeCategory=="A"){
 			return "宅游戏";	
 		}else if(d.largeCategory=="B"){
-			return "宅电影";			
-		}else if(d.largeCategory=="C"){
-			return "宅软件";
+			return "宅软件";			
 		}else{
 			return "";
 		}
@@ -114,7 +107,7 @@ max-height: 100%;
 
 <script type="text/html" id="toolbar">
   <div class="layui-btn-container">
-    <button class="layui-btn layui-btn-sm" lay-event="del">批量删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="detail">查看详情</button>
   </div>
 </script>
 

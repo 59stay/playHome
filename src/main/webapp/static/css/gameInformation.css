@@ -197,7 +197,7 @@
 
 .data_list .datas ul li{
 	margin-left:15px;
-	line-height: 35px;
+	line-height: 40px;
 	
 }
 
@@ -227,12 +227,12 @@
 .data_list .datas ul li em{
 margin:9px 0px 0px 0px;
 padding: 2px 3px 2px  2px;
-width: 14px;
-height: 14px;
+width: 20px;
+height: 20px;
 float: left;
 font-style: inherit;
 font-size:10px;
-line-height: 14px;
+line-height: 20px;
 background-color: #000000; 
 display: block;
 text-align: center;

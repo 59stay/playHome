@@ -42,6 +42,7 @@ function showModifyPassword(){
 }
 
 
+
 /**
  * 获取父页面传给子页面的值
  * @param variable
@@ -62,6 +63,14 @@ function getQueryVariable(variable){
 function reloadPage(){
 	window.location.reload();
 }
+
+/**
+ * 返回首页
+ */
+function cancel(){
+   window.location.href = "/personalCenter/toMain";
+}
+
 
 
 /**图片等比例缩放*/

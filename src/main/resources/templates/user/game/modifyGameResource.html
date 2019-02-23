@@ -24,7 +24,7 @@ width: 90px;
 			  var downloadType = [[${gameInformation.downloadType}]];
 			  var gameDownloadAddress = [[${gameInformation.gameDownloadAddress}]];
 			  var linkPwd = [[${gameInformation.linkPwd}]];
-			  $("#points").val([[${gameInformation.integral}]]);
+			  $("#integral").val([[${gameInformation.integral}]]);
 			  $("#download_type").val(downloadType);
 			  if(downloadType=="1"){
 				  $("#addr1").show(); 
@@ -34,7 +34,6 @@ width: 90px;
 				  $("#addr2").show(); 
 	              $("#game_download_address2").val(gameDownloadAddress); 
 			  }
-				  
 	    });
 
 	layui.use(['element','form','layedit','upload'], function(){
@@ -45,7 +44,7 @@ width: 90px;
 		  
 		  //普通图片上传
 		  var uploadInst = upload.render({
-		     elem: '#upload_Game_Btn'
+		     elem: '#upload_btn'
 		    ,url: '/user/gameInformation/uploadCoverImage'
 		    ,size: 60 //限制文件大小，单位 KB
 		    ,before: function(obj){
@@ -86,35 +85,76 @@ width: 90px;
 				//  console.log(data.othis); //得到美化后的DOM对象
 				
 		         if (data.value == 1) {
-	                   $("#addr1").show(); 
-	                   $("#addr2").hide();
-	                   $("#game_download_address1").val("");
-			    	   $("#link_pwd").val(""); 
-				       $("#game_download_address2").val("");
-					}else if (data.value == 2) {
-					   $("#addr2").show(); 
-					   $("#addr1").hide();
-					   $("#game_download_address1").val("");
-			    	   $("#link_pwd").val(""); 
-				       $("#game_download_address2").val("");
-				    }else{
-			    	   $("#addr1").hide();
-			    	   $("#addr2").hide();
-			    	   $("#game_download_address1").val("");
-			    	   $("#link_pwd").val(""); 
-				       $("#game_download_address2").val("");
-				    }
+                   $("#addr1").show(); 
+                   $("#addr2").hide();
+                   $("#game_download_address1").val("");
+		    	   $("#link_pwd").val(""); 
+			       $("#game_download_address2").val("");
+			       $("#game_download_address1").attr("lay-verify",'required|url');
+			       $("#link_pwd").attr("lay-verify",'required');
+			       $("#game_download_address2").removeAttr("lay-verify");
+				}else if (data.value == 2) {
+				   $("#addr2").show(); 
+				   $("#addr1").hide();
+				   $("#game_download_address1").val("");
+		    	   $("#link_pwd").val(""); 
+			       $("#game_download_address2").val("");
+			       $("#game_download_address2").attr("lay-verify",'required|url');
+			       $("#game_download_address1").removeAttr("lay-verify");
+			       $("#link_pwd").removeAttr("lay-verify");
+			    }else{
+		    	   $("#addr1").hide();
+		    	   $("#addr2").hide();
+		    	   $("#game_download_address1").val("");
+		    	   $("#link_pwd").val(""); 
+			       $("#game_download_address2").val("");
+			       $("#game_download_address1").removeAttr("lay-verify");
+			       $("#game_download_address2").removeAttr("lay-verify");
+			       $("#link_pwd").removeAttr("lay-verify");
+			    }
 
 			});
 		  //监听提交
-		  form.on('submit(game_submit)', function(data){
-			  var content=layedit.getText(index);
-			  if(content==""){
-				  layer.msg("请输入资源描述！");
-				  return false;
-			  }
-			$("#content").val(content);
-		    return true;
+		  form.on('submit(submit_data)', function(data){
+			    var game_id =  $("#game_id").val(); 
+	 		    var game_picture = $("#game_picture").val();
+	 		 	var game_name = $("#game_name").val();
+	 			var game_title = $("#game_title").val();
+	 			var integral = $("#integral").val();
+	 			var s_large_category = $("#s_large_category").val();
+	 			var s_small_category = $("#s_small_category").val();
+	 			var download_type = $("#download_type").val();
+	 			var addr1 = $("#game_download_address1").val();
+	 			var link_pwd = $("#link_pwd").val();
+	 			var addr2 = $("#game_download_address2").val();
+			    var content=layedit.getText(index);
+			    var download_address;
+	 			if(game_picture==""){
+	 				layer.msg("请上传封面！");
+	 				return false;
+	 			}
+	 			if(download_type=="1"){
+	 				game_download_address = addr1;
+			    }else {
+			    	game_download_address = addr2;
+			    }
+			    
+	 			if (content == "<br>") {
+	 				layer.msg("请输入资源描述！");
+	 				return false;
+	 			}
+			    $("#content").val(content);
+			    
+			    $.post("/user/gameInformation/update",{id:game_id,gamePicture:game_picture,gameName:game_name,gameTitle:game_title,integral:integral,largeCategory:s_large_category,'dataDictionary.id':s_small_category,downloadType:download_type,gameDownloadAddress:game_download_address,linkPwd:link_pwd,gameDescribe:content},function(result){
+		 	  		  if(result.success){
+		 	  			  alert("修改资源成功！");
+		 	  			  window.location.href="/personalCenter/toSoftwareManagement";
+		 	  		  }
+	 	            },"json").error(function(){
+	 				  alert('修改资源失败,请联系客服(QQ:166768601)');
+	 		    }); 
+			    
+		        return false;
 		  });
 	   });
 	 

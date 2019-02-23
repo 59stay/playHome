@@ -51,15 +51,13 @@ function formatLargeCategory(data){
 	if(data.largeCategory=="A"){
 		return "宅游戏";
 	}else if(data.largeCategory=="B"){
-		return "宅电影";
-	}else if(data.largeCategory=="C"){
 		return "宅软件";
 	}else{
 		return "";
 	}
 }
 function formatAction(data){
-	return "<button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+data.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
+	return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='detail("+data.resourceId+",\""+data.largeCategory+"\")'><i class='layui-icon layui-icon-edit'></i>查看</button><button class='layui-btn layui-btn-warm layui-btn-xs' onclick='del("+data.id+")'><i class='layui-icon layui-icon-delete' ></i>删除</button>";
 }
 
 function del(id){
@@ -81,6 +79,24 @@ function del(id){
 	});
 }
 
+function detail(resourceId,largeCategory){
+if(largeCategory=="A"){
+	 	layer.open({
+	   		  type: 2,
+	   		  title: '资源详细信息',
+	   		  area: ['45%','70%'],
+	   		  content: '/admin/gameInformation/getGameInformation?id='+resourceId
+	   		});  
+	   }
+if(largeCategory=="B"){
+	 	layer.open({
+	   		  type: 2,
+	   		  title: '资源详细信息',
+	   		  area: ['45%','70%'],
+	   		 content: '/admin/software/getSoftware?id='+resourceId
+	   		});  
+	   } 
+} 
 
 /*]]>*/
 	

@@ -22,10 +22,10 @@ layui.use(['element','form','table'], function(){
 		     elem: '#gameListTable'
 		    ,width:960
 		    ,limits:[10,20,30]
-		    ,url:'/user/gameInformation/userGameList'
+		    ,url:'/user/gameInformation/gameList'
 		    ,cols: [[
 		       {type:'numbers',width:40}
-		      ,{field:'gameName', width:260, title: '游戏名称',templet:formatName}
+		      ,{field:'gameName', width:260, title: '游戏名称'}
 		      ,{field:'dataDictionary', width:100, title: '所属类别',templet:formatGameTypeName}
 		      ,{field:'integral', width:60, title: '积分',align:'center'}
 		      ,{field:'auditStatus', width:120, title: '审核状态',align:'center',templet:formatAuditStatus}
@@ -37,13 +37,7 @@ layui.use(['element','form','table'], function(){
 		  
 	});
 	
-function formatName(data){
-	if(data.dataDictionary==2){//2审核通过
-		return data.gameName;
-	}else{
-		return data.gameName;
-	}
-}
+ 
 
 
 function formatGameTypeName(data){

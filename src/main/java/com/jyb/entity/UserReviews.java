@@ -37,6 +37,8 @@ public class UserReviews {
 	
 	private Integer resourceId;  //资源Id
 	
+	private Integer publisherId; //资源发布者Id
+	
 	@Column(length=30)
 	private String largeCategory;  //大类别
 	
@@ -101,6 +103,14 @@ public class UserReviews {
 
 	public void setResourceId(Integer resourceId) {
 		this.resourceId = resourceId;
+	}
+
+	public Integer getPublisherId() {
+		return publisherId;
+	}
+
+	public void setPublisherId(Integer publisherId) {
+		this.publisherId = publisherId;
 	}
 
 	 
