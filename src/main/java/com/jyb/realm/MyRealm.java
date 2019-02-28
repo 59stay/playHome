@@ -94,6 +94,12 @@ public class MyRealm extends AuthorizingRealm{
 			info.addStringPermission("后台-分页查询所有评论信息"); 
 			info.addStringPermission("后台-删除评论信息"); 
 			info.addStringPermission("后台-安全退出");
+			
+			/********AdminTimerController**********/
+			info.addStringPermission("后台-查询所有的定时任务信息");
+			info.addStringPermission("后台-保存定时器信息"); 
+			info.addStringPermission("后台-开启定时器信息");
+			info.addStringPermission("后台-关闭定时器信息"); 
 		}
 		info.setRoles(roles);
 		return info;

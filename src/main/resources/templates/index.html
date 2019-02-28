@@ -22,7 +22,7 @@
 	  var carousel = layui.carousel,form = layui.form;
 	  //常规轮播
 	  carousel.render({
-	    elem: '#test1'
+	     elem: '#test1'
 	    ,arrow: 'always'
 	    ,width: '1170px'
 	    ,height: '300px'
@@ -39,25 +39,20 @@
 <div class="w1170" style="padding-bottom: 10px; overflow: visible;" th:include="common/head::#head"></div>
 <!-- 滚动条 -->
 <div class="w1170">
-	<div class="layui-carousel" id="test1" lay-filter="test1"
-		  lay-anim="" lay-indicator="inside" lay-arrow="always">
+	<div class="layui-carousel" id="test1" lay-filter="test1" lay-anim="" lay-indicator="inside" lay-arrow="always">
 		<div carousel-item="">
-			<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="生化危机2"></img></div></a>
-		  	<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="生化危机2"></img></div></a>
-			<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="生化危机2"></img></div></a>
+			<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="1111"></img></div></a>
+		  	<a href="/user/gameInformation/index" ><div class="layui-this"><img style="width:1170px;" src="/static/images/生化危机2.jpg" alt="222"></img></div></a>
 		  
 		</div>
-		<div class="layui-carousel-ind">
+		<!-- <div class="layui-carousel-ind" >
 			<ul>
 				<li class="layui-this"></li>
 				<li class=""></li>
-				<li class=""></li>
-				<li class=""></li>
-				<li class=""></li>
 			</ul>
-		</div>
-		<button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
-		<button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+		</div> 
+		 <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+		<button class="layui-icon layui-carousel-arrow" lay-type="add"></button> -->
 	</div>
 </div>
 <!-- 资源列表区 -->
@@ -83,13 +78,13 @@
 				<div class="data_list_resources">
 					<div class="data_list_title">
 						<i class="layui-icon layui-icon-component"></i> <span class="head">软件资源列表</span>
-						<a style="margin-left:970px;"  href=""><span class="head">更多...</span></a>
+						<a style="margin-left:970px;"  href="/user/software/index"><span class="head">更多...</span></a>
 					</div>
 				   <div class="datas imageDatas">
 						<ul class="imageUl">
-							<li th:each="softwareBrowseFrequency:${application.softwareBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/gameInformation/listDetails/'+${softwareBrowseFrequency.id}" th:title="${softwareBrowseFrequency.name}">
-									<img th:src="${softwareBrowseFrequency.picture}"></img>
-									  <p  th:text="${softwareBrowseFrequency.name}"></p>
+							<li th:each="software:${application.softwareBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/software/listDetails/'+${software.id}" th:title="${software.name}">
+									<img th:src="${software.picture}"></img>
+									  <p th:text="${#strings.length(software.name)>8} ? ${#strings.substring(software.name,0,8)} : ${software.name}"></p>
 							</a></li>
 						</ul>
 					</div>  

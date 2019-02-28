@@ -8,12 +8,6 @@
      overflow:auto;
  }
 
-.layui-table img {
-width: auto;
-height: auto;
-max-width: 100% !important;
-max-height: 100%;
-}
 .layui-table-tool-self{
 display: none;
 }
@@ -58,12 +52,12 @@ display: none;
 		      ,{field:'browseFrequency',  title: '浏览次数',sort: true,align:'center'}
 		    /*   ,{field:'downloadAddress', width:150, title: '资源下载地址',align:'center'}
 		      ,{field:'linkPwd', width:100, title: '资源密码',align:'center'}
-		      ,{field:'downloadType', width:150, title: '资源地址类别',align:'center',templet:formatDownloadType}
-		      ,{field:'dataDictionary', width:100, title: '类别',align:'center',templet:formatTypeName} */
+		      ,{field:'downloadType', width:150, title: '资源地址类别',align:'center',templet:formatDownloadType}*/
+		      ,{field:'dataDictionary', width:100, title: '类别',align:'center',templet:formatTypeName} 
 		      ,{field:'auditStatus',   title: '审核状态',align:'center',templet:formatAuditStatus}
 		      ,{field:'reason',  title: '审核未通过原因',align:'center'}
 		      ,{field:'auditDate',   title: '审核日期',align:'center'}
-		      ,{field:'useful', title:'链接是否有效', align:'center', width:150,templet:formatIsUseful}
+		      ,{field:'isUseful', title:'链接是否有效', align:'center',sort: true, width:150,templet:formatIsUseful}
 		      ,{field:'integral',   title: '积分',align:'center'}
 		      ,{field:'userInformation',   title: '发布人',align:'center',templet:formatUserName}
 		      ,{field:'creationTime',   title: '创建时间',align:'center'}
@@ -147,7 +141,7 @@ display: none;
 	}
 	
 	function formatIsUseful(d){
-		    if(d.useful){
+		    if(d.isUseful==1){
 		    	return "是";
 		    }else{
 		    	return "否";
@@ -193,8 +187,9 @@ display: none;
 						 var index = parent.layer.getFrameIndex(window.name); 
 					 	 if(result.success){
 					 		 layer.msg("审核已通过");
-							 parent.location.reload(); //刷新父页面
+							// parent.location.reload(); //刷新父页面
 							 parent.layer.close(index); //当你在iframe页面关闭自身时
+							 table.reload("softwareTable",{});
 						
 						 }
 					},"json"); 
@@ -211,8 +206,9 @@ display: none;
 						 var index = parent.layer.getFrameIndex(window.name); 
 					 	 if(result.success){
 					 		 layer.msg("审核已驳回");
-							 parent.location.reload(); //刷新父页面
+							// parent.location.reload(); //刷新父页面
 							 parent.layer.close(index); //当你在iframe页面关闭自身时
+							 table.reload("softwareTable",{});
 						
 						 }
 					},"json"); 

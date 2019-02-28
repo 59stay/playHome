@@ -7,7 +7,7 @@
     	<div class="UserDownLoad" th:each="userDownLoad:${userDownLoadList}">
     		<span th:text="'【'+${#dates.format(userDownLoad.downloadDate,'yyyy-MM-dd HH:mm')}+'】 '"></span>
     		&nbsp;下载了&nbsp;
-    		<a th:href="'/user/gameInformation/listDetails/'+${userDownLoad.userInformation.id}" target="_blank" th:title="${userDownLoad.resourceName}" th:text="${userDownLoad.resourceName}"></a>
+    		 <a style="color: red;" th:title="${userDownLoad.resourceName}" th:text="${userDownLoad.resourceName}" href="javascript:;"   th:onclick="'javascript:detail('+${userDownLoad.isNotExist}+','+${userDownLoad.resourceId}+',\''+${userDownLoad.largeCategory}+'\')'"></a> 
     	</div>
 		<div align="center" th:utext="${pageCode}" style="padding-top: 20px">
 		</div>

@@ -154,7 +154,7 @@ width: 90px;
 					 		    	$.post("/user/gameInformation/addGameInformation",{gamePicture:picture,gameName:name,gameTitle:title,integral:integral,largeCategory:s_large_category,'dataDictionary.id':s_small_category,downloadType:download_type,gameDownloadAddress:download_address,linkPwd:link_pwd,gameDescribe:content},function(result){
 							 	  		  if(result.success){
 							 	  			  alert("发布资源成功！");
-							 	  			  window.location.href="/personalCenter/gameResourceManagement";
+							 	  			  window.location.href="/personalCenter/toGameResourceManagement";
 							 	  		  }
 						 	            },"json").error(function(){
 						 				  alert('发布资源失败,请联系客服(QQ:166768601)');

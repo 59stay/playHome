@@ -3,7 +3,7 @@ function showLogin(){
 	layer.open({
 	  type: 2,  //layer提供5种层类型，可传入的值有：0（信息框，默认）、1（页面层）、2（ifream层）、3（加载层）、4（tips层）若你采用layer.open({type: 1})方式调用，则type为必填项（信息框除外）
 	  title: '用户登录',
-	  area: ['300px', '400px'],
+	  area: ['340px', '360px'],
 	  content: '/user/userLogin.html' //iframe的url
 	}); 
 }
@@ -13,7 +13,7 @@ function showRegister(){
 	layer.open({
 		  type: 2,
 		  title: '用户注册',
-		  area: ['400px', '560px'],
+		  area: ['400px', '430px'],
 		  content: '/user/userRegister.html' //iframe的url
 		}); 
 }
@@ -41,6 +41,24 @@ function showModifyPassword(){
 		}); 
 }
 
+/**分享规则*/
+function sharingRule(){
+	layer.open({
+		  type: 2,
+		  title: '分享规则',
+		  area: ['400px', '400px'],
+		  content: '/user/sharingRule.html' //iframe的url
+		}); 
+}
+/**发布资源规范*/
+function standard(){
+	layer.open({
+		  type: 2,
+		  title: '发布资源规范',
+		  area: ['330px', '280px'],
+		  content: '/user/standard.html' //iframe的url
+		}); 
+}
 
 
 /**
@@ -65,10 +83,10 @@ function reloadPage(){
 }
 
 /**
- * 返回首页
+ * 返回资源展示页面
  */
 function cancel(){
-   window.location.href = "/personalCenter/toMain";
+	 window.location.href="/personalCenter/toGameResourceManagement";
 }
 
 

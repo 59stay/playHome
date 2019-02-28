@@ -27,7 +27,7 @@
       			<div class="layui-form-item">
 				    <label class="layui-form-label">标题：</label>
 				    <div class="layui-input-block">
-				      <input type="text" id="game_title" name="gameTitle" lay-verify="title" autocomplete="off" th:value="${gameInformation.gameTitle}" placeholder="请输入游戏标题" class="layui-input"  maxlength="50"/>
+				      <input type="text" id="game_title" name="gameTitle" lay-verify="required" autocomplete="off" th:value="${gameInformation.gameTitle}" placeholder="请输入游戏标题" class="layui-input"  maxlength="50"/>
 				    </div>
 				 </div>
 
@@ -88,13 +88,13 @@
 					<label class="layui-form-label">分享地址：</label>
 					<div class="layui-input-inline" style="width: 600px">
 						<input type="text" id="game_download_address1"
-							name="gameDownloadAddress" autocomplete="off" lay-verify="required" 
+							name="gameDownloadAddress" autocomplete="off"  
 							placeholder="请输入百度云分享地址" class="layui-input" maxlength="350" />
 					</div>
 					<div class="layui-input-inline" style="width: 100px">
 						<input type="text" id="link_pwd" name="linkPwd"
 							 autocomplete="off" placeholder="请输入密码"
-							class="layui-input" maxlength="4" lay-verify="required" 
+							class="layui-input" maxlength="4"  
 							onKeyUp="value=value.replace(/[\W]/g,'')" />
 					</div>
 				</div>
@@ -102,7 +102,7 @@
 				<div class="layui-form-item" id="addr2" style="display: none;">
 					<label class="layui-form-label">分享地址：</label>
 					<div class="layui-input-block">
-						<input type="text" id="game_download_address2" name="gameDownloadAddress" autocomplete="off" lay-verify="required" 
+						<input type="text" id="game_download_address2" name="gameDownloadAddress" autocomplete="off" 
 							placeholder="请输入其他分享地址" class="layui-input" maxlength="350" />
 					</div>
 				</div>

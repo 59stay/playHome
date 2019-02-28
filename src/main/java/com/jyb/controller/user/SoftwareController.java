@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
+import com.jyb.entity.DownloadRecord;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
@@ -31,6 +34,8 @@ import com.jyb.service.SoftwareService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
+import com.jyb.util.CookiesUtil;
+import com.jyb.util.IpUtil;
 import com.jyb.util.PageUtil;
 import com.jyb.util.RedisUtil;
 import com.jyb.util.StringUtil;
@@ -192,6 +197,14 @@ public class SoftwareController {
 	    	software.setAuditStatus(1);	
 	    }
 	    softwareService.save(software);
+	    List<UserReviews> userReviewsList = userReviewsService.ReviewsList(u_software.getId(),"B");
+	    for (UserReviews ur : userReviewsList) {
+	    	if(!u_software.getName().equals(ur.getResourceName())){
+	    		ur.setResourceName(u_software.getName());
+		    	userReviewsService.save(ur);
+	    	}
+		}
+	    
 	    InitSystem.loadData(request.getServletContext());
 	    softwareIndex.updateIndex(software);
 	    redisUtil.del("r_software_"+software.getId());
@@ -259,7 +272,11 @@ public class SoftwareController {
 		Map<String, Object> resultMap = new HashMap<>();
 		softwareService.delete(id);//删除资源信息
 		userReviewsService.deleteUserReviews(id,"B");//删除资源信息评论
-		downloadRecordService.deleteDownloadRecord(id, "B");//删除下载的资源信息
+		DownloadRecord downloadRecord = downloadRecordService.getDownloadedRecord(id,"B");
+		if(downloadRecord!=null){
+			downloadRecord.setIsNotExist(2);//下载记录状态改成已删除
+			downloadRecordService.save(downloadRecord);
+		}
 		InitSystem.loadData(request.getServletContext());
 		softwareIndex.deleteIndex(String.valueOf(id));
 		redisUtil.del("r_software_"+id);
@@ -267,5 +284,33 @@ public class SoftwareController {
 		return resultMap;
 	}
 
-	
+	/**
+	 * 增加查看次数每次加1
+	 * @param id
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/updateSoftwareBrowseFrequency")
+	public void updateSoftwareBrowseFrequency(Integer id,HttpServletRequest request,HttpServletResponse response)throws Exception{
+		Cookie ck1 = CookiesUtil.getCookieByName(request, "ipAddr");
+		Cookie ck2 = CookiesUtil.getCookieByName(request, "softwareId");
+		Software software = softwareService.getId(id);
+		if(ck1!=null && ck2!=null ){
+			String ipAddr = ck1.getValue();
+			String softwareId = ck2.getValue();
+			if(!ipAddr.equals(IpUtil.getIpAddr(request))&&!softwareId.equals(id.toString())){
+				software.setBrowseFrequency(software.getBrowseFrequency()+1);
+				softwareService.save(software);
+				redisUtil.del("r_software_"+software.getId());
+				InitSystem.loadData(request.getServletContext());
+		    }
+		}else{
+			software.setBrowseFrequency(software.getBrowseFrequency()+1);
+			softwareService.save(software);
+			redisUtil.del("r_software_"+software.getId());
+			InitSystem.loadData(request.getServletContext());
+			CookiesUtil.setCookie(response, "ipAddr", IpUtil.getIpAddr(request),15);
+			CookiesUtil.setCookie(response, "softwareId",id.toString(),15);
+		}
+	}
 }

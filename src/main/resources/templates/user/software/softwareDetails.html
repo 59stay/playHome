@@ -10,6 +10,28 @@
 <script src="/static/js/common.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/
+    $(document).ready(function(){
+	 $.post("/user/signIn/loadSignIn",{},function(result){   
+		 if(result.success){
+			 if(result.alreadySignI!=null){
+				 $("#sign_in_div").empty();
+				 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
+			 }else{
+				 $("#sign_in_div").empty();
+				 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+					 
+			 }
+		 }else{
+			 $("#sign_in_div").empty();
+			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+		 }
+	},"json"); 
+	//增加查看次数
+	$.post("/user/software/updateSoftwareBrowseFrequency",{"id":[[${software.id}]]},function(result){});
+}); 
+        
+           
+           
 layui.use([ 'element','laypage','form' ], function() {
 	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 	  var $ = layui.jquery; // 使用jquery
@@ -46,26 +68,6 @@ layui.use([ 'element','laypage','form' ], function() {
 	  });
 });
 
- $(document).ready(function(){
-	 $.post("/user/signIn/loadSignIn",{},function(result){   
-		 if(result.success){
-			 if(result.alreadySignI!=null){
-				 $("#sign_in_div").empty();
-				 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
-			 }else{
-				 $("#sign_in_div").empty();
-				 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
-					 
-			 }
-		 }else{
-			 $("#sign_in_div").empty();
-			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
-		 }
-	},"json"); 
-	//增加查看次数
-	//$.post("/user/gameInformation/updateGameBrowseFrequency",{"id":[[${software.id}]]},function(result){});
-	 
-}); 
 
 function signIn(){
 	if([[${session.userInfo}]]==null){//未登录
@@ -80,18 +82,18 @@ function signIn(){
 }
 
 function submitData(){
-	var userReviews=$("#reviewsInformation").val();
+	var reviewsContent=$("#reviewsContent").val();
 	if([[${session.userInfo}]]==null){//未登录
 		layer.msg("登录后才能评论哟！");
 		return;
 	}
-	if(userReviews==""){
+	if(reviewsContent==""){
 		layer.msg("请填写评论内容！");
 		return false;
 	}
-	$.post("/user/userReviews/add",{"resourceId":[[${software.id}]],"resourceName":[[${software.name}]],"reviewsContent":userReviews,"largeCategory":[[${software.largeCategory}]]},function(result){
+	$.post("/user/userReviews/addUserReviews",{"resourceId":[[${software.id}]],"resourceName":[[${software.name}]],"reviewsContent":reviewsContent,"largeCategory":[[${software.largeCategory}]]},function(result){
 		if(result.success){
-			$("#reviewsInformation").val("");
+			$("#reviewsContent").val("");
 			 window.location.reload();
 			//layer.msg("评论成功，稍后显示！");
 		}
@@ -196,7 +198,7 @@ function download(){
 						&nbsp;&nbsp;所需：<font color="red" th:text="${software.integral}"></font>&nbsp;积分
 					</div>
 
-					<div align="center">
+				<!-- 	<div align="center">
 						<div class="bshare-custom">
 							<div class="bsPromo bsPromo2"></div>
 							<a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博"
@@ -204,13 +206,13 @@ function download(){
 								class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a
 								title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台"
 								class="bshare-more bshare-more-icon more-style-addthis"></a><span
-								class="BSHARE_COUNT bshare-share-count" style="float: none;">0</span>
+								class="BSHARE_COUNT bshare-share-count" style="float: none;">1</span>
 						</div>
 						<script type="text/javascript" charset="utf-8"
 							src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
 						<script type="text/javascript" charset="utf-8"
 							src="http://static.bshare.cn/b/bshareC0.js"></script>
-					</div>
+					</div> -->
 
 					<div class="downloadBtn">
 					        	<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
@@ -226,7 +228,7 @@ function download(){
 							style="color: #999;" ></font>
 					</div>
 					<div  class="userReviews">
-						<textarea id="reviewsInformation" placeholder="请输入评论信息"
+						<textarea id="reviewsContent" placeholder="请输入评论信息"
 							class="layui-textarea"></textarea>
 						<button class="layui-btn layui-btn-radius  layui-btn-sm"
 							onclick="submitData()">&nbsp;&nbsp;提交评论&nbsp;&nbsp;</button>

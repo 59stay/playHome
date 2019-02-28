@@ -63,7 +63,7 @@
                 <div class="item-box">
                     <div class="review-version">
                         <div class="form-box">
-                            <img class="banner-img" src="/static/images/liuyan.jpg"> </img>
+                            <img class="banner-img" src="/static/images/ggl.png"> </img>
                             <div class="form">
                                 <form class="layui-form" action="">
                                     <div class="layui-form-item layui-form-text">
@@ -85,7 +85,7 @@
                         <div class="list-cont">
                             <div th:each="userMessage:${userMessageList}" class="cont">
                                 <div class="img">
-                                    <img style="width:50px; height:60px;" class="layui-nav-img" th:src="${userMessage.userInformation.userHead}" alt="用户头像"></img>
+                                    <img class="layui-nav-img" th:src="${userMessage.userInformation.userHead}" alt="用户头像"></img>
                                 </div>
                                 <div class="text">
                                     <p class="tit"><span  class="name" th:text="${userMessage.userInformation.userName}"></span><span class="data" th:text="${#strings.substring(userMessage.messageCreationTime,0,19)}"></span></p>

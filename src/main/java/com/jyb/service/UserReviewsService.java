@@ -44,6 +44,12 @@ public interface UserReviewsService {
 	 */
 	public UserReviews getId(Integer id);
 	/**
+	 * 根据资源Id和类别查找
+	 * @param resourceId
+	 * @param largeCategory
+	 */
+	public List<UserReviews> ReviewsList(Integer resourceId,String largeCategory);
+	/**
 	 * 根据资源ID和大类别删除评论信息
 	 * @param resourceId
 	 * @param largeCategory

@@ -50,10 +50,15 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/userLogin.html", "anon");
         filterChainDefinitionMap.put("/user/userRegister.html", "anon");
         filterChainDefinitionMap.put("/user/findPassword.html", "anon");
+        filterChainDefinitionMap.put("/user/sharingRule.html", "anon");
+        filterChainDefinitionMap.put("/user/sharingRule.html", "anon");
+        filterChainDefinitionMap.put("/user/standard.html", "anon");
+        
         filterChainDefinitionMap.put("/admin/adminLogin.html", "anon");
+  
         
         filterChainDefinitionMap.put("/admin/userInfor/login", "anon");
-        
+        filterChainDefinitionMap.put("/aboutUs", "anon");
         filterChainDefinitionMap.put("/user/gameInformation/**", "anon");
         filterChainDefinitionMap.put("/user/userInformation/**", "anon");
         filterChainDefinitionMap.put("/user/userMessage/**", "anon");
@@ -63,10 +68,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/software/**", "anon");
         filterChainDefinitionMap.put("/user/signIn/loadSignIn", "anon");
         
-        
+        filterChainDefinitionMap.put("/admin/quartz/**", "anon");
         
         filterChainDefinitionMap.put("/userHeadImage/**", "anon");
-        filterChainDefinitionMap.put("/gameContentImage/**", "anon");
+        filterChainDefinitionMap.put("/contentImage/**", "anon");
         filterChainDefinitionMap.put("/gameCoverImage/**", "anon");
        
         filterChainDefinitionMap.put("/static/css/**", "anon");

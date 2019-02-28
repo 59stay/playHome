@@ -22,13 +22,13 @@ var navs = [{
 }*/
 ,{
 	"title" : "基础信息管理",
-	"icon" : "&#xe61c;",
+	"icon" : "&#xe649;",
 	"href" : "",
 	"spread" : false,
 	"children" : [
 		{
 			"title" : "用户信息",
-			"icon" : "&#xe631;",
+			"icon" : "&#xe770;",
 			"href" : "/admin/userInfo",
 			"spread" : false
 		},
@@ -40,7 +40,7 @@ var navs = [{
 		},
 		{
 			"title" : "友情链接信息",
-			"icon" : "icon-text",
+			"icon" : "&#xe64c;",
 			"href" : "/admin/friendshipLink",
 			"spread" : false
 		},
@@ -52,7 +52,7 @@ var navs = [{
 		},
 		{
 			"title" : "评论信息",
-			"icon" : "icon-text",
+			"icon" : "&#xe611;",
 			"href" : "/admin/userReviews",
 			"spread" : false
 		}
@@ -60,25 +60,25 @@ var navs = [{
 }
 ,{
 	"title" : "资源管理",
-	"icon" : "&#xe61c;",
+	"icon" : "&#xe681;",
 	"href" : "",
 	"spread" : false,
 	"children" : [
 		{
 			"title" : "游戏资源",
-			"icon" : "&#xe631;",
+			"icon" : "&#xe61c;",
 			"href" : "/admin/gameResource",
 			"spread" : false
 		},
 		{
 			"title" : "软件资源",
-			"icon" : "&#xe631;",
+			"icon" : "&#xe857;",
 			"href" : "/admin/softwareResource",
 			"spread" : false
 		},
 		{
 			"title" : "失效资源",
-			"icon" : "&#xe631;",
+			"icon" : "&#xe64d;",
 			"href" : "/admin/invalidLink",
 			"spread" : false
 		}
@@ -86,20 +86,20 @@ var navs = [{
 }
 ,{
 	"title" : "系统管理",
-	"icon" : "&#xe61c;",
+	"icon" : "&#xe620;",
 	"href" : "",
 	"spread" : false,
 	"children" : [
 		{
 			"title" : "日志信息",
-			"icon" : "&#xe631;",
+			"icon" : "&#xe621;",
 			"href" : "/admin/logInfo",
 			"spread" : false
 		},
 		{
 			"title" : "定时器信息",
-			"icon" : "&#xe631;",
-			"href" : "",
+			"icon" : "&#xe60e;",
+			"href" : "/admin/timer",
 			"spread" : false
 		}
 	]

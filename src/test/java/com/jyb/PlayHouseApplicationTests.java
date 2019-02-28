@@ -17,6 +17,7 @@ import com.jyb.lucene.GameIndex;
 import com.jyb.lucene.SoftwareIndex;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.SoftwareService;
+import com.jyb.util.CheckUrlUtil;
 
 @RunWith(SpringRunner.class)	
 @SpringBootTest
@@ -70,6 +71,59 @@ public class PlayHouseApplicationTests {
   		for(Software software:softwareList){
   			softwareIndex.addIndex(software);
   		}
+  	}
+    
+    @Test
+  	public void checkLink() {
+		List<GameInformation> gameInformation= gameInformationService.listAll(null,Sort.Direction.DESC, "gameBrowseFrequency");
+		  for(GameInformation game:gameInformation){
+			  System.out.println(game.getGameName());
+		  }
+		/* for(GameInformation game:gameInformation){
+        	if(game.getDownloadType()==1){//验证百度云链接
+  				try {
+					if(!CheckUrlUtil.checkBDY(game.getGameDownloadAddress())){
+						game.setAuditStatus(1);
+						game.setIsUseful(2);
+						gameInformationService.save(game);
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					  continue;   
+				}
+  			}
+  			 if(game.getDownloadType()==2){//验证其他链接地址
+               if(!CheckUrlUtil.checkUrl(game.getGameDownloadAddress(), 1000)){
+            	        game.setAuditStatus(1);
+            	        game.setIsUseful(2);
+            	        gameInformationService.save(game);
+               }
+    	   }
+        }
+        
+        List<Software> softwareList=softwareService.listAll(null,Sort.Direction.DESC, "browseFrequency");
+        for(Software software:softwareList){
+  			if(software.getDownloadType()==1){//验证百度云链接
+  				try {
+					if(!CheckUrlUtil.checkBDY(software.getDownloadAddress())){
+						software.setAuditStatus(1);
+						software.setIsUseful(2);
+						softwareService.save(software);
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+				    continue;  
+				}
+  			}
+  			 if(software.getDownloadType()==2){//验证其他链接地址
+               if(!CheckUrlUtil.checkUrl(software.getDownloadAddress(), 1000)){
+    					software.setAuditStatus(1);
+    					software.setIsUseful(2);
+    					softwareService.save(software);
+               }
+    	   }
+  		}*/
+  		
   	}
 
 }

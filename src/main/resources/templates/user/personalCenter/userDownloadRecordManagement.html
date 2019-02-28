@@ -19,10 +19,38 @@ width: 90px;
 <script src="/static/js/jquery.js"></script>
 <script th:inline="javascript">
 /*<![CDATA[*/  
-layui.use('element', function(){
+$(document).ready(function(){  
+    	  $("#li5").addClass("layui-this");
+     });           
+layui.use(['element','form','table'], function(){
+      var form=layui.form;
 	  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-	  var $ = layui.jquery; // 使用jquery
+	  $ = layui.jquery; // 使用jquery
+	  table = layui.table;
 });
+
+function detail(isNotExist,resourceId,largeCategory){
+	if(isNotExist==2){
+		layer.msg('该资源已经被删除！')
+	    return false;
+	}
+ 	if(largeCategory=="A"){
+		 	layer.open({
+		   		  type: 2,
+		   		  title: '资源详细信息',
+		   		  area: ['45%','70%'],
+		   		  content: '/admin/gameInformation/getGameInformation?id='+resourceId
+		   		});  
+		   }
+	if(largeCategory=="B"){
+		 	layer.open({
+		   		  type: 2,
+		   		  title: '资源详细信息',
+		   		  area: ['45%','70%'],
+		   		 content: '/admin/software/getSoftware?id='+resourceId
+		   		});  
+		   } 
+	} 
 
 /*]]>*/
 	

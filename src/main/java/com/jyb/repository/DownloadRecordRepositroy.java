@@ -16,15 +16,23 @@ public interface DownloadRecordRepositroy  extends JpaRepository<DownloadRecord,
 	 * @return
 	 */
 	@Query(value="select count(*) from download_record where user_id=?1 and resource_id=?2 and large_category=?3 ",nativeQuery=true)
-	public Integer getDownloadTime(Integer userId,Integer resourceId,String largeCategory);
+	public Integer getDownloadsFrequency(Integer userId,Integer resourceId,String largeCategory);
 	
 	/**
-	 * 删除指定资源的下载信息
+	 * 删除指定资源的下载记录
 	 * @param articleId
 	 */
 	@Query(value="delete from download_record where resource_id=?1 and large_category=?2",nativeQuery=true)
 	@Modifying
 	public void deleteDownloadRecord(Integer articleId,String largeCategory);
 	
+	/**
+	 * 根据资源ID和大类别查询已下载的记录
+	 * @param resourceId
+	 * @param largeCategory
+	 * @return
+	 */
+	@Query(value="select * from download_record where resource_id=?1 and large_category=?2",nativeQuery=true)
+	public DownloadRecord getDownloadedRecord(Integer resourceId,String largeCategory);
 	
 }

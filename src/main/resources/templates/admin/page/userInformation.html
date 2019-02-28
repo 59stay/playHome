@@ -8,12 +8,12 @@
      overflow:auto;
  }
 
-.layui-table img {
+/* .layui-table img {
 width: auto;
 height: auto;
 max-width: 100% !important;
 max-height: 100%;
-}
+} */
 .layui-table-tool-self{
 display: none;
 }
@@ -77,7 +77,7 @@ display: none;
 	
 	
 	function formatUserHeadPicture(d){
-			return "<img alt='"+d.userName+"' src='"+d.userHead+"'></img>";
+			return "<img class='layui-nav-img' style='with:28px; height:28px;' alt='"+d.userName+"' src='"+d.userHead+"'></img>";
 	}
 	
 	function formatUserRole(d){
@@ -133,8 +133,9 @@ display: none;
 						 var index = parent.layer.getFrameIndex(window.name); 
 					 	 if(result.success){
 					 		 layer.msg("审核已通过");
-							 parent.location.reload(); //刷新父页面
+							// parent.location.reload(); //刷新父页面
 							 parent.layer.close(index); //当你在iframe页面关闭自身时
+							 table.reload("userinfoTable",{});
 						
 						 }
 					},"json"); 

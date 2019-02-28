@@ -31,9 +31,12 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.jyb.config.LogAspect;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.Software;
 import com.jyb.util.DateUtil;
@@ -46,7 +49,8 @@ import com.jyb.util.StringUtil;
 @Component("softwareIndex")
 public class SoftwareIndex {
 private Directory dir=null;
-	
+    private Logger log = LoggerFactory.getLogger(SoftwareIndex.class);	
+
 	@Value("${lucenePath2}")
 	private String lucenePath;
 	
@@ -64,7 +68,7 @@ private Directory dir=null;
 		IndexWriterConfig iwc=new IndexWriterConfig(analyzer);
 		//创建写索引实例
 		IndexWriter writer=new IndexWriter(dir, iwc);
-	 	System.out.println("写入了"+writer.numDocs()+"文档");
+		log.info("写入了"+writer.numDocs()+"文档");
 		return writer;
 	}
 	
@@ -135,7 +139,7 @@ private Directory dir=null;
 			writer.deleteDocuments(new Term("id",id));
 			writer.forceMergeDeletes(); // 强制删除(合并删除的数据，数据量大时，需要在系统空闲的时间做删除处理【思路:写定时器删除】)
 			writer.commit();
-			System.out.println("最大文档数:"+writer.maxDoc()+"个，实际文档数"+writer.numDocs());
+			log.info("最大文档数:"+writer.maxDoc()+"个，实际文档数"+writer.numDocs());
 			writer.close();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -230,10 +234,10 @@ private Directory dir=null;
 					TokenStream tokenStream = analyzer.tokenStream("resourcesDescribe", new StringReader(content)); 
 					String hContent=highlighter.getBestFragment(tokenStream, content);
 					if(StringUtil.isEmpty(hContent)){
-						if(content.length()<=200){
+						if(content.length()<=100){
 							software.setResourcesDescribe(content);
 						}else{
-							software.setResourcesDescribe(content.substring(0, 200));						
+							software.setResourcesDescribe(content.substring(0, 100));						
 						}
 					}else{
 						software.setResourcesDescribe(hContent);					

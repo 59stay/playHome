@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/static/layui/css/layui.css"></link>
 <script src="/static/layui/layui.js"></script>
 <script src="/static/js/jquery.js"></script>
+<script src="https://cdn.vaptcha.com/v2.js"></script> 
 <script>
 	 layui.use(['form','layer'], function(){
 		 var form = layui.form;
@@ -29,20 +30,28 @@
 			  document.getElementById("password_div").style.visibility="visible";
 			  $("#password").focus();
 			  return false; 
+		  }else if(myForm.vaptcha_token.value==""){
+			  layer.msg("请进行人机验证！");
+			  return false;
 		  }else{
 			  var index = layer.load(1, {
 				  shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
 			   $("#login_button").attr('disabled',true); 
-	           $.post("/user/userInformation/login",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim() },function(result){
-	        	  layer.close(index);
-	 			  $("#login_button").attr('disabled',false);
+	            $.post("/user/userInformation/login",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),vaptcha_token:myForm.vaptcha_token.value},function(result){
 	        	   if(result.success){
+	        		  layer.close(index);
+	 	 			  $("#login_button").attr('disabled',false);
 				      parent.reloadPage();
 				  }else{
-					  layer.msg(result.errorInfo); 
+						  layer.msg(result.errorInfo);
+						  setTimeout(function(){
+							  layer.close(index);
+							  $("#login_button").attr('disabled',false);
+							  window.location.reload(); //刷新当前窗口
+							  }, 2000);
 				  } 
-			  },"json");
+			  },"json"); 
 			   
 		  }
 	}
@@ -51,19 +60,29 @@
 
 <body>
 <div style="padding: 20px">
-	<form name="myForm" class="layui-form" action="">
+	<form name="myForm" class="layui-form">
 		<input type="text" id="userName" name="userName" onkeyup="value=value.replace(/[\u4E00-\u9FA5]/g,'')" placeholder="请输入用户名" class="layui-input" style="padding-left: 33px;" maxlength="10"/>
 		<i class="layui-icon  layui-icon-username" style="position: absolute;top:30px;left: 30px;" ></i>
-		<div id="username_div" style="margin: 5px 0px 5px 45px; visibility: hidden ; color:#ff0000  ">用户名为必填，长度3-10位</div>
+		<div id="username_div" style="margin: 1px 0px 1px 0px; visibility: hidden ; color:#ff0000  ">用户名为必填，长度3-10位</div>
 
 		<input type="password" id="password" name="password"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30"/>
-		<i class="layui-icon layui-icon-password" style="position: absolute;top:94px;left: 30px;" ></i>
-		<div id="password_div" style="margin:5px 0px 5px 45px; visibility: hidden; color:#ff0000 ">密码为必填，长度6-30</div>
-
-		<div style="width: 260px;">
+		<i class="layui-icon layui-icon-password" style="position: absolute;top:90px;left: 30px;" ></i>
+		<div id="password_div" style="margin:1px 0px 1px 0px; visibility: hidden; color:#ff0000 ">密码为必填，长度6-30</div>
+	      <div data-vid="5c7754cbfc650fe020328b0e" style="margin-bottom: 13px;">
+			    <div class="vaptcha-init-main">
+			        <div class="vaptcha-init-loading">
+			            <a href="/" target="_blank">
+			                <img src="https://cdn.vaptcha.com/vaptcha-loading.gif" />
+			            </a>
+			            <span class="vaptcha-text">人机验证启动中...</span>
+			        </div>
+			    </div>
+         </div>
+         
+		<div >
 		   <button id="login_button" class="layui-btn layui-btn-fluid"  onclick="submitData();return false;">登 录</button>
         </div>
-		<div style="margin:10px 0px 0px 200px;">
+		<div style="margin:10px 0px 0px 235px;">
 			<a href="javascript:parent.showFindPassword()">忘记密码</a>
 		</div>
 

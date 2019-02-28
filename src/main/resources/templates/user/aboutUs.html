@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>宅着玩资源网站-首页</title>
+<link rel="stylesheet" href="/static/layui/css/layui.css" />
+<link rel="stylesheet" href="/static/css/index.css" />
+<link rel="stylesheet" href="/static/css/icon.css" />
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/common.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+layui.use(['element','laypage','form'], function(){
+		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		 var $ = layui.jquery; // 使用jquery
+		 
+	});
+/*]]>*/	
+	
+</script>
+</head>
+
+<body>
+<!-- 导航区 -->
+<div class="w1170" style="padding-bottom: 10px; overflow: visible;" th:include="common/head::#head"></div>
+<!-- 关于我们内容-->
+	<div class="w1170">
+		<div class="data_list_condition">
+			<div class="data_list_resources">
+				<div class="data_list_title">
+					<i class="layui-icon layui-icon-rate-solid"></i> <span class="head">关于我们</span>
+				</div>
+				<div style="padding: 10px; line-height: 25px">
+					<font face="微软雅黑">
+					<font color="#007000">1.宅着玩是一个什么样的网站</font>
+					</font><br/>
+					<font style="margin-left: 15px;" face="微软雅黑">
+					  宅着玩网站是专注于收集网上的游戏资源、软件资源，用户可以在本网站中发布自己整理好的资源，资源被其他用户下载后，发布者可以获取1-10个积分，积分可用于下载其他用户发布的资源。
+					</font><br/>
+					<font face="微软雅黑"><font color="#007000">
+					 2.宅着玩网站中积分获取方式</font></font><br/> 
+					 <font face="微软雅黑">
+						（1）每日签到，每天即可获取3积分<br/>
+						（2）分享本网站到3个QQ群，截图发给站长，即可领取50积分
+						 <button onclick="sharingRule();return false;" class="layui-btn layui-btn-xs layui-btn-normal">分享规则</button><br/>
+						（3）发布资源，其他用户下载后即可获取1-10个积分 
+						     <button onclick="standard();return false;" class="layui-btn layui-btn-xs layui-btn-normal">发资源规范</button><br/>
+						（4）注册账号就送30积分，名额有限，送完为止  (注册后联系站长领取积分)<br/>
+					</font><br/>
+					 <font face="微软雅黑"> <font color="#007000">3.资源版权归属问题</font></font><br/> 
+					 <font face="微软雅黑">
+							（1）站内收录的所有资源均来自于互联网及网友分享，版权归原作者及其网站所有。<br/>
+							（2）如本站存在侵权内容请点击底部侵权举报或者发送邮件联系我们，提供侵权链接与权益证明，核实后我们将立即删除相关内容。<br />
+							（3）本站仅为资源分享的平台，站内资源仅供学习 研究 交流所用，若用于任何商业用途，后果自负，本站不承担责任。<br />
+							（4）本站转载及用户发布的内容均不代表本站观点，严禁在本站发布反动、色情、广告等不良信息，情节严重者立即封号。<br />
+							（5）凡登录本网站或直接、间接使用本站资料者，应仔细阅读声明，一旦使用本站任何资源，即被视为您已接受本站的免责声明。<br />
+					 </font> <br/> 
+					 <font face="微软雅黑"><font color="#007000">4.联系方式</font></font><br/> 
+					 <font face="微软雅黑">
+							（1）站长联系方式<br/>
+							 <span style="margin-left: 35px;">QQ：166768601</span><span style="margin-left: 35px;">邮箱：166768601@qq.com</span><br/> 
+							（2）QQ群<br/>
+							<span style="margin-left: 35px;">群名称：宅着玩交流群①</span>  <span style="margin-left: 35px;">群号：644085232 <a style="margin-left: 10px;margin-bottom: 3px;" target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=7365244e614af5277dc5b0525b1ede3bd93dc03b42c68fca16cbb111285b9170"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="宅着玩交流群①" title="宅着玩交流群①"/></a></span><br/>
+							
+					 </font>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 友情链接 -->
+<div class="w1170" th:include="common/link::#link"></div>
+<!-- 版权所有 -->
+<div class="w1170" style="padding-top: 40px" th:include="common/foot::#foot"></div>
+</body>
+</html>

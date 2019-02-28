@@ -33,6 +33,8 @@ public class DownloadRecord {
 	
 	private String largeCategory;// 大类别
 	
+	private Integer isNotExist;// 资源是否存在  1是 2否
+	
 	@ManyToOne
 	@JoinColumn(name="userId")
 	private UserInformation userInformation; // 下载用户
@@ -89,11 +91,12 @@ public class DownloadRecord {
 		this.downloadDate = downloadDate;
 	}
 
-	@Override
-	public String toString() {
-		return "DownloadRecord [id=" + id + ", resourceId=" + resourceId + ", resourceName=" + resourceName
-				+ ", largeCategory=" + largeCategory + ", userInformation=" + userInformation + ", downloadDate="
-				+ downloadDate + "]";
+	public Integer getIsNotExist() {
+		return isNotExist;
+	}
+
+	public void setIsNotExist(Integer isNotExist) {
+		this.isNotExist = isNotExist;
 	}
 
 

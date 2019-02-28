@@ -36,9 +36,9 @@
 												th:value="${q}" class="layui-input" style="height: 30px" />
 										</div>
 										<div class="layui-col-md2">
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"
-												class="layui-btn layui-btn-radius layui-btn-sm"
-												value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " />
+											 <input type="submit"  
+											 class="layui-btn layui-btn-radius layui-btn-sm" 
+											 value="搜 索" style="width: 100px;margin-left: 10px;"/>
 										</div>
 									</div>
 								</form>
@@ -59,9 +59,11 @@
     			<ul th:if="${resultTotal!=0}">
     				<li th:each="hotSoftware:${hotSoftwareList}" style="margin-left:5px; margin-top:10px; height: 105px;">
     				<a  th:href="'/user/software/listDetails/'+${hotSoftware.id}"><img th:src="${hotSoftware.Picture}"  style="width:90px; height:105px;"></img></a>
-    				    <div style="position:relative;left:110px;bottom: 105px; width:670px;">
+    				    <div style="position:relative;left:100px;bottom: 105px; width:670px;">
     					<span class="summary"><a  th:href="'/user/software/listDetails/'+${hotSoftware.id}"   target="_blank" th:utext="${hotSoftware.Name}"></a></span>
-					  	<span class="summary" th:utext="${#strings.length(hotSoftware.resourcesDescribe)>110} ? '摘要: '+${#strings.substring(hotSoftware.resourcesDescribe,0,110)}+'...':'摘要: '+ ${hotSoftware.resourcesDescribe}+'...'"></span>
+					    <span class="summary" th:utext="'摘要: '+${hotSoftware.resourcesDescribe}"></span>
+					  	<!-- <span class="summary" th:utext="${#strings.length(hotSoftware.resourcesDescribe)>100} ? '摘要: '+${#strings.substring(hotSoftware.resourcesDescribe,0,100)}+'...':'摘要: '+ ${hotSoftware.resourcesDescribe}+'...'"></span>
+					  	 -->
 					  	<span class="summary"><a style="color: green" target="_blank" th:href="'/user/software/listDetails/'+${hotSoftware.id}" th:text="'http://www.59stay.com/user/'+${hotSoftware.id}"></a>&nbsp;&nbsp;&nbsp;&nbsp;<font th:text="'发布日期：'+${#dates.format(hotSoftware.CreationTime,'yyyy-MM-dd')}"></font></span>
     				    </div>
     				</li>

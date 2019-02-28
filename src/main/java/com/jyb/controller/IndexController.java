@@ -1,26 +1,16 @@
 package com.jyb.controller;
 
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.jyb.entity.GameInformation;
-import com.jyb.service.GameInformationService;
 
 @Controller
 public class IndexController {
-	@Autowired
-	private GameInformationService gameInformationService;
 
 	/**
 	 * 网站根目录请求
-	 * 
-	 * @return
 	 */
 	@RequestMapping("/")
 	private ModelAndView root() {
@@ -28,11 +18,21 @@ public class IndexController {
 		mv.setViewName("index");
 		return mv;
 	}
-
+	
+	/**
+	 * 关于我们
+	 */
+	@RequestMapping("/aboutUs")
+	private ModelAndView aboutUs() {
+	    ModelAndView mv = new ModelAndView();
+		mv.setViewName("user/aboutUs");
+		return mv;
+	}
+	
+	
 	/**
 	 * 后台-首页
 	 */
-	
 	@RequestMapping("admin/index")
 	@RequiresPermissions(value={"后台-首页"})
 	private ModelAndView rootAdmin() {
@@ -52,6 +52,8 @@ public class IndexController {
 		mv.setViewName("admin/game/page/gameResource");
 		return mv;
 	}
+	
+	
 	
 	/**
 	 * 后台-软件资源
@@ -112,7 +114,6 @@ public class IndexController {
 	/**
 	 * 后台-失效链接
 	 */
-
 	@RequestMapping("admin/invalidLink")
 	@RequiresPermissions(value={"后台-失效链接"})
 	private ModelAndView invalidLink() {
@@ -124,7 +125,6 @@ public class IndexController {
 	/**
 	 * 后台-日志信息
 	 */
-
 	@RequestMapping("admin/logInfo")
 	@RequiresPermissions(value={"后台-日志信息"})
 	private ModelAndView logInfo() {
@@ -136,7 +136,6 @@ public class IndexController {
 	/**
 	 * 后台-评论信息
 	 */
-	
 	@RequestMapping("admin/userReviews")
 	@RequiresPermissions(value={"后台-评论信息"})
 	private ModelAndView userReviews() {
@@ -144,4 +143,17 @@ public class IndexController {
 		mv.setViewName("admin/page/userReviews");
 		return mv;
 	}
+	
+	/**
+	 * 后台-定时任务信息
+	 */
+	@RequestMapping("admin/timer")
+	@RequiresPermissions(value={"后台-定时器信息"})
+	private ModelAndView timer() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("admin/page/timer");
+		return mv;
+	}
+	
+	
 }

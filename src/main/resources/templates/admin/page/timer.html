@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<style type="text/css">
+.layui-table-body{
+     overflow:auto;
+ }
+
+.layui-table-tool-self{
+     display: none;
+}
+
+</style>
+<script src="/static/layui/layui.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/ 
+	layui.use(['element','form','table'], function(){
+	      var form=layui.form;
+		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		  $ = layui.jquery; // 使用jquery
+		  table = layui.table;
+	      table.render({
+		     elem: '#timerTable'
+		    ,url:'/admin/timer/listAll'
+		    ,cols: [[
+		       {type:'radio'}
+			  ,{type:'numbers',width:40}
+			  ,{field:'taskName', title: '任务名称',align:'center'}
+			  ,{field:'taskDescription', title: '任务描述',align:'center'}
+			  ,{field:'taskClass', title: '任务类',align:'center'}
+			  ,{field:'startTime', title: '启动时间',align:'center'}
+			  ,{field:'timerStatic', title: '任务状态',align:'center',templet:formatTimerStatic}
+			  ,{field:'createTime', title: '创建时间',align:'center'}
+		    ]]
+		  });
+		  
+		  
+		  //监听开关按钮操作
+		   form.on('switch(timerStaticSwitch)', function(obj){
+		   var timerStatic ;
+		   if(obj.elem.checked){
+			   timerStatic=1;
+			   $.post("/admin/timer/updateStartTimer1",{"id":this.value,"timerStatic":timerStatic},function(result){
+				   if(result.success){
+						layer.msg("执行成功！");
+						table.reload("userinfoTable",{});
+					}
+				},"json"); 
+		   }else{
+			   timerStatic=2; 
+			   $.post("/admin/timer/updateStopTimer1",{"id":this.value,"timerStatic":timerStatic},function(result){
+				   if(result.success){
+						layer.msg("执行成功！");
+						table.reload("userinfoTable",{});
+					}
+				},"json"); 
+		   }
+		  });
+		   	  
+		  
+		  
+		
+});
+	
+	function formatTimerStatic(d){
+			if(d.timerStatic==1){
+			      return "<input type='checkbox' checked lay-text='开启|关闭' name='cs1' value="+d.id+" lay-skin='switch' lay-filter='timerStaticSwitch'></input>";
+			    }else{
+			      return "<input type='checkbox'  lay-text='开启|关闭' name='cs2'  value="+d.id+" lay-skin='switch' lay-filter='timerStaticSwitch'></input>";
+			    }	
+	}
+	
+/*]]>*/
+</script>
+</head>
+
+<body>
+  
+<div style="margin: 10px 10px 0px 20px;">
+ <table  id="timerTable" lay-filter="timerTable"></table>
+</div>
+
+
+
+</body>
+</html>

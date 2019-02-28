@@ -15,6 +15,7 @@ import com.jyb.service.GameInformationService;
 import com.jyb.service.InvalidLinkService;
 import com.jyb.service.SoftwareService;
 import com.jyb.service.UserInformationService;
+import com.jyb.specialEntity.Constant;
 
 
 @Controller
@@ -40,7 +41,7 @@ public class PersonalCenterController {
     @RequestMapping("toMain")
     public ModelAndView toPersonalCenterMain(HttpSession session){
     	ModelAndView mv=new ModelAndView();
-    	UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+    	UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
     	InvalidLink  invalidLink = new InvalidLink();
     	invalidLink.setUserId(userInformation.getId());
     	Long count=invalidLinkService.getCount(invalidLink);
@@ -57,7 +58,7 @@ public class PersonalCenterController {
     @RequestMapping("personalData")
     public ModelAndView personalData(HttpSession session){
     	ModelAndView mv=new ModelAndView();
-    	UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+    	UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
     	UserInformation userInfo = userInformationService.getById(userInformation.getId());
     	mv.addObject("userInformation", userInfo);
     	mv.setViewName("user/personalCenter/personalData");

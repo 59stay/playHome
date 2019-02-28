@@ -55,7 +55,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 					if(userReviews.getResourceId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
 					}
-					if(userReviews.getResourceId() != null){
+					if(userReviews.getPublisherId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("publisherId"), userReviews.getPublisherId()));
 					}
 					
@@ -93,7 +93,7 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 					if(userReviews.getResourceId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("resourceId"), userReviews.getResourceId()));
 					}
-					if(userReviews.getResourceId() != null){
+					if(userReviews.getPublisherId() != null){
 						predicate.getExpressions().add(cb.equal(root.get("publisherId"), userReviews.getPublisherId()));
 					}
 					if(StringUtil.isNotEmpty(userReviews.getReviewsContent())){
@@ -127,6 +127,12 @@ public class UserReviewsServiceImpl implements UserReviewsService {
 	public void deleteUserReviews(Integer resourceId, String largeCategory) {
 		// TODO Auto-generated method stub
 		userReviewsRepositroy.deleteUserReviews(resourceId, largeCategory);
+	}
+
+	@Override
+	public List<UserReviews> ReviewsList(Integer resourceId, String largeCategory) {
+		// TODO Auto-generated method stub
+		return userReviewsRepositroy.ReviewsList(resourceId, largeCategory);
 	}
 
 }

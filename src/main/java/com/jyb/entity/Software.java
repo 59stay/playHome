@@ -86,7 +86,6 @@ public class Software implements Serializable{
 	
 	public Software() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Software(Integer auditStatus, Integer isUseful) {

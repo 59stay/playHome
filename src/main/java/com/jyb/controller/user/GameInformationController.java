@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
+import com.jyb.entity.DownloadRecord;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
@@ -35,7 +39,9 @@ import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
+import com.jyb.util.CookiesUtil;
 import com.jyb.util.DateUtil;
+import com.jyb.util.IpUtil;
 import com.jyb.util.PageUtil;
 import com.jyb.util.RedisUtil;
 import com.jyb.util.StringUtil;
@@ -61,12 +67,12 @@ public class GameInformationController {
 	
 	
 	
-	@Value("${gameContentImageFilePath}")
-	private String gameContentImageFilePath;
+	@Value("${contentImageFilePath}")
+	private String contentImageFilePath;
 	
 
-	@Value("${gameCoverImageFilePath}")
-	private String gameCoverImageFilePath;
+	@Value("${coverImageFilePath}")
+	private String coverImageFilePath;
 	
 
 	
@@ -165,19 +171,19 @@ public class GameInformationController {
 	@RequestMapping("/uploadCoverImage")
 	public Map<String,Object> uploadCoverImage(MultipartFile file,HttpSession session)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
 		if(!file.isEmpty()){
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
 			// 获取文件的后缀名
 			String suffixName = fileName.substring(fileName.lastIndexOf("."));
 			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameCoverImageFilePath+userInformation.getEmail()+"/"+newFileName));
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(coverImageFilePath+userInformation.getEmail()+"/"+newFileName));
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
 			map2.put("title", newFileName);
-			map2.put("src", "/gameCoverImage/"+userInformation.getEmail()+"/"+newFileName);
+			map2.put("src", "/coverImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
 		return map;
@@ -193,19 +199,19 @@ public class GameInformationController {
 	@RequestMapping("/uploadContentImage")
 	public Map<String,Object> uploadContentImage(MultipartFile file,HttpSession session)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
 		if(!file.isEmpty()){
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
 			// 获取文件的后缀名
 			String suffixName = fileName.substring(fileName.lastIndexOf("."));
 			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(gameContentImageFilePath+userInformation.getEmail()+"/"+newFileName));
+			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(contentImageFilePath+userInformation.getEmail()+"/"+newFileName));
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
 			map2.put("title", newFileName);
-			map2.put("src", "/gameContentImage/"+userInformation.getEmail()+"/"+newFileName);
+			map2.put("src", "/contentImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
 		return map;
@@ -246,30 +252,40 @@ public class GameInformationController {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping("/update")
+	@RequestMapping("/updateGame")
 	@Transactional
-	public ModelAndView update(GameInformation gameInfo,HttpServletRequest request)throws Exception{
-	    GameInformation gameInformation=gameInformationService.getId(gameInfo.getId());
-	    gameInformation.setGameName(gameInfo.getGameName());
-	    gameInformation.setGameTitle(gameInfo.getGameTitle());
-	    gameInformation.setGamePicture(gameInfo.getGamePicture());
-	    gameInformation.setGameDescribe(gameInfo.getGameDescribe());
-	    gameInformation.setDownloadType(gameInfo.getDownloadType());
-	    gameInformation.setIntegral(gameInfo.getIntegral());
-	    gameInformation.setGameDownloadAddress(gameInfo.getGameDownloadAddress());
-	    gameInformation.setLinkPwd(gameInfo.getLinkPwd());
-	    gameInformation.setDataDictionary(gameInfo.getDataDictionary());
-	    if(gameInformation.getAuditStatus()==2||gameInformation.getAuditStatus()==3){
-	      gameInformation.setAuditStatus(1);	
-	    }
-	    gameInformationService.save(gameInformation);
-	    InitSystem.loadData(request.getServletContext());
-	    gameIndex.updateIndex(gameInformation);
-	    redisUtil.del("r_game_"+gameInformation.getId());
-		ModelAndView mav=new ModelAndView();
-    	mav.addObject("title", "修改游戏成功页面");
-    	mav.setViewName("user/game/modifyGameSuccess");
-        return mav;
+	public Map<String,Object> updateGame(GameInformation gameInfo,HttpServletRequest request)throws Exception{
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(gameInfo!=null && gameInfo.getDataDictionary()!=null){
+			   GameInformation gameInformation=gameInformationService.getId(gameInfo.getId());
+			    gameInformation.setGameName(gameInfo.getGameName());
+			    gameInformation.setGameTitle(gameInfo.getGameTitle());
+			    gameInformation.setGamePicture(gameInfo.getGamePicture());
+			    gameInformation.setGameDescribe(gameInfo.getGameDescribe());
+			    gameInformation.setDownloadType(gameInfo.getDownloadType());
+			    gameInformation.setIntegral(gameInfo.getIntegral());
+			    gameInformation.setGameDownloadAddress(gameInfo.getGameDownloadAddress());
+			    gameInformation.setLinkPwd(gameInfo.getLinkPwd());
+			    gameInformation.setDataDictionary(gameInfo.getDataDictionary());
+			    if(gameInformation.getAuditStatus()==2||gameInformation.getAuditStatus()==3){
+			      gameInformation.setAuditStatus(1);	
+			    }
+			    gameInformationService.save(gameInformation);
+			    List<UserReviews> userReviewsList = userReviewsService.ReviewsList(gameInfo.getId(),"A");
+			    for (UserReviews ur : userReviewsList) {
+			    	if(!gameInfo.getGameName().equals(ur.getResourceName())){
+			    		ur.setResourceName(gameInfo.getGameName());
+				    	userReviewsService.save(ur);
+			    	}
+				}
+			    InitSystem.loadData(request.getServletContext());
+			    gameIndex.updateIndex(gameInformation);
+			    redisUtil.del("r_game_"+gameInformation.getId());
+			    map.put("success", true);	
+		   }else{
+			    map.put("success", false);
+		 }
+        return map;
 	}
 	
 	/**
@@ -284,7 +300,7 @@ public class GameInformationController {
 	@RequestMapping(value = "/gameList")
 	public Map<String,Object> gameLists(GameInformation s_gameInformation,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+		UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
 		s_gameInformation.setUserInformation(userInformation);
 		List<GameInformation> gameList=gameInformationService.listPage(s_gameInformation, page, limit,Sort.Direction.DESC,"gameCreationTime");
 		Long count=gameInformationService.getCount(s_gameInformation);
@@ -306,7 +322,11 @@ public class GameInformationController {
 		Map<String, Object> resultMap = new HashMap<>();
 		gameInformationService.delete(id);//删除资源信息
 		userReviewsService.deleteUserReviews(id,"A");//删除资源信息评论
-		downloadRecordService.deleteDownloadRecord(id, "A");//删除下载的资源信息
+		DownloadRecord downloadRecord = downloadRecordService.getDownloadedRecord(id,"A");
+		if(downloadRecord!=null){
+			downloadRecord.setIsNotExist(2);//下载记录状态改成已删除
+			downloadRecordService.save(downloadRecord);
+		}
 		InitSystem.loadData(request.getServletContext());
 		gameIndex.deleteIndex(String.valueOf(id));
 		redisUtil.del("r_game_"+id);
@@ -348,12 +368,27 @@ public class GameInformationController {
 	 */
 	@ResponseBody
 	@RequestMapping("/updateGameBrowseFrequency")
-	public void updateView(Integer id,HttpServletRequest request)throws Exception{
+	public void updateGameBrowseFrequency(Integer id,HttpServletRequest request,HttpServletResponse response)throws Exception{
+		Cookie ck1 = CookiesUtil.getCookieByName(request, "ipAddr");
+		Cookie ck2 = CookiesUtil.getCookieByName(request, "gameId");
 		GameInformation gameInfo = gameInformationService.getId(id);
-		gameInfo.setGameBrowseFrequency(gameInfo.getGameBrowseFrequency()+1);
-		gameInformationService.save(gameInfo);
-		redisUtil.del("r_game_"+gameInfo.getId());
-		InitSystem.loadData(request.getServletContext());
+		if(ck1!=null && ck2!=null ){
+			String ipAddr = ck1.getValue();
+			String gameId = ck2.getValue();
+			if(!ipAddr.equals(IpUtil.getIpAddr(request))&&!gameId.equals(id.toString())){
+				gameInfo.setGameBrowseFrequency(gameInfo.getGameBrowseFrequency()+1);
+				gameInformationService.save(gameInfo);
+				redisUtil.del("r_game_"+gameInfo.getId());
+				InitSystem.loadData(request.getServletContext());
+		    }
+		}else{
+			gameInfo.setGameBrowseFrequency(gameInfo.getGameBrowseFrequency()+1);
+			gameInformationService.save(gameInfo);
+			redisUtil.del("r_game_"+gameInfo.getId());
+			InitSystem.loadData(request.getServletContext());
+			CookiesUtil.setCookie(response, "ipAddr", IpUtil.getIpAddr(request),15);
+			CookiesUtil.setCookie(response, "gameId",id.toString(),15);
+		}
 	}
 	
 	

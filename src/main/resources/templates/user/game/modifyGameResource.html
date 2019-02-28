@@ -30,9 +30,12 @@ width: 90px;
 				  $("#addr1").show(); 
 	              $("#game_download_address1").val(gameDownloadAddress);
 		    	  $("#link_pwd").val(linkPwd); 
+		    	  $("#game_download_address1").attr("lay-verify","required");
+		    	  $("#link_pwd").attr("lay-verify","required");
 			  }else{
 				  $("#addr2").show(); 
 	              $("#game_download_address2").val(gameDownloadAddress); 
+	              $("#game_download_address2").attr("lay-verify","required");
 			  }
 	    });
 
@@ -127,7 +130,7 @@ width: 90px;
 	 			var addr1 = $("#game_download_address1").val();
 	 			var link_pwd = $("#link_pwd").val();
 	 			var addr2 = $("#game_download_address2").val();
-			    var content=layedit.getText(index);
+	 			var content = layedit.getContent(index);
 			    var download_address;
 	 			if(game_picture==""){
 	 				layer.msg("请上传封面！");
@@ -138,22 +141,21 @@ width: 90px;
 			    }else {
 			    	game_download_address = addr2;
 			    }
-			    
+	 			
 	 			if (content == "<br>") {
 	 				layer.msg("请输入资源描述！");
 	 				return false;
 	 			}
 			    $("#content").val(content);
-			    
-			    $.post("/user/gameInformation/update",{id:game_id,gamePicture:game_picture,gameName:game_name,gameTitle:game_title,integral:integral,largeCategory:s_large_category,'dataDictionary.id':s_small_category,downloadType:download_type,gameDownloadAddress:game_download_address,linkPwd:link_pwd,gameDescribe:content},function(result){
+			    alert(content);
+			    $.post("/user/gameInformation/updateGame",{id:game_id,gamePicture:game_picture,gameName:game_name,gameTitle:game_title,integral:integral,largeCategory:s_large_category,'dataDictionary.id':s_small_category,downloadType:download_type,gameDownloadAddress:game_download_address,linkPwd:link_pwd,gameDescribe:content},function(result){
 		 	  		  if(result.success){
 		 	  			  alert("修改资源成功！");
-		 	  			  window.location.href="/personalCenter/toSoftwareManagement";
+		 	  			  window.location.href="/personalCenter/toGameResourceManagement";
 		 	  		  }
 	 	            },"json").error(function(){
 	 				  alert('修改资源失败,请联系客服(QQ:166768601)');
 	 		    }); 
-			    
 		        return false;
 		  });
 	   });

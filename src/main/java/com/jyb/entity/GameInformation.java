@@ -73,7 +73,7 @@ public class GameInformation implements Serializable{
 	 @JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date auditDate;// 审核日期
 	
-	private Integer isUseful; // 资源链接是否有效  true(1) 有效   false(2) 无效 
+	private Integer isUseful; // 资源链接是否有效  (1) 有效   (2) 无效 
 
 	@ManyToOne
 	@JoinColumn(name = "userId")

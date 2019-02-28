@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserMessage;
 import com.jyb.service.UserMessageService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
 
@@ -90,7 +91,7 @@ public class UserMessageController {
     @RequestMapping("save")
     public  Map<String,Object>   saveUserMessage(UserMessage  userMessage,HttpSession session){
     	Map<String,Object> map = new HashMap<String,Object>();
-    	UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+    	UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
     	if(userInformation!=null && userMessage!=null){
     		userMessage.setMessageCreationTime(new Date());
     		userMessage.setUserInformation(userInformation);
@@ -111,7 +112,7 @@ public class UserMessageController {
     @RequestMapping("checkMessageFrequency")
     public  Map<String,Object>   checkMessageFrequency(HttpSession session){
     	Map<String,Object> map = new HashMap<String,Object>();
-    	UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+    	UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
     	if(userInformation!=null){
     	 Integer num =userMessageService.getByDate(userInformation.getId(),DateUtil.getTodayStartTime(),DateUtil.getTodayEndTime());
     	 if(num<10){

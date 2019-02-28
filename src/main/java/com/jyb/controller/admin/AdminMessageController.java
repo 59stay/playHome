@@ -22,7 +22,7 @@ import com.jyb.util.StringUtil;
 
 @Controller
 @RequestMapping("admin/userMessage")
-public class AdminUserMessageController {
+public class AdminMessageController {
 	@Autowired
 	private UserMessageService userMessageService;
 	

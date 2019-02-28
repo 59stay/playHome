@@ -81,18 +81,18 @@ function signIn(){
 }
 
 function submitData(){
-	var userReviews=$("#reviewsInformation").val();
+	var reviewsContent=$("#reviewsContent").val();
 	if([[${session.userInfo}]]==null){//未登录
 		layer.msg("登录后才能评论哟！");
 		return;
 	}
-	if(userReviews==""){
+	if(reviewsContent==""){
 		layer.msg("请填写评论内容！");
 		return false;
 	}
-	$.post("/user/userReviews/addUserReviews",{"publisherId":[[${gameInformation.userInformation.id}]],"resourceId":[[${gameInformation.id}]],"resourceName":[[${gameInformation.gameName}]],"reviewsContent":userReviews,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
+	$.post("/user/userReviews/addUserReviews",{"publisherId":[[${gameInformation.userInformation.id}]],"resourceId":[[${gameInformation.id}]],"resourceName":[[${gameInformation.gameName}]],"reviewsContent":reviewsContent,"largeCategory":[[${gameInformation.largeCategory}]]},function(result){
 		if(result.success){
-			$("#reviewsInformation").val("");
+			$("#reviewsContent").val("");
 			 window.location.reload();
 			//layer.msg("评论成功，稍后显示！");
 		}
@@ -199,7 +199,7 @@ function download(){
 						&nbsp;&nbsp;所需：<font color="red"
 							th:text="${gameInformation.integral}"></font>&nbsp;积分
 					</div>
-					<div align="center">
+					<!-- <div align="center">
 						<div class="bshare-custom">
 							<div class="bsPromo bsPromo2"></div>
 							<a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博"
@@ -213,7 +213,7 @@ function download(){
 							src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
 						<script type="text/javascript" charset="utf-8"
 							src="http://static.bshare.cn/b/bshareC0.js"></script>
-					</div> 
+					</div>  -->
 					<div class="downloadBtn">
 			        	<input th:if="${session.userInfo!=null}" th:value="${session.userInfo.id}" id="session_user_id" type="hidden"></input> 
 						<button class="layui-btn layui-btn-radius" onclick="download()">&nbsp;&nbsp;立即下载&nbsp;&nbsp;</button>
@@ -230,7 +230,7 @@ function download(){
 						style="color: #999;" ></font>
 				</div>
 				<div  class="userReviews">
-					<textarea id="reviewsInformation" placeholder="请输入评论信息"
+					<textarea id="reviewsContent" placeholder="请输入评论信息"
 						class="layui-textarea"></textarea>
 					<button class="layui-btn layui-btn-radius  layui-btn-sm"
 						onclick="submitData()">&nbsp;&nbsp;提交评论&nbsp;&nbsp;</button>
@@ -245,6 +245,7 @@ function download(){
 		<div class="pRight">
 		    <!--签到处-->
 			<div class="data_list"  th:include="common/signIn::#sI"></div> 
+			<!--热门资源-->
 			<div class="data_list">
 				<div class="data_list_title">
 					<i class="layui-icon layui-icon-fire"></i> <span class="head">热门游戏</span>
@@ -253,7 +254,7 @@ function download(){
 					<ul>
 						<li th:each="gameBrowseFrequency,iterStat:${application.gameBrowseFrequencyList}">
 						    <em th:text="${iterStat.index}+1"></em> 
-							<a  style="margin-left: 10px;" target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameBrowseFrequency.id}"
+							<a  style="margin-left: 10px;"  th:href="'/user/gameInformation/listDetails/'+${gameBrowseFrequency.id}"
 							th:title="${gameBrowseFrequency.gameName}"
 							th:text="${gameBrowseFrequency.gameName}"></a>
 						</li>

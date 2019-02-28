@@ -18,6 +18,7 @@ import com.jyb.service.GameInformationService;
 import com.jyb.service.SignInService;
 import com.jyb.service.UserInformationService;
 import com.jyb.specialEntity.AgentThreadLocal;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.DateUtil;
 
@@ -39,7 +40,7 @@ public class SignInController {
 	@RequestMapping("/loadSignIn")
 	public Map<String,Object> loadSignIn(HttpSession session){
 		Map<String,Object> map = new HashMap<String,Object>();
-		 UserInformation userInfo = (UserInformation) session.getAttribute("userInfo");
+		 UserInformation userInfo = (UserInformation) session.getAttribute(Constant.USERINFO);
 		 Integer count = CommonMethodUtil.getSignInNumber();
 		 if(userInfo!=null){
 			 SignIn alreadySignI = CommonMethodUtil.isNoSignIn();
@@ -65,7 +66,7 @@ public class SignInController {
 	@RequestMapping("/loginSignIn")
 	public Map<String,Object> loginSignIn(HttpSession session){
 		Map<String,Object> map = new HashMap<String,Object>();
-		UserInformation userInfo = (UserInformation) session.getAttribute("userInfo");
+		UserInformation userInfo = (UserInformation) session.getAttribute(Constant.USERINFO);
 		if(userInfo==null){
 			map.put("success", false);
 		}else{
@@ -80,6 +81,7 @@ public class SignInController {
 			signInService.save(signIn);
 			UserInformation userInformation  = userInformationService.getById(userInfo.getId());
 			userInformation.setUserIntegral(userInformation.getUserIntegral()+3);//签到成功加3积分
+			userInformationService.save(userInformation);
 			map.put("signInNumber", signInRanking);//用户签到总人数
 			map.put("alreadySignI", signIn); //已经签到的用户信息
 			map.put("success", true);

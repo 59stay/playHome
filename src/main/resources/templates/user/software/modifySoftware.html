@@ -30,9 +30,12 @@ width: 90px;
 				  $("#addr1").show(); 
 	              $("#download_address1").val(downloadAddress);
 		    	  $("#link_pwd").val(linkPwd); 
+		    	  $("#download_address1").attr("lay-verify","required");
+		    	  $("#link_pwd").attr("lay-verify","required");
 			  }else{
 				  $("#addr2").show(); 
 	              $("#download_address2").val(downloadAddress); 
+	              $("#download_address2").attr("lay-verify","required");
 			  }
 				  
 	    });
@@ -118,7 +121,7 @@ width: 90px;
 				}
              }); 
 		  
-		    
+		   
 		    form.on('submit(submit_data)', function(data){
 		    	var software_id =  $("#software_id").val(); 
 	 		    var picture = $("#picture").val();
@@ -149,6 +152,7 @@ width: 90px;
 	 				return false;
 	 			}
 	 			 $("#content").val(content); 
+	 			 
 	 			 $.post("/user/software/update",{id:software_id,picture:picture,name:name,title:title,integral:integral,largeCategory:s_large_category,'dataDictionary.id':s_small_category,downloadType:download_type,downloadAddress:download_address,linkPwd:link_pwd,resourcesDescribe:content},function(result){
 		 	  		  if(result.success){
 		 	  			  alert("修改资源成功！");

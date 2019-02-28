@@ -64,7 +64,7 @@ public class AdminUserInformationController {
 				String userName=(String) SecurityUtils.getSubject().getPrincipal();
 				UserInformation userInfo=userInformationService.findByUserName(userName);
 				if(userInfo.getUserRole()==0){
-					request.getSession().setAttribute("adminUserInfo", userInfo);
+					request.getSession().setAttribute(Constant.USERINFO, userInfo);
 					map.put("success", true);
 				}else{
 					map.put("success", false);

@@ -58,7 +58,7 @@ public class DownloadRecordController {
 	@RequestMapping(value = "/listPage/{id}")
 	public ModelAndView listPage(HttpSession session,@PathVariable(value="id",required=false) Integer page)throws Exception{
 		ModelAndView mav=new ModelAndView();
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+		UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
 		DownloadRecord s_userDownload=new DownloadRecord();
 		s_userDownload.setUserInformation(userInformation);
 		List<DownloadRecord> userDownLoadList=downloadRecordService.listPage(s_userDownload, page, 10, Sort.Direction.DESC, "downloadDate");
@@ -80,8 +80,8 @@ public class DownloadRecordController {
 	@ResponseBody
 	@RequestMapping("/exist")
 	public boolean exist(Integer resourceId,String largeCategory,HttpSession session)throws Exception{
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
-		Integer count=downloadRecordService.getDownloadTime(userInformation.getId(), resourceId,largeCategory);
+		UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
+		Integer count=downloadRecordService.getDownloadsFrequency(userInformation.getId(), resourceId,largeCategory);
 		if(count>0){
 			return true;
 		}else{
@@ -98,7 +98,7 @@ public class DownloadRecordController {
 	@ResponseBody
 	@RequestMapping("/isIntegralEnough")
 	public boolean isIntegralEnough(Integer integral,HttpSession session)throws Exception{
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+		UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
 		if(userInformation.getUserIntegral()>=integral){
 			return true;
 		}else{
@@ -176,6 +176,7 @@ public class DownloadRecordController {
 				dr.setLargeCategory(gameInfo.getLargeCategory()); 
 				dr.setResourceName(gameInfo.getGameName());
 				dr.setUserInformation(userInformation);
+				dr.setIsNotExist(2);
 				dr.setDownloadDate(new Date());
 				downloadRecordService.save(dr);
 			    gameInfo.setGameDownloadFrequency(gameInfo.getGameDownloadFrequency()+1);//增加下载次数
@@ -187,6 +188,7 @@ public class DownloadRecordController {
 				dr.setLargeCategory(software.getLargeCategory()); 
 				dr.setResourceName(software.getName());
 				dr.setUserInformation(userInformation);
+				dr.setIsNotExist(2);
 				dr.setDownloadDate(new Date());
 				downloadRecordService.save(dr);
 				software.setDownloadFrequency(software.getDownloadFrequency()+1);//增加下载次数

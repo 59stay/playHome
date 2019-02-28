@@ -10,12 +10,7 @@
 .layui-table-tool-self{
 display: none;
 }
-.layui-table img {
-width: auto;
-height: auto;
-max-width: 100% !important;
-max-height: 100%;
-}
+
 
 </style>
 <script src="/static/layui/layui.js"></script>
@@ -81,7 +76,7 @@ max-height: 100%;
 	});
 
 	 function formatUserHeadPicture(d){
-			return "<img  src='"+d.userInformation.userHead+"'></img>";
+			return "<img class='layui-nav-img'  src='"+d.userInformation.userHead+"'></img>";
 	 }
 	 function formatUserName(d){
 		 return d.userInformation.userName;

@@ -184,7 +184,7 @@ public class GameIndex {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<GameInformation> search(String q)throws Exception{
+	public synchronized List<GameInformation> search(String q)throws Exception{
 		dir=FSDirectory.open(Paths.get(lucenePath));//获取索引路径
 		IndexReader reader = DirectoryReader.open(dir);//读取索引
 		IndexSearcher is=new IndexSearcher(reader);//创建索引查询器
@@ -233,13 +233,13 @@ public class GameIndex {
 					TokenStream tokenStream = analyzer.tokenStream("gameDescribe", new StringReader(content)); 
 					String hContent=highlighter.getBestFragment(tokenStream, content);
 					if(StringUtil.isEmpty(hContent)){
-						if(content.length()<=200){
+						if(content.length()<=100){
 							game.setGameDescribe(content);
 						}else{
-							game.setGameDescribe(content.substring(0, 200));						
+							game.setGameDescribe(content.substring(0,100));						
 						}
 					}else{
-						game.setGameDescribe(hContent);					
+							game.setGameDescribe(hContent);	
 					}
 				}
 				gameList.add(game);

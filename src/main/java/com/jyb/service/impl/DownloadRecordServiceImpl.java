@@ -103,15 +103,21 @@ public class DownloadRecordServiceImpl implements DownloadRecordService {
 	}
 
 	@Override
-	public Integer getDownloadTime(Integer userId, Integer resourceId,String largeCategory) {
+	public Integer getDownloadsFrequency(Integer userId, Integer resourceId,String largeCategory) {
 		// TODO Auto-generated method stub
-		return downloadRecordRepositroy.getDownloadTime(userId,resourceId,largeCategory);
+		return downloadRecordRepositroy.getDownloadsFrequency(userId,resourceId,largeCategory);
 	}
 
 	@Override
 	public void deleteDownloadRecord(Integer id,String largeCategory) {
 		// TODO Auto-generated method stub
 		downloadRecordRepositroy.deleteDownloadRecord(id,largeCategory); 
+	}
+
+	@Override
+	public DownloadRecord getDownloadedRecord(Integer resourceId, String largeCategory) {
+		// TODO Auto-generated method stub
+		return downloadRecordRepositroy.getDownloadedRecord(resourceId, largeCategory);
 	}
 
 }

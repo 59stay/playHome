@@ -36,9 +36,9 @@
 												class="layui-input" style="height: 30px" />
 										</div>
 										<div class="layui-col-md2">
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"
-												class="layui-btn layui-btn-radius layui-btn-sm"
-												value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;搜索&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " />
+											 <input type="submit"  
+											 class="layui-btn layui-btn-radius layui-btn-sm" 
+											 value="搜 索" style="width: 100px;margin-left: 10px;"/>
 										</div>
 									</div>
 								</form>
@@ -56,11 +56,6 @@
 				</div>
 				<div class="datas imageDatas">
 					<ul class="imageUl">
-						<!-- <li class="imageLi"><a target="_blank" href="#" title="毒液">
-								<img class="indexFilm" src="https://tu.66vod.net/2018/4544.jpg"></img>
-								<p>电影名称</p>
-						</a></li> -->
-
 						<li th:each="gameInfo:${indexGameInformationList}" class="imageLi"><a
 							target="_blank" th:href="'/user/gameInformation/listDetails/'+${gameInfo.id}"
 							th:title="${gameInfo.gameName}"> 

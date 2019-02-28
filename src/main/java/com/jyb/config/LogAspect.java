@@ -3,7 +3,6 @@ package com.jyb.config;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
@@ -53,7 +52,8 @@ public class LogAspect {
 	   		+ "|| execution(public * com.jyb.controller..*.add*(..))"
 	   		+ "|| execution(public * com.jyb.controller..*.modify*(..))"
 	   		+ "|| execution(public * com.jyb.controller..*.save*(..))"
-	   		+ "|| execution(public * com.jyb.controller..*.check*(..))")
+	   		+ "|| execution(public * com.jyb.controller..*.check*(..))"
+	   		+ "|| execution(public * com.jyb.controller..*.update*(..))")
 	   private void controllerAspect(){}
 	   
 	   

@@ -16,7 +16,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	//游戏内容回显图片
 	registry.addResourceHandler("/gameContentImage/**").addResourceLocations("file:D:\\phImage\\gameContentImage\\");
-	registry.addResourceHandler("/gameCoverImage/**").addResourceLocations("file:D:\\phImage\\gameCoverImage\\");
+	registry.addResourceHandler("/contentImage/**").addResourceLocations("file:D:\\phImage\\contentImage\\");
 	registry.addResourceHandler("/userHeadImage/**").addResourceLocations("file:D:\\phImage\\userHeadFilePath\\");
   }
  

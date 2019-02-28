@@ -34,7 +34,7 @@ public interface DownloadRecordService {
 	 * @param resourceId
 	 * @return
 	 */
-	public Integer getDownloadTime(Integer userId,Integer resourceId,String largeCategory);
+	public Integer getDownloadsFrequency(Integer userId,Integer resourceId,String largeCategory);
 
 	/**
 	 * 添加下载记录
@@ -65,6 +65,13 @@ public interface DownloadRecordService {
 	 */
 	public void deleteDownloadRecord(Integer articleId,String largeCategory);
 	
+	/**
+	 * 根据资源ID和大类别查询已下载的记录
+	 * @param resourceId
+	 * @param largeCategory
+	 * @return
+	 */
+	public DownloadRecord getDownloadedRecord(Integer resourceId,String largeCategory);
 	
 	
 

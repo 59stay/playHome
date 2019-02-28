@@ -54,7 +54,7 @@ function signIn(){
 }
 
 function submitData(){
-	var q=$("#q").val();
+	var q=$("#q").val().trim();
 	if(q==""){
 		layer.msg("请输入关键字！");
 		$("#q").focus();

@@ -1,8 +1,10 @@
 package com.jyb.controller.user;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,6 +13,15 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -24,11 +35,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.jyb.entity.UserInformation;
 import com.jyb.service.UserInformationService;
 import com.jyb.specialEntity.Constant;
+import com.jyb.specialEntity.VaptchaMessage;
 import com.jyb.util.DateUtil;
 import com.jyb.util.IpUtil;
 import com.jyb.util.MD5Util;
@@ -56,10 +68,11 @@ public class UserInformationController {
 	 * @param userInformation
 	 * @param session
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("login")
 	@ResponseBody
-	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpServletRequest request,HttpSession session){
+	public Map<String,Object> loginUserInformation(UserInformation userInformation,HttpServletRequest request,HttpSession session,String vaptcha_token) throws Exception{
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(StringUtil.isEmpty(userInformation.getUserName())){
 			map.put("success", false);
@@ -69,6 +82,10 @@ public class UserInformationController {
 			map.put("success", false);
     		map.put("errorInfo", "请输入密码！");
     		return map;
+		}else if(!vaptchaCheck(vaptcha_token,request.getRemoteHost())){
+				map.put("success", false);
+	    		map.put("errorInfo", "人机验证失败！");
+	    		return map;
 		}else{
 			try {
 				Subject subject=SecurityUtils.getSubject();
@@ -198,7 +215,7 @@ public class UserInformationController {
 	@RequestMapping("/uploadUserHead")
 	public Map<String,Object> uploadUserHead(MultipartFile file,HttpSession session)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute("userInfo");
+		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
 		if(!file.isEmpty()){
 			// 获取文件名
 			String fileName = file.getOriginalFilename();
@@ -247,7 +264,7 @@ public class UserInformationController {
 	public Map<String,Object> modifyPassword(String oldPassword,String password,String confirmPassword,HttpSession session){
 		  Map<String, Object> map = new HashMap<>();
 		  if(StringUtil.isNotEmpty(oldPassword)&& StringUtil.isNotEmpty(password)){
-			  UserInformation userInfo=(UserInformation)session.getAttribute("userInfo");
+			  UserInformation userInfo=(UserInformation)session.getAttribute(Constant.USERINFO);
 			  String md5 = MD5Util.md5(oldPassword,Constant.SALT);
 			  if(userInfo.getUserPassword().equals(md5)){
 				  userInfo.setUserPassword(MD5Util.md5(confirmPassword,Constant.SALT));
@@ -296,6 +313,44 @@ public class UserInformationController {
 		resultMap.put("userName",user.getUserName());
 		resultMap.put("success", true);
 		return resultMap;
+	}
+	
+	
+	/**
+	 * 人机验证结果判断
+	 * @param token
+	 * @param ip
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unused")
+	private boolean vaptchaCheck(String token,String ip)throws Exception{
+		String body="";
+		CloseableHttpClient httpClient=HttpClients.createDefault();
+		HttpPost httpPost=new HttpPost("http://api.vaptcha.com/v2/validate");
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("id", "5c7754cbfc650fe020328b0e"));
+		nvps.add(new BasicNameValuePair("secretkey", "04bc8ca8f0a247be8d0d8a3b5c190df3"));
+		nvps.add(new BasicNameValuePair("scene", ""));
+		nvps.add(new BasicNameValuePair("token", token));
+		nvps.add(new BasicNameValuePair("ip", ip));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse r = httpClient.execute(httpPost);
+		HttpEntity entity = r.getEntity();
+		if(entity!=null){
+			body = EntityUtils.toString(entity, "utf-8");
+			System.out.println(body);
+		}
+		r.close();
+		httpClient.close();
+		Gson gson = new Gson();
+		VaptchaMessage message=gson.fromJson(body, VaptchaMessage.class);
+		if(message.getSuccess()==1){
+			return true;
+		}else{
+			return false;
+		}
+				
 	}
 	
 }

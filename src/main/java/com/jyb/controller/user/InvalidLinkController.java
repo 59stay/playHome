@@ -24,6 +24,7 @@ import com.jyb.lucene.SoftwareIndex;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.InvalidLinkService;
 import com.jyb.service.SoftwareService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.CheckUrlUtil;
 import com.jyb.util.RedisUtil;
 
@@ -65,7 +66,7 @@ public class InvalidLinkController {
 	@RequestMapping(value = "/userInvalidLinkList")
 	public Map<String,Object> userInvalidLink(InvalidLink s_invalidLink,HttpSession session,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit)throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		UserInformation userInformation=(UserInformation)session.getAttribute("userInfo");
+		UserInformation userInformation=(UserInformation)session.getAttribute(Constant.USERINFO);
 		s_invalidLink.setUserId(userInformation.getId());
 		List<InvalidLink> invalidLinkList=invalidLinkService.listPage(s_invalidLink, page,limit,Sort.Direction.DESC,"creationTime");
 		Long count=invalidLinkService.getCount(s_invalidLink);
@@ -87,13 +88,24 @@ public class InvalidLinkController {
     public Map<String,Object> modifyShareLink(InvalidLink invalidLink,HttpSession session,HttpServletRequest request)throws Exception{
     	Map<String, Object> resultMap = new HashMap<>();
     	InvalidLink link = invalidLinkService.getId(invalidLink.getId());
-    	if(!CheckUrlUtil.checkBDY(invalidLink.getDownloadAddress())&&link.getDownloadType()==1){
-    		resultMap.put("success", false);
-    		resultMap.put("errorInfo", "百度云分享链接已经失效 ，请重新修改链接");
-    	}else if(!CheckUrlUtil.checkUrl(invalidLink.getDownloadAddress(), 3000)&&link.getDownloadType()==2){
-    		resultMap.put("success", false);
-    		resultMap.put("errorInfo", "其他分享链接已经失效 ，请重新修改链接");
-    	}else{
+    	boolean flag =false;
+    	if(link.getDownloadType()==1){
+    		if(!CheckUrlUtil.checkBDY(invalidLink.getDownloadAddress())){
+    			resultMap.put("success", false);
+        		resultMap.put("errorInfo", "百度云分享链接已经失效 ，请重新修改链接");	
+    		}else{
+    			flag = true;
+    		}
+    	}else if(link.getDownloadType()==2){
+    		if(!CheckUrlUtil.checkUrl(invalidLink.getDownloadAddress(), 3000)){
+    			resultMap.put("success", false);
+        		resultMap.put("errorInfo", "其他分享链接已经失效 ，请重新修改链接");
+    		}else{
+    			flag = true;
+    		}
+    	}
+    	
+    	if(flag){
     		if(link.getLargeCategory().equals("A")){//游戏
         		GameInformation gm = gameInformationService.getId(link.getResourceId());
         		gm.setGameDownloadAddress(invalidLink.getDownloadAddress());
@@ -114,7 +126,8 @@ public class InvalidLinkController {
         		softwareIndex.updateIndex(software);
         		redisUtilSoftware.del("r_software_"+software.getId());
         	}
-        	invalidLinkService.delete(link.getId());
+        	 invalidLinkService.delete(link.getId());
+        	 InitSystem.loadData(request.getServletContext());
         	resultMap.put("success", true);
     	}
     	return resultMap;

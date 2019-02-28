@@ -2,21 +2,17 @@
 <meta charset="UTF-8"></meta>
 <div id="head">
 <ul class="layui-nav" lay-filter="">
-			<li class="layui-nav-item"><a href="/">首页</a></li>
+            <li class="layui-nav-item"> <a  href="/"><img src="/static/images/logo.png" /> </a></li>
+			<li class="layui-nav-item" style="margin-left: 50px;"><a href="/">首页</a></li>
 			<li class="layui-nav-item"><a href="/user/gameInformation/index">宅游戏</a></li>
-			<!-- <li class="layui-nav-item"><a
-				href="http://blog.java1234.com/blog/articles/427.html"
-				target="_blank">宅电影</a></li> -->
 	    	<li class="layui-nav-item"><a href="/user/software/index">宅软件</a></li>  
 			<li class="layui-nav-item"><a
 				href="/user/userMessage/index" >留言板</a></li>
-			<li class="layui-nav-item"><a
-				href="http://www.java1234.com/javaxuexiluxiantu.html"
-				target="_blank">关于我们</a></li>
-			<li class="layui-nav-item" style="float: right;"
-				th:if="${session.userInfo!=null}"><a href="/personalCenter/toMain"><img
-					th:src="${session.userInfo.userHead}"
-					class='layui-nav-img' th:text="${session.userInfo.userName}"></img></a>
+			<li class="layui-nav-item"><a href="/aboutUs">关于我们</a></li>
+			<li class="layui-nav-item" style="float: right;" th:if="${session.userInfo!=null}">
+			    <a href="/personalCenter/toMain">
+			       <img th:src="${session.userInfo.userHead}" class='layui-nav-img' th:text="${session.userInfo.userName}"></img>
+			    </a>
 				<dl class="layui-nav-child">
 					<dd>
 						<a href="javascript:;" onclick="javascript:showModifyPassword();return false;" >修改密码</a>
