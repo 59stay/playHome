@@ -31,7 +31,6 @@ width: 90px;
 	              $("#game_download_address1").val(gameDownloadAddress);
 		    	  $("#link_pwd").val(linkPwd); 
 		    	  $("#game_download_address1").attr("lay-verify","required");
-		    	  $("#link_pwd").attr("lay-verify","required");
 			  }else{
 				  $("#addr2").show(); 
 	              $("#game_download_address2").val(gameDownloadAddress); 
@@ -48,7 +47,7 @@ width: 90px;
 		  //普通图片上传
 		  var uploadInst = upload.render({
 		     elem: '#upload_btn'
-		    ,url: '/user/gameInformation/uploadCoverImage'
+		    ,url: '/common/uploadCoverImage'
 		    ,size: 60 //限制文件大小，单位 KB
 		    ,before: function(obj){
 		      //预读本地文件示例，不支持ie8
@@ -77,7 +76,7 @@ width: 90px;
 		  
 		  var index=layedit.build('content',{
 			  uploadImage:{
-				  url:'/user/gameInformation/uploadContentImage',
+				  url:'/common/uploadContentImage',
 				  type:'post'
 			  }
 		  });
@@ -147,7 +146,6 @@ width: 90px;
 	 				return false;
 	 			}
 			    $("#content").val(content);
-			    alert(content);
 			    $.post("/user/gameInformation/updateGame",{id:game_id,gamePicture:game_picture,gameName:game_name,gameTitle:game_title,integral:integral,largeCategory:s_large_category,'dataDictionary.id':s_small_category,downloadType:download_type,gameDownloadAddress:game_download_address,linkPwd:link_pwd,gameDescribe:content},function(result){
 		 	  		  if(result.success){
 		 	  			  alert("修改资源成功！");

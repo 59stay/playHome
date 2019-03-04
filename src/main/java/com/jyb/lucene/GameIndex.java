@@ -50,7 +50,7 @@ public class GameIndex {
 
 	private Directory dir=null;
 	
-	@Value("${lucenePath}")
+	@Value("${lucenePath1}")
 	private String lucenePath;
 	
 	/**

@@ -85,9 +85,13 @@ function reloadPage(){
 /**
  * 返回资源展示页面
  */
-function cancel(){
-	 window.location.href="/personalCenter/toGameResourceManagement";
-}
+function cancel(type){
+	if(type==1){
+		 window.location.href="/personalCenter/toGameResourceManagement";
+	}else{
+		 window.location.href="/personalCenter/toSoftwareManagement";
+	}
+}	
 
 
 

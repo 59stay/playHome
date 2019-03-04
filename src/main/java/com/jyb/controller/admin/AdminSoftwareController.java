@@ -1,5 +1,6 @@
 package com.jyb.controller.admin;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jyb.entity.GameInformation;
 import com.jyb.entity.Software;
 import com.jyb.init.InitSystem;
 import com.jyb.lucene.SoftwareIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.SoftwareService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
 @Controller
 @RequestMapping("admin/software")
@@ -140,6 +141,22 @@ public class AdminSoftwareController {
 		return map;
 	}
 	
-	
+	/**
+	 * 生成软件资源索引
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/indexes")
+	@RequiresPermissions(value={"后台-生成资源索引"})
+	public Map<String,Object>  indexes (){
+	    FileUtil.deleteDir(new File("D://lucene2"));
+		List<Software> softwareList=softwareService.listAll(null,Sort.Direction.DESC, "browseFrequency");
+  		for(Software software:softwareList){
+  			softwareIndex.addIndex(software);
+  		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("success", true);
+		return map;
+	}
 	
 }

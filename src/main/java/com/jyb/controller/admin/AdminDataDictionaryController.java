@@ -102,6 +102,7 @@ public class AdminDataDictionaryController {
 			map.put("success",true);
 		}else if(dataDictionary.getId()==null){
 			dataDictionaryService.save(dataDictionary);
+			InitSystem.loadData(request.getServletContext());
 			map.put("success",true);
 		}else{
 			map.put("success",false);

@@ -49,7 +49,8 @@ public class MyRealm extends AuthorizingRealm{
 			info.addStringPermission("后台-失效链接");
 			info.addStringPermission("后台-日志信息");
 			info.addStringPermission("后台-评论信息");
-
+			info.addStringPermission("后台-生成资源索引");
+			
 			/********AdminDataDictionaryController**********/
 			info.addStringPermission("后台-分页查询所有的类别信息");
 			info.addStringPermission("后台-根据id查找类别信息");

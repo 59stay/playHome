@@ -252,7 +252,7 @@ public class SoftwareController {
 		List<Software> hotSoftwareList=softwareIndex.search(q);
 		Integer toIndex=hotSoftwareList.size()>=Integer.parseInt(page)*10?Integer.parseInt(page)*10:hotSoftwareList.size();
 		mav.addObject("hotSoftwareList",hotSoftwareList.subList((Integer.parseInt(page)-1)*10, toIndex));
-		mav.addObject("pageCode", PageUtil.getUpAndDownPageCode(Integer.parseInt(page), hotSoftwareList.size(), q, 10));
+		mav.addObject("pageCode", PageUtil.getUpAndDownPageCode("/user/software/search?page",Integer.parseInt(page), hotSoftwareList.size(), q, 10));
 		mav.addObject("q",q);
 		mav.addObject("resultTotal",hotSoftwareList.size());
 		mav.addObject("title", q);
@@ -301,14 +301,10 @@ public class SoftwareController {
 			if(!ipAddr.equals(IpUtil.getIpAddr(request))&&!softwareId.equals(id.toString())){
 				software.setBrowseFrequency(software.getBrowseFrequency()+1);
 				softwareService.save(software);
-				redisUtil.del("r_software_"+software.getId());
-				InitSystem.loadData(request.getServletContext());
 		    }
 		}else{
 			software.setBrowseFrequency(software.getBrowseFrequency()+1);
 			softwareService.save(software);
-			redisUtil.del("r_software_"+software.getId());
-			InitSystem.loadData(request.getServletContext());
 			CookiesUtil.setCookie(response, "ipAddr", IpUtil.getIpAddr(request),15);
 			CookiesUtil.setCookie(response, "softwareId",id.toString(),15);
 		}

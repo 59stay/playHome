@@ -72,7 +72,7 @@ public class ShiroConfig {
         
         filterChainDefinitionMap.put("/userHeadImage/**", "anon");
         filterChainDefinitionMap.put("/contentImage/**", "anon");
-        filterChainDefinitionMap.put("/gameCoverImage/**", "anon");
+        filterChainDefinitionMap.put("/coverImage/**", "anon");
        
         filterChainDefinitionMap.put("/static/css/**", "anon");
         filterChainDefinitionMap.put("/static/images/**", "anon");

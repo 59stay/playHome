@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,9 +15,6 @@ import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jyb.util.RedisUtil;
 
 import redis.clients.jedis.JedisPoolConfig;
@@ -95,7 +89,7 @@ public class RedisConfig {
 		return JedisConnectionFactory;
 	}
 	@Bean
-	public RedisSerializer<Object> FastJsonRedisSerializer() {
+	public RedisSerializer<Object> fastJsonRedisSerializer() {
 	    return new FastJsonRedisSerializer<Object>(Object.class);
 	}
 	
@@ -107,20 +101,17 @@ public class RedisConfig {
 	@Bean
 	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-		 //initDomainRedisTemplate(redisTemplate, redisConnectionFactory);
-		 //FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
-	     // 全局开启AutoType，不建议使用
-         // ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
-         // 建议使用这种方式，小范围指定白名单
-         //ParserConfig.getGlobalInstance().addAccept("com.entity.");
-         //redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-         // redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
-         // 设置键（key）的序列化采用StringRedisSerializer。
-         redisTemplate.setKeySerializer(new StringRedisSerializer());
-         redisTemplate.setValueSerializer(FastJsonRedisSerializer());
-         //redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+         redisTemplate.setConnectionFactory(redisConnectionFactory);
+         redisTemplate.setKeySerializer(new StringRedisSerializer());  // 设置键（key）的序列化采用StringRedisSerializer
+         redisTemplate.setKeySerializer(fastJsonRedisSerializer());
+         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+         redisTemplate.setHashKeySerializer(fastJsonRedisSerializer()); 
+         redisTemplate.setValueSerializer(new StringRedisSerializer());
+         redisTemplate.setValueSerializer(fastJsonRedisSerializer());
+         redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+    	 redisTemplate.setHashValueSerializer(fastJsonRedisSerializer());
          redisTemplate.afterPropertiesSet();
+ 	 	 redisTemplate.setEnableTransactionSupport(true); // 开启事务
 		return redisTemplate;
 	}
 	
@@ -137,23 +128,6 @@ public class RedisConfig {
 	    return new HttpMessageConverters(converter);
 	}
 
-	/**
-	 * 设置数据存入 redis 的序列化方式,并开启事务
-	 * 
-	 * @param redisTemplate
-	 * @param factory
-	 */
-	private void initDomainRedisTemplate(RedisTemplate<String, Object> redisTemplate, RedisConnectionFactory factory) {
-		// 如果不配置Serializer，那么存储的时候缺省使用String，如果用User类型存储，那么会提示错误User can't cast
-		// to String！
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-		redisTemplate.setHashValueSerializer(new JdkSerializationRedisSerializer());
-		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-		// 开启事务
-		redisTemplate.setEnableTransactionSupport(true);
-		redisTemplate.setConnectionFactory(factory);
-	}
 	
 	/**
      * 注入封装RedisTemplate

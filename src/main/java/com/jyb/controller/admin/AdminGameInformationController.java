@@ -1,5 +1,6 @@
 package com.jyb.controller.admin;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.jyb.lucene.GameIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
 
 @Controller
@@ -182,5 +184,24 @@ public class AdminGameInformationController {
 		map.put("success", true);
 		return map;
 	}
+	
+	/**
+	 * 生成游戏资源索引
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/indexes")
+	@RequiresPermissions(value={"后台-生成资源索引"})
+	public Map<String,Object>  indexes (){
+		FileUtil.deleteDir(new File("D://lucene1"));
+		List<GameInformation> gameList=gameInformationService.listAll(null,Sort.Direction.DESC, "gameBrowseFrequency");
+		for(GameInformation game:gameList){
+				gameIndex.addIndex(game);
+		}
+		Map<String, Object> map = new HashMap<>();
+		map.put("success", true);
+		return map;
+	}
+	
 	
 }

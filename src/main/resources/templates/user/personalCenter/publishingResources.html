@@ -37,7 +37,6 @@ width: 90px;
 		    	   $("#link_pwd").val(""); 
 			       $("#download_address2").val("");
 			       $("#download_address1").attr("lay-verify",'required|url');
-			       $("#link_pwd").attr("lay-verify",'required');
 			       $("#download_address2").removeAttr("lay-verify");
 				}else if (data.value == 2) {
 				   $("#addr2").show(); 
@@ -47,7 +46,6 @@ width: 90px;
 			       $("#download_address2").val("");
 			       $("#download_address2").attr("lay-verify",'required|url');
 			       $("#download_address1").removeAttr("lay-verify");
-			       $("#link_pwd").removeAttr("lay-verify");
 			    }else{
 		    	   $("#addr1").hide();
 		    	   $("#addr2").hide();
@@ -56,7 +54,6 @@ width: 90px;
 			       $("#download_address2").val("");
 			       $("#download_address1").removeAttr("lay-verify");
 			       $("#download_address2").removeAttr("lay-verify");
-			       $("#link_pwd").removeAttr("lay-verify");
 			    }
 
 		});
@@ -64,7 +61,7 @@ width: 90px;
 						var uploadInst = upload
 								.render({
 									elem : '#upload_btn',
-									url : '/user/gameInformation/uploadCoverImage',
+									url : '/common/uploadCoverImage',
 									size : 60, //限制文件大小，单位 KB
 									before : function(obj) {
 										//预读本地文件示例，不支持ie8
@@ -117,7 +114,7 @@ width: 90px;
 						
 					 	var index = layedit.build( 'content', {
 											uploadImage : {
-												url : '/user/gameInformation/uploadContentImage',
+												url : '/common/uploadContentImage',
 												type : 'post',
 											}
 						}); 

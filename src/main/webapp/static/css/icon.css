@@ -1,13 +1,33 @@
 /*阿里图标素材代码 http://www.iconfont.cn*/
 /**新增游戏图标*/
 @font-face {font-family: "layui-icon";
-  src: url('../layui/font/iconfont.eot?t=1544170668217'); /* IE9*/
-  src: url('./layui/font/iconfont.eot?t=1544170668217#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  src: url('./layui/font/iconfont.eot?t=1544170668217');
+  src: url('./layui/font/iconfont.eot?t=1544170668217#iefix') format('embedded-opentype'),
   url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAUEAAsAAAAAB4AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY8iUgFY21hcAAAAYAAAABLAAABcOc7teNnbHlmAAABzAAAAVYAAAGMvR+y12hlYWQAAAMkAAAALAAAADYTft9HaGhlYQAAA1AAAAAcAAAAJAfeA4NobXR4AAADbAAAAAgAAAAICAAAAGxvY2EAAAN0AAAABgAAAAYAxgAAbWF4cAAAA3wAAAAgAAAAIAERAJZuYW1lAAADnAAAAUUAAAJtPlT+fXBvc3QAAATkAAAAHgAAAC+Vcm5seJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkYWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByeCT8TZm7438AQw9zA0AAUZgTJAQDgHQwJeJxjYGBgZWBgYAZiHSBmYWBgDGFgZAABP6AoI1icmYELLM7CoARWwwISfyb8/z+MBPJZwCQDIxvDKOABkzJQHjisIJiBEQBXYAm1AHicVY29boJQFIDvEeSGGy9FLkKQAuVHGIyKFMHEVNvEauJMF1l8hfYBOrdL4+DbdHfyQZqOfQBSNOnQkzN850u+HNRE9XCfjR80QE/oGb2id4RgyGE3lBpYAk23QR9n+RzyLM9mkOgXo+nj2swh5AQs+OMhRPWGffDqBKsCHntRGKXnTHezc9HzJ2noCRb4nqBqM+ioWpLdwW2SpWEeeldQ22QBWapjwYYzhB731l7MR3z1wo/mi7bqwA2dJZs+k4E3ZXkvSxYPMutvkhm9AccFVYvTAJqBbVp7y7SDZi+NNRUcZuxE+BB3BnOqRaxcK7GkKNIfVMQgpci6YimSkhKf1ofRWD+sLAyArdX99nQYdAKAqZlQm2LccmhiTgECdXg4Vd8Ty+GXzI1pq0Vjly15x5qsj0URcVxUFMevf88u8EjIlnQZ2YpmXlKf0JIYDKFfDYc6PAAAeJxjYGRgYABij7Z9yvH8Nl8ZuFkYQOCGge8aZJqFgekTkOJgYALxAPwKCGR4nGNgZGBgbvjfwBDDwgACQJKRARUwAQBHCAJrBAAAAAQAAAAAAAAAAMYAAAABAAAAAgCKAAUAAAAAAAIAAAAKAAoAAAD/AAAAAAAAeJxlj01OwzAQhV/6B6QSqqhgh+QFYgEo/RGrblhUavdddN+mTpsqiSPHrdQDcB6OwAk4AtyAO/BIJ5s2lsffvHljTwDc4Acejt8t95E9XDI7cg0XuBeuU38QbpBfhJto41W4Rf1N2MczpsJtdGF5g9e4YvaEd2EPHXwI13CNT+E69S/hBvlbuIk7/Aq30PHqwj7mXle4jUcv9sdWL5xeqeVBxaHJIpM5v4KZXu+Sha3S6pxrW8QmU4OgX0lTnWlb3VPs10PnIhVZk6oJqzpJjMqt2erQBRvn8lGvF4kehCblWGP+tsYCjnEFhSUOjDFCGGSIyujoO1Vm9K+xQ8Jee1Y9zed0WxTU/3OFAQL0z1xTurLSeTpPgT1fG1J1dCtuy56UNJFezUkSskJe1rZUQuoBNmVXjhF6XNGJPyhnSP8ACVpuyAAAAHicY2BigAAuBuyAiZGJkZmBNT0xN1WXgQEAC+wB4gAA') format('woff'),
-  url('./layui/font/iconfont.ttf?t=1544170668217') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('./layui/font/iconfont.svg?t=1544170668217#iconfont') format('svg'); /* iOS 4.1- */
-}
-.layui-icon-game:before { content: "\e613"; }
+  url('./layui/font/iconfont.ttf?t=1544170668217') format('truetype'),
+  url('./layui/font/iconfont.svg?t=1544170668217#iconfont') format('svg');
+} 
 
+@font-face {font-family: "layui-icon";
+  src: url('./layui/font/iconfont.eot?t=1551591858376'); /* IE9 */
+  src: url('./layui/font/iconfont.eot?t=1551591858376#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAALsAAsAAAAABqwAAAKdAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCCcAqBNIE7ATYCJAMICwYABCAFhG0HMRviBREVjDWyHwXunpvolI9oS8MyLsNSl2HB/x/B82T377kzs2/nS6yEClLiok1KqBRUWZVcJ+07uNxX9mEgB/IT0+mbf9z92PfXsjVMIgqwMAu4BgggGOvzXE5vAh1I6wPltDeNNbF31Asw3hrYnhgFEnABhdwwdsELvA8BfEmUT5paWnuxGOxlAsiyxQtT2EIYg2E5i+Bp2GuQzThYtUY9BjZF35e/lGZB4Wjshk5qnqXum+wU6FXendGAIAICOuwAGsgHBqS3Md2uaIRxGt+0IRXHqhX4kez9By7kqHaE/XV2tT8A8VDxTEpP9ajVCgADRytB26T3ARPsH+i/8u3b2Mio7e8Wb97ERIRvec0n38zevSs69Xb++vXU3bep+9+N7rxJ2XLixpX+tVd27Dx68fJpWX1LFp4HPf6aNTKcdf9b0sQnV7ttl07ssXvt2ZNtrXCZz16fcyf794c0NIR4d7m+IXuirkQ4/1ePF1Z2RiT0UafYUX1QbfmXv6HuE+BOBFX9s20DwPu9j3ORzTDMC/aMHoE/pxzYYgy1bVaPoEAeRWUuiAIo4z68bH+oD1MtEbeZFywRN+t1ScigsaSThs2HI+anHB5WLXzlGR32E4a1yHyAXGcAEewJJdBtaMFepGHfcET6wSO4Fnz11znTT2aR2mN0BH1wtxB5RU6uW9S4dozBMnU4r44Ec+Q6ioGlm+XcCHPkJTbUq8AWISAuMhiCxzBNCyi5iNETPRQpu4ZBTS/SvSJTVI0YcgjkA64tEPEUchR0Fmrl82MosJRycAevLj2HWC0aH1h05gByZMgH8R7lmdpKwCYEAYQVMmAIZqFUqgDK5lkx5BG6cEKy1GU47WioQd/elP3dLsCXbVU5UzXuQydxck1RAAAAAA==') format('woff2'),
+  url('./layui/font/iconfont.woff?t=1551591858376') format('woff'),
+  url('./layui/font/iconfont.ttf?t=1551591858376') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('./layui/font/iconfont.svg?t=1551591858376#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+/* .iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+} 
+ */
+ 
+.layui-icon-see:before {content: "\e620";}
+
+.layui-icon-game:before { content:"\e613";}
 
 

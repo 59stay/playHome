@@ -114,6 +114,24 @@ display: none;
 		  			});
 		        }
 		      break;
+		      case 'indexes':
+		    	  layer.confirm("您确定要生成游戏资源索引信息吗？", {
+		  		       title:"系统提示"
+		  		      ,icon: 3
+		  			  ,btn: ['确定','取消'] //按钮
+		  			}, function(){
+		  				layer.closeAll('dialog');
+		  				$.post("/admin/gameInformation/indexes",{},function(result){
+		  					if(result.success){
+		  						layer.msg("索引创建成功！");
+		  					}else{
+		  						layer.msg("索引创建失败，请联系管理员！");
+		  					}
+		  				},"json");
+		  			}, function(){
+		  			  
+		  			});
+		      break;
 		    }
 		  });
 	});
@@ -240,6 +258,7 @@ display: none;
   <div class="layui-btn-container">
     <button class="layui-btn layui-btn-sm" lay-event="detail">查看详情</button>
     <button class="layui-btn layui-btn-sm" lay-event="del">批量删除</button>
+    <button class="layui-btn layui-btn-sm" lay-event="indexes">生成资源索引</button>
   </div>
 </script>
 

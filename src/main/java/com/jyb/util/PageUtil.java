@@ -58,7 +58,29 @@ public class PageUtil {
 	 * @param pageSize
 	 * @return
 	 */
-	public static String getUpAndDownPageCode(Integer page,Integer totalNum,String q,Integer pageSize){
+	public static String getUpAndDownPageCode(String targetUrl,Integer page,Integer totalNum,String q,Integer pageSize){
+		long totalPage=totalNum%pageSize==0?totalNum/pageSize:totalNum/pageSize+1;
+		StringBuffer pageCode=new StringBuffer();
+		if(totalPage==0){
+			return "";
+		}else{
+			pageCode.append("<div class='layui-box layui-laypage layui-laypage-default'>");
+			if(page>1){
+				pageCode.append("<a href="+targetUrl+"="+(page-1)+"&q="+q+"' class='layui-laypage-prev'>上一页</a>");
+			}else{
+				pageCode.append("<a href='#' class='layui-laypage-prev layui-disabled'>上一页</a>");
+			}
+			if(page<totalPage){
+				pageCode.append("<a href='"+targetUrl+"="+(page+1)+"&q="+q+"' class='layui-laypage-next'>下一页</a>");
+			}else{
+				pageCode.append("<a href='#' class='layui-laypage-next layui-disabled'>下一页</a>");
+			}
+			pageCode.append("</div>");
+		}
+		return pageCode.toString();
+	}
+		
+/*	public static String getUpAndDownPageCode(Integer page,Integer totalNum,String q,Integer pageSize){
 		long totalPage=totalNum%pageSize==0?totalNum/pageSize:totalNum/pageSize+1;
 		StringBuffer pageCode=new StringBuffer();
 		if(totalPage==0){
@@ -79,6 +101,6 @@ public class PageUtil {
 		}
 		return pageCode.toString();
 	}
-	
+	*/
 	
 }

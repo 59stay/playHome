@@ -11,6 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jyb.config.LogAspect;
 import com.jyb.entity.UserInformation;
 /**
  * session过滤器
@@ -18,11 +22,11 @@ import com.jyb.entity.UserInformation;
  *
  */
 public class SessionFilter implements Filter {
-	
+	 private Logger log = LoggerFactory.getLogger(LogAspect.class);
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		// TODO Auto-generated method stub
-		   System.out.println("Filter初始化中");
+		log.info("Filter初始化中");
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class SessionFilter implements Filter {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		   System.out.println("Filter销毁中");
+		log.info("Filter销毁中");
 	}
 
 }

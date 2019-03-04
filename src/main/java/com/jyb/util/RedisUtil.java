@@ -5,11 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.test.annotation.Commit;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -18,13 +14,11 @@ import org.springframework.util.CollectionUtils;
  *
  */
 public class RedisUtil<T> {
-	
+
 	private RedisTemplate<String, T> redisTemplate;
 
 	public void setRedisTemplate(RedisTemplate<String, T> redisTemplate) {
-		    @SuppressWarnings("unused")
-			RedisSerializer<?> stringSerializer = new StringRedisSerializer();
-		    this.redisTemplate = redisTemplate;
+		this.redisTemplate = redisTemplate;
 	}
 
 	// =============================common============================

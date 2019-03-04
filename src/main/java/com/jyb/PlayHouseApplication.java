@@ -14,6 +14,10 @@ public class PlayHouseApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PlayHouseApplication.class, args);
 	}
+	  /**
+	   * session过滤器 
+	   * @return
+	   */
       @Bean
 	  public FilterRegistrationBean sessionFilter() {
 		  FilterRegistrationBean registrationBean = new FilterRegistrationBean();

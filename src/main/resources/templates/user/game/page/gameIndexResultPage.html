@@ -52,7 +52,7 @@
   	   <div class="data_list_resources">
 				<div class="data_list_title">
     			<i class="layui-icon layui-icon-template-1"></i>
-				<span class="head" >搜索&nbsp;"<font color="red" th:text="${q}"></font>"&nbsp;的结果(总共搜索到&nbsp;<font color="red" th:text="${resultTotal}"></font>&nbsp;条记录)</span>
+				<span class="head" >搜索2&nbsp;"<font color="red" th:text="${q}"></font>"&nbsp;的结果(总共搜索到&nbsp;<font color="red" th:text="${resultTotal}"></font>&nbsp;条记录)</span>
     		</div>
     		<div class="data_result">
     			<div th:if="${resultTotal==0}" align="center" style="padding-top: 20px">未查询到结果，请换个关键词试试看！或者在<a style="color: red;" href="/user/userMessage/index">留言板</a>吐槽你想找的资源</div>
@@ -61,7 +61,7 @@
     				<a  th:href="'/user/gameInformation/listDetails/'+${hotGame.id}"><img th:src="${hotGame.gamePicture}"  style="width:90px; height:105px;"></img></a>
     				     <div style="position:relative;left:100px;bottom: 105px; width:670px;">
     					<span class="summary"><a  th:href="'/user/gameInformation/listDetails/'+${hotGame.id}"   target="_blank" th:utext="${hotGame.gameName}"></a></span>
-					    <span class="summary" th:utext="'摘要: '+${hotGame.gameDescribe}"></span>
+					    <span class="summary" id="zy" th:utext="'摘要: '+${hotGame.gameDescribe}"></span>
 					 	<!-- <span class="summary" th:utext="${#strings.length(hotGame.gameDescribe)>100} ? '摘要: '+${#strings.substring(hotGame.gameDescribe,0,100)}+'...':'摘要: '+ ${hotGame.gameDescribe}+'...'"></span>
 					  	   -->
 					  	<span class="summary"><a style="color: green" target="_blank" th:href="'/user/gameInformation/listDetails/'+${hotGame.id}" th:text="'http://www.59stay.com/user/'+${hotGame.id}"></a>&nbsp;&nbsp;&nbsp;&nbsp;<font th:text="'发布日期：'+${#dates.format(hotGame.gameCreationTime,'yyyy-MM-dd')}"></font></span>

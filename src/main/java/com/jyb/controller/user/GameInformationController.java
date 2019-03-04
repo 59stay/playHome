@@ -6,30 +6,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.DownloadRecord;
 import com.jyb.entity.GameInformation;
-import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
 import com.jyb.init.InitSystem;
@@ -40,7 +35,6 @@ import com.jyb.service.UserReviewsService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.CommonMethodUtil;
 import com.jyb.util.CookiesUtil;
-import com.jyb.util.DateUtil;
 import com.jyb.util.IpUtil;
 import com.jyb.util.PageUtil;
 import com.jyb.util.RedisUtil;
@@ -49,7 +43,6 @@ import com.jyb.util.StringUtil;
 @Controller
 @RequestMapping("user/gameInformation")
 public class GameInformationController {
-    
 	@Autowired
 	private GameInformationService gameInformationService;
 	
@@ -66,17 +59,7 @@ public class GameInformationController {
 	private RedisUtil<GameInformation> redisUtil;
 	
 	
-	
-	@Value("${contentImageFilePath}")
-	private String contentImageFilePath;
-	
 
-	@Value("${coverImageFilePath}")
-	private String coverImageFilePath;
-	
-
-	
-	
 	/**
 	 * 游戏主页面
 	 * @return
@@ -160,62 +143,7 @@ public class GameInformationController {
 	    mv.setViewName("user/game/gameDetails");
 		return mv;
 	}
-    /**
-     * 游戏封面图片上传处理
-     * @param file
-     * @param session
-     * @return
-     * @throws Exception
-     */
-	@ResponseBody
-	@RequestMapping("/uploadCoverImage")
-	public Map<String,Object> uploadCoverImage(MultipartFile file,HttpSession session)throws Exception{
-		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
-		if(!file.isEmpty()){
-			// 获取文件名
-			String fileName = file.getOriginalFilename();
-			// 获取文件的后缀名
-			String suffixName = fileName.substring(fileName.lastIndexOf("."));
-			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(coverImageFilePath+userInformation.getEmail()+"/"+newFileName));
-			map.put("code", 0);
-			map.put("msg", "上传成功");
-			Map<String,Object> map2=new HashMap<String,Object>();
-			map2.put("title", newFileName);
-			map2.put("src", "/coverImage/"+userInformation.getEmail()+"/"+newFileName);
-			map.put("data", map2);
-		}
-		return map;
-	}
 	
-	/**
-	 * Layui编辑器图片上传处理
-	 * @param file
-	 * @return
-	 * @throws Exception
-	 */
-	@ResponseBody
-	@RequestMapping("/uploadContentImage")
-	public Map<String,Object> uploadContentImage(MultipartFile file,HttpSession session)throws Exception{
-		Map<String,Object> map=new HashMap<String,Object>();
-		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
-		if(!file.isEmpty()){
-			// 获取文件名
-			String fileName = file.getOriginalFilename();
-			// 获取文件的后缀名
-			String suffixName = fileName.substring(fileName.lastIndexOf("."));
-			String newFileName=DateUtil.getCurrentDateStr()+suffixName;
-			FileUtils.copyInputStreamToFile(file.getInputStream(), new File(contentImageFilePath+userInformation.getEmail()+"/"+newFileName));
-			map.put("code", 0);
-			map.put("msg", "上传成功");
-			Map<String,Object> map2=new HashMap<String,Object>();
-			map2.put("title", newFileName);
-			map2.put("src", "/contentImage/"+userInformation.getEmail()+"/"+newFileName);
-			map.put("data", map2);
-		}
-		return map;
-	}
 	/**
 	 * 用户发布游戏信息
 	 * @param gameInfo
@@ -333,7 +261,7 @@ public class GameInformationController {
 		resultMap.put("success", true);
 		return resultMap;
 	}
-
+	
 	
 	/**
 	 * 关键字分词搜索
@@ -352,7 +280,7 @@ public class GameInformationController {
 		List<GameInformation> hotGameList=gameIndex.search(q);
 		Integer toIndex=hotGameList.size()>=Integer.parseInt(page)*10?Integer.parseInt(page)*10:hotGameList.size();
 		mav.addObject("hotGameList",hotGameList.subList((Integer.parseInt(page)-1)*10, toIndex));
-		mav.addObject("pageCode", PageUtil.getUpAndDownPageCode(Integer.parseInt(page), hotGameList.size(), q, 10));
+		mav.addObject("pageCode", PageUtil.getUpAndDownPageCode("/user/gameInformation/search?page",Integer.parseInt(page), hotGameList.size(), q, 10));
 		mav.addObject("q",q);
 		mav.addObject("resultTotal",hotGameList.size());
 		mav.addObject("title", q);
@@ -361,6 +289,7 @@ public class GameInformationController {
 	}
 	
 	
+
 	/**
 	 * 增加查看次数加 1
 	 * @param id
@@ -378,18 +307,13 @@ public class GameInformationController {
 			if(!ipAddr.equals(IpUtil.getIpAddr(request))&&!gameId.equals(id.toString())){
 				gameInfo.setGameBrowseFrequency(gameInfo.getGameBrowseFrequency()+1);
 				gameInformationService.save(gameInfo);
-				redisUtil.del("r_game_"+gameInfo.getId());
-				InitSystem.loadData(request.getServletContext());
 		    }
 		}else{
 			gameInfo.setGameBrowseFrequency(gameInfo.getGameBrowseFrequency()+1);
 			gameInformationService.save(gameInfo);
-			redisUtil.del("r_game_"+gameInfo.getId());
-			InitSystem.loadData(request.getServletContext());
 			CookiesUtil.setCookie(response, "ipAddr", IpUtil.getIpAddr(request),15);
 			CookiesUtil.setCookie(response, "gameId",id.toString(),15);
 		}
 	}
-	
 	
 }

@@ -35,13 +35,13 @@ spring:
       mail.properties.mail.debug: true
 # redis配置
 redis:
-   hostName: 192.168.0.104
+   hostName: 192.168.0.105
    port: 6379
    password: 123456
-   maxIdle: 100 #最大空闲数  
-   maxTotal: 200 #最大连接数
-   maxWaitMillis: 1000 #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。 
-   testOnBorrow: true #是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个  
+   maxIdle: 100
+   maxTotal: 200
+   maxWaitMillis: 1000 
+   testOnBorrow: true
 
 # 资源封面图片路径
 coverImageFilePath: D://phImage/coverImage/
@@ -50,7 +50,7 @@ contentImageFilePath: D://phImage/contentImage/
 # 用户头像路径
 userHeadFilePath: D://phImage/userHeadFilePath/
 # 索引存储路径-游戏
-lucenePath: D://lucene
+lucenePath1: D://lucene1
 # 索引存储路径-软件
 lucenePath2: D://lucene2
 

@@ -4,6 +4,7 @@
 <meta charset="UTF-8"></meta>
 <title th:text="${title}+'-宅着玩'"></title>
 <link rel="stylesheet" href="/static/layui/css/layui.css"></link>
+<link rel="stylesheet" href="/static/css/icon.css" />
 <link rel="stylesheet" href="/static/css/personalCenter.css" />
 <style type="text/css">
 .layui-input-block{
@@ -68,7 +69,7 @@ width: 90px;
 		}
 	}
    function formatAction(data){
-		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='detail("+data.resourceId+",\""+data.largeCategory+"\")'><i class='layui-icon layui-icon-edit'></i>查看详情</button><button class='layui-btn layui-btn-normal layui-btn-xs' onclick='modifyLink("+data.id+","+data.downloadType+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
+		return "<button class='layui-btn layui-btn-normal layui-btn-xs' onclick='detail("+data.resourceId+",\""+data.largeCategory+"\")'><i class='layui-icon layui-icon-see'></i>查看详情</button><button  class='layui-btn layui-btn-xs layui-btn-danger' onclick='modifyLink("+data.id+","+data.downloadType+")'><i class='layui-icon layui-icon-edit'></i>修复链接</button>";
 	}
    
    /**
@@ -80,7 +81,7 @@ width: 90px;
    		  type: 2,
    		  title: '修复资源分享链接',
    		  area: ['700px', '200px'],
-   		  content: '/user/common/modifyShareLink.html?id='+id+'&downloadType='+downloadType//iframe的url
+   		  content: '/user/modifyShareLink.html?id='+id+'&downloadType='+downloadType //iframe的url
    		});
    }
    

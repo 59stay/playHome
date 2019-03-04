@@ -13,27 +13,25 @@
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/common.js"></script>
 <script type="text/javascript">
- $(function(){ 
-	var id=getQueryVariable("id");
-	if(id){
-		$.post("/admin/dataDictionary/getDataDictionary",{id:id},function(result){
-			  if(result.success){
-				  var dataDictionary=result.dataDictionary;
-			      $("#dictionaryName").val(dataDictionary.dictionaryName);
-				  $("#dictionaryType").val(dataDictionary.dictionaryType);
-				  $("#dictionarySort").val(dataDictionary.dictionarySort); 
-			  }else{
-				  alert("服务器加载有问题，请联系管理员！");
-			  }
-		  },"json");
-	}
- }); 
-
-
 layui.use(['form','layer'], function(){
 	  var form=layui.form;
 	  var layer = layui.layer;
 	
+	  var id=getQueryVariable("id");
+		if(id){
+			$.post("/admin/dataDictionary/getDataDictionary",{id:id},function(result){
+				  if(result.success){
+					  var dataDictionary=result.dataDictionary;
+					  $("#dictionaryType").val(dataDictionary.dictionaryType);
+				      $("#dictionaryName").val(dataDictionary.dictionaryName);
+					  $("#dictionarySort").val(dataDictionary.dictionarySort); 
+		              form.render();
+				  }else{
+					  alert("服务器加载有问题，请联系管理员！");
+				  }
+			  },"json");
+		}
+	  
 	  
 	  //监听提交
 	  form.on('submit(submit_data)', function(data){
@@ -76,15 +74,15 @@ layui.use(['form','layer'], function(){
 	           });
 		  }
 	  });
-	  
 });
+
 </script>
 </head>
 <body>
 	<div style="padding: 25px">
 		<form class="layui-form" >
 		    	<div class="layui-line">
-					<select id="dictionaryType" name="dictionaryType" lay-filter="search_dictionary_type" lay-verify="required">
+					<select id="dictionaryType" name="dictionaryType"   lay-verify="required">
 						<option value="">请选择大类别</option>
 						<option value="A">宅游戏</option>
 						<option value="B">宅软件</option>
