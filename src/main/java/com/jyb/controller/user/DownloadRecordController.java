@@ -37,17 +37,17 @@ public class DownloadRecordController {
 
 	@Autowired
 	private  DownloadRecordService downloadRecordService;
-	
-	
+
+
 	@Autowired
 	private GameInformationService gameInformationService;
-	
+
 	@Autowired
 	private UserInformationService userInformationService;
-	
+
 	@Autowired
 	private SoftwareService softwareService;
-	
+
 	/**
 	 *  分页查询用户资源下载信息
 	 * @param session
@@ -69,7 +69,7 @@ public class DownloadRecordController {
 		mav.setViewName("user/personalCenter/userDownloadRecordManagement");
         return mav;
 	}
-	
+
 	/**
 	 * 判断用户是否下载过某资源
 	 * @param resourceId
@@ -108,7 +108,7 @@ public class DownloadRecordController {
 	/**
 	 * 记录用户下载的资源
 	 * @param id
-	 * @param type  1.表示用户查看自己发布的资源 2.表示用户已下载过该资源 3.表示其他用户查看别人发布的资源 
+	 * @param type  1.表示用户查看自己发布的资源 2.表示用户已下载过该资源 3.表示其他用户查看别人发布的资源
 	 * @param session
 	 * @return
 	 */
@@ -158,7 +158,7 @@ public class DownloadRecordController {
 				userInformation.setUserIntegral(userInformation.getUserIntegral() - gameInfo.getIntegral());
 				//给当前资源发布者加积分
 				publisher.setUserIntegral(publisher.getUserIntegral()+gameInfo.getIntegral());
-				
+
 			}
 			if(largeCategory.equals("B")){
 				software = softwareService.getId(id);
@@ -167,16 +167,16 @@ public class DownloadRecordController {
 				userInformation.setUserIntegral(userInformation.getUserIntegral() - software.getIntegral());
 				//给当前资源发布者加积分
 				publisher.setUserIntegral(publisher.getUserIntegral()+software.getIntegral());
-				
+
 			}
 			userInformationService.save(userInformation);
 			userInformationService.save(publisher);
 			if(largeCategory.equals("A")){
 				dr.setResourceId(id);
-				dr.setLargeCategory(gameInfo.getLargeCategory()); 
+				dr.setLargeCategory(gameInfo.getLargeCategory());
 				dr.setResourceName(gameInfo.getGameName());
 				dr.setUserInformation(userInformation);
-				dr.setIsNotExist(2);
+				dr.setIsNotExist(1);
 				dr.setDownloadDate(new Date());
 				downloadRecordService.save(dr);
 			    gameInfo.setGameDownloadFrequency(gameInfo.getGameDownloadFrequency()+1);//增加下载次数
@@ -185,21 +185,21 @@ public class DownloadRecordController {
 			}
             if(largeCategory.equals("B")){
             	dr.setResourceId(id);
-				dr.setLargeCategory(software.getLargeCategory()); 
+				dr.setLargeCategory(software.getLargeCategory());
 				dr.setResourceName(software.getName());
 				dr.setUserInformation(userInformation);
-				dr.setIsNotExist(2);
+				dr.setIsNotExist(1);
 				dr.setDownloadDate(new Date());
 				downloadRecordService.save(dr);
 				software.setDownloadFrequency(software.getDownloadFrequency()+1);//增加下载次数
 				softwareService.save(software);
 				mav.addObject("resource", software);
 			}
-          
+
 	    	mav.setViewName("common/downloadRecordShow");
 		}
         return mav;
 	}
-	
-	
+
+
 }
