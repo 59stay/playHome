@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.support.ErrorPageFilter;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 @ServletComponentScan
@@ -15,6 +16,7 @@ public class PlayHouseApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(PlayHouseApplication.class);
 	}
+	
 	public static void main(String[] args) {
 		SpringApplication.run(PlayHouseApplication.class, args);
 	}
@@ -29,7 +31,7 @@ public class PlayHouseApplication extends SpringBootServletInitializer {
 		  registrationBean.setFilter(sessionFilter);
 		  registrationBean.setOrder(Integer.MAX_VALUE);//数字越小，优先级越高；
 		  registrationBean.addUrlPatterns("/user/signIn/*");
-	     // registrationBean.setEnabled(false);
+	      //registrationBean.setEnabled(false);
 	      return registrationBean;
 	  }
 }

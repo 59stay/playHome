@@ -30,14 +30,14 @@
 			  document.getElementById("password_div").style.visibility="visible";
 			  $("#password").focus();
 			  return false; 
-		  }else if(myForm.vaptcha_token.value==""){
+		  } else if(myForm.vaptcha_token.value==""){
 			  layer.msg("请进行人机验证！");
 			  return false;
-		  }else{
+		  } else{
 			  var index = layer.load(1, {
 				  shade: [0.1,'#fff'] //0.1透明度的白色背景
 				});
-			   $("#login_button").attr('disabled',true); 
+			   $("#login_button").attr('disabled',true); //
 	            $.post("/user/userInformation/login",{userName:$("#userName").val().trim(),userPassword:$("#password").val().trim(),vaptcha_token:myForm.vaptcha_token.value},function(result){
 	        	   if(result.success){
 	        		  layer.close(index);
@@ -68,7 +68,7 @@
 		<input type="password" id="password" name="password"  placeholder="请输入密码" class="layui-input" style="padding-left: 33px;" maxlength="30"/>
 		<i class="layui-icon layui-icon-password" style="position: absolute;top:90px;left: 30px;" ></i>
 		<div id="password_div" style="margin:1px 0px 1px 0px; visibility: hidden; color:#ff0000 ">密码为必填，长度6-30</div>
-	      <div data-vid="5c7754cbfc650fe020328b0e" style="margin-bottom: 13px;">
+	    <div data-vid="5c7754cbfc650fe020328b0e" style="margin-bottom: 13px;">
 			    <div class="vaptcha-init-main">
 			        <div class="vaptcha-init-loading">
 			            <a href="/" target="_blank">
@@ -77,7 +77,7 @@
 			            <span class="vaptcha-text">人机验证启动中...</span>
 			        </div>
 			    </div>
-         </div>
+         </div>  
          
 		<div >
 		   <button id="login_button" class="layui-btn layui-btn-fluid"  onclick="submitData();return false;">登 录</button>

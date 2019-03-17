@@ -18,8 +18,6 @@ import com.jyb.realm.MyRealm;
 
 /**
  * Shiro配置类
- *
- *
  */
 @Configuration
 public class ShiroConfig {
@@ -53,9 +51,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/sharingRule.html", "anon");
         filterChainDefinitionMap.put("/user/sharingRule.html", "anon");
         filterChainDefinitionMap.put("/user/standard.html", "anon");
-        
         filterChainDefinitionMap.put("/admin/adminLogin.html", "anon");
-  
         
         filterChainDefinitionMap.put("/admin/userInfor/login", "anon");
         filterChainDefinitionMap.put("/aboutUs", "anon");
@@ -69,16 +65,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/signIn/loadSignIn", "anon");
         
         filterChainDefinitionMap.put("/admin/quartz/**", "anon");
-        
-        filterChainDefinitionMap.put("/userHeadImage/**", "anon");
+       
         filterChainDefinitionMap.put("/contentImage/**", "anon");
         filterChainDefinitionMap.put("/coverImage/**", "anon");
-       
-        filterChainDefinitionMap.put("/static/css/**", "anon");
-        filterChainDefinitionMap.put("/static/images/**", "anon");
-        filterChainDefinitionMap.put("/static/js/**", "anon");
-        filterChainDefinitionMap.put("/static/layui/**", "anon");
-        filterChainDefinitionMap.put("/static/login/**", "anon");
+        filterChainDefinitionMap.put("/userHeadImage/**", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "logout"); 
         // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;

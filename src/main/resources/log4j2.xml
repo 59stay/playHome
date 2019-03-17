@@ -4,7 +4,8 @@
 <configuration  status="ERROR"  monitorInterval="500">
 <!--定义日志储存文件目录-->
     <properties>
-        <property name="LOG_PATH">d:/log4j2</property>
+      <!-- <property name="LOG_PATH">d:/log4j2</property> -->
+      <property name="LOG_PATH">/home/log4j2</property>
     </properties>
 
     <appenders>

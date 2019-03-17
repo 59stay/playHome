@@ -150,7 +150,7 @@ public class PersonalCenterController {
     private ModelAndView toInvalidLinkManagement(){
     	ModelAndView mav=new ModelAndView();
     	mav.addObject("title", "失效链接信息管理页面");
-    	mav.setViewName("user/personalCenter/InvalidLinkManagement");
+    	mav.setViewName("user/personalCenter/invalidLinkManagement");
         return mav;
     }
     /**

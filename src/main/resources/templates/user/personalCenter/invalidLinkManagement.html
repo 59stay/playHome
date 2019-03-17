@@ -24,7 +24,7 @@ width: 90px;
   $(document).ready(function(){  
     	  $("#li3").addClass("layui-this");
      }); 
-	layui.use(['element','form','table'], function(){
+ 	layui.use(['element','form','table'], function(){
 	      var form=layui.form;
 		  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		  $ = layui.jquery; // 使用jquery
@@ -48,7 +48,7 @@ width: 90px;
 			    ,page: true
 			  });
          });
-         
+        
    function formatLargeCategory(data){
 		if(data.largeCategory=="A"){
 			return "宅游戏";
@@ -121,7 +121,7 @@ width: 90px;
 			th:include="user/personalCenter/leftMenu::#lm"></div>
 		 <div style="float: right; width: 970px"
 			th:include="user/personalCenter/page/InvalidLinkManagementPage::#ilmPage">
-		</div>
+		</div> 
 	</div>
 </body>
 </html>
