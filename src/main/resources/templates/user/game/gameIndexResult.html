@@ -38,12 +38,12 @@ layui.use([ 'element','laypage','form' ], function() {
 		 }
 	},"json"); 
 	 
-	$('li div span[id="zy"]').each(function() {
+	 $('li div span[id="zy"]').each(function() {
 	        var words = $(this).text().length;
 	        if(words >100){
 	            $(this).text($(this).text().slice(0,100)+"...");
 	        }
-	    });
+	    }); 
 	 
 }); 
 

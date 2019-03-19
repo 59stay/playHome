@@ -93,7 +93,7 @@ function submitData(){
 		layer.msg("请填写评论内容！");
 		return false;
 	}
-	$.post("/user/userReviews/addUserReviews",{"resourceId":[[${software.id}]],"resourceName":[[${software.name}]],"reviewsContent":reviewsContent,"largeCategory":[[${software.largeCategory}]]},function(result){
+	$.post("/user/userReviews/addUserReviews",{"publisherId":[[${software.userInformation.id}]],"resourceId":[[${software.id}]],"resourceName":[[${software.name}]],"reviewsContent":reviewsContent,"largeCategory":[[${software.largeCategory}]]},function(result){
 		if(result.success){
 			$("#reviewsContent").val("");
 			 window.location.reload();

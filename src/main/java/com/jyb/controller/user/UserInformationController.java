@@ -138,6 +138,7 @@ public class UserInformationController {
 			userInformation.setAccountStatus(0);
 			userInformation.setUserIntegral(0);
 			userInformation.setUserRole(1);
+			userInformation.setUserIntegral(50);//送50积分
 			userInformation.setHostIp(IpUtil.getIpAddr(request));
 			userInformationService.save(userInformation);
 			map.put("success",true);
