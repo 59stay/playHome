@@ -38,7 +38,7 @@
 
 <body>
 <!-- 导航区 -->
-<div class="w1170" style="padding-bottom: 10px; overflow: visible;" th:include="common/head::#head"></div>
+<div class="w1170" style="padding-bottom:5px; overflow: visible;" th:include="common/head::#head"></div>
 <!-- 滚动条 -->
 <div class="w1170">
 	<div class="layui-carousel" id="test1" lay-filter="test1" lay-anim="" lay-indicator="inside" lay-arrow="always">
@@ -57,6 +57,8 @@
 		<button class="layui-icon layui-carousel-arrow" lay-type="add"></button> -->
 	</div>
 </div>
+<!-- 首页公告 -->
+<div class="w1170" style="margin-top:5px;"><img src="/static/images/gg1.png" width="1170" alt="首页公告"></img></div>
 <!-- 资源列表区 -->
 <div class="w1170">
 	<div class="data_list_condition">
@@ -68,7 +70,7 @@
 					<div class="datas imageDatas">
 						<ul class="imageUl">
 							<li th:each="game:${application.gameIndexList}" class="imageLi"><a target="_blank" th:href="'/user/gameInformation/listDetails/'+${game.id}" th:title="${game.gameName}">
-									<img th:src="${game.gamePicture}"></img>
+									<img th:src="${game.gamePicture}"  th:alt="${game.gameName}"></img>
 									<p th:text="${#strings.length(game.gameName)>8} ? ${#strings.substring(game.gameName,0,8)} : ${game.gameName}"></p>
 							</a></li>
 						</ul>
@@ -85,7 +87,7 @@
 				   <div class="datas imageDatas">
 						<ul class="imageUl">
 							<li th:each="software:${application.softwareBrowseFrequencyList}" class="imageLi"><a target="_blank" th:href="'user/software/listDetails/'+${software.id}" th:title="${software.name}">
-									<img th:src="${software.picture}"></img>
+									<img th:src="${software.picture}" th:alt="${software.name}"></img>
 									  <p th:text="${#strings.length(software.name)>8} ? ${#strings.substring(software.name,0,8)} : ${software.name}"></p>
 							</a></li>
 						</ul>

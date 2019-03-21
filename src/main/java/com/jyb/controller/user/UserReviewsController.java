@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,6 +27,8 @@ import com.jyb.entity.UserReviews;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.specialEntity.Constant;
+import com.jyb.util.SensitiveWordsUtil;
+import com.jyb.util.StringUtil;
 
 @Controller
 @RequestMapping("user/userReviews")
@@ -57,6 +60,24 @@ public class UserReviewsController {
 		UserInformation userInformation =(UserInformation) session.getAttribute(Constant.USERINFO);
 		userReviews.setReviewsTime(new Date());
 		userReviews.setUserInformation(userInformation);
+		Set<String> set = SensitiveWordsUtil.getBadWord(userReviews.getReviewsContent(),2);
+			String mgc ="";
+			for (String strSet : set) {
+				mgc+= strSet+",";
+			}
+		    if(StringUtil.isNotEmpty(mgc)){
+			mgc = mgc.substring(0,mgc.length()-1);
+			String[] mgcArray = mgc.split(",");
+			String  strMgc = "";
+		    for (int i = 0; i < mgcArray.length; i++) {
+		    	if(i==0){
+		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(userReviews.getReviewsContent(),mgcArray[i]);
+		    	}else{
+		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(strMgc,mgcArray[i]);	
+		    	}
+			}
+	    	userReviews.setReviewsContent(strMgc);
+	     }
 		userReviewsService.save(userReviews);
 		map.put("success", true);
 		return map;

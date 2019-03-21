@@ -40,7 +40,7 @@ public class AdminDataDictionaryController {
 	public   Map<String,Object> listPage(@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit,DataDictionary dataDictionary){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<DataDictionary> ddList =   dataDictionaryService.listPage(dataDictionary, page, limit,Sort.Direction.DESC,"dictionarySort");
-		Long count = dataDictionaryService.getCount(null);
+		Long count = dataDictionaryService.getCount(dataDictionary);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
 		resultMap.put("data",ddList);

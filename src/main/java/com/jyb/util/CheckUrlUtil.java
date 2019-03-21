@@ -31,11 +31,9 @@ public class CheckUrlUtil {
 	public static boolean checkBDY(String link){
 		CloseableHttpResponse response = null;
 		try {
-		HttpGet httpget = new HttpGet(link); 
+		HttpGet httpget = new HttpGet(link.trim()); 
 		httpget.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0"); // 设置请求头消息User-Agent
-		
-		
-			response = httpClient.execute(httpget);
+		response = httpClient.execute(httpget);
 		} catch (Exception e) {
 			return false;		
 		}
@@ -67,7 +65,7 @@ public class CheckUrlUtil {
         boolean flag = false;
         while (counts < 3) {  
         	  try {  
-                  url = new URL(urlString);  
+                  url = new URL(urlString.trim());  
                   URLConnection co =  url.openConnection();
                   co.setConnectTimeout(timeOutMillSeconds);
                   co.connect();
@@ -85,7 +83,7 @@ public class CheckUrlUtil {
 	public static void main(String[] args) throws Exception {
 		//boolean a = CheckUrlUtil.checkUrl("http://ww.bai.com",3000);
 		//System.out.println(a);
-		//System.out.println(CheckUrlUtil.checkBDY("https://www.baidu.com https://www.baidu.com, https://www.baidu.com,,"));
+		//System.out.println(CheckUrlUtil.checkBDY("https://pan.baidu.com/s/1jHQas1w"));
 	}
 	
 }

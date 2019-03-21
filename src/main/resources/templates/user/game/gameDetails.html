@@ -24,7 +24,6 @@ layui.use([ 'element','laypage','form' ], function() {
 	      $("#userReviewsList").empty();
 	      $.post("/user/userReviews/list",{"resourceId":[[${gameInformation.id}]],"largeCategory":[[${gameInformation.largeCategory}]],"page":obj.curr},function(result){
 			  var rows=result;
-			  //alert(rows.length)
 			  if(rows.length==0){
 				  $("#userReviewsList").html("<p align='center'>暂无评论</p>");
 			  }else{
@@ -57,12 +56,12 @@ layui.use([ 'element','laypage','form' ], function() {
 				 $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>"); 
 			 }else{
 				 $("#sign_in_div").empty();
-				 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+				 $("#sign_in_div").append("<a  style='cursor:pointer;' onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px;cursor:pointer;' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
 					 
 			 }
 		 }else{
 			 $("#sign_in_div").empty();
-			 $("#sign_in_div").append("<a onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+			 $("#sign_in_div").append("<a style='cursor:pointer;'  onclick='signIn();return false;'><img style='padding-top: 10px; padding-bottom:10px;' alt='用户签到处' src='/static/images/sign.jpg' width='200' height='50'></img></a><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
 		 }
 	},"json"); 
 	//增加查看次数（暂时不加这个功能）
@@ -77,7 +76,7 @@ function signIn(){
 	}else{
 		   $.post("/user/signIn/loginSignIn",{},function(result){ 
 			   $("#sign_in_div").empty();
-			  $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
+			  $("#sign_in_div").append("<div style='padding-top: 10px;padding-bottom: 10px;'>您今天第<font color='red'>"+result.alreadySignI.signInRanking+"</font>个签到成功；<br>签到时间:<font >"+(result.alreadySignI.signInTime).substring(0,19)+"</font></div><p style='padding-bottom: 10px'>今日已经有<font color='red'>"+result.signInNumber+"</font>位大佬签到了！</p>");
 			},"json"); 
 	}
 }

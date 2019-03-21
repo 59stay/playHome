@@ -82,11 +82,11 @@ public class UserInformationController {
 			map.put("success", false);
     		map.put("errorInfo", "请输入密码！");
     		return map;
-		}else if(!vaptchaCheck(vaptcha_token,request.getRemoteHost())){
+		}/*else if(!vaptchaCheck(vaptcha_token,request.getRemoteHost())){
 				map.put("success", false);
 	    		map.put("errorInfo", "人机验证失败！");
 	    		return map;
-		}else{
+		}*/else{
 			try {
 				Subject subject=SecurityUtils.getSubject();
 				UsernamePasswordToken token=new UsernamePasswordToken(userInformation.getUserName(), MD5Util.md5(userInformation.getUserPassword(),Constant.SALT));

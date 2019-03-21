@@ -58,7 +58,7 @@ public class AdminSoftwareController {
 	public   Map<String,Object> listPage(Software software,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<Software> softwareList = softwareService.listPage(software, page, limit,Sort.Direction.DESC,"creationTime");
-		Long count = softwareService.getCount(null);
+		Long count = softwareService.getCount(software);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
 		resultMap.put("data",JSONObject.toJSON(softwareList));

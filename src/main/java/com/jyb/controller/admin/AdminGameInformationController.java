@@ -62,7 +62,7 @@ public class AdminGameInformationController {
 	public   Map<String,Object> listPage(GameInformation gameInfo,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<GameInformation> gameInformation =   gameInformationService.listPage(gameInfo, page, limit,Sort.Direction.DESC,"gameCreationTime");
-		Long count = gameInformationService.getCount(null);
+		Long count = gameInformationService.getCount(gameInfo);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
 		resultMap.put("data",JSONObject.toJSON(gameInformation));

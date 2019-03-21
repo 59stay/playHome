@@ -55,7 +55,7 @@ function standard(){
 	layer.open({
 		  type: 2,
 		  title: '发布资源规范',
-		  area: ['330px', '280px'],
+		  area: ['330px', '200px'],
 		  content: '/user/standard.html' //iframe的url
 		}); 
 }

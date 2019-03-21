@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +33,8 @@ import com.jyb.service.UserMessageService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.DateUtil;
 import com.jyb.util.PageUtil;
+import com.jyb.util.SensitiveWordsUtil;
+import com.jyb.util.StringUtil;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -95,6 +98,26 @@ public class UserMessageController {
     	if(userInformation!=null && userMessage!=null){
     		userMessage.setMessageCreationTime(new Date());
     		userMessage.setUserInformation(userInformation);
+ 			Set<String> set = SensitiveWordsUtil.getBadWord(userMessage.getMessageInformation(),2);
+ 			String mgc ="";
+ 			for (String strSet : set) {
+ 				mgc+= strSet+",";
+ 			}
+ 		   if(StringUtil.isNotEmpty(mgc)){
+ 			    mgc = mgc.substring(0,mgc.length()-1);
+ 	 			String[] mgcArray = mgc.split(",");
+ 	 			String  strMgc = "";
+ 	 		    for (int i = 0; i < mgcArray.length; i++) {
+ 	 		    	if(i==0){
+ 	 		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(userMessage.getMessageInformation(),mgcArray[i]);
+ 	 		    	}else{
+ 	 		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(strMgc,mgcArray[i]);	
+ 	 		    	}
+ 	 			}
+ 	 		   if(StringUtil.isNotEmpty(strMgc)){
+ 		    	  userMessage.setMessageInformation(strMgc);
+ 		        }
+ 			}
     		userMessageService.save(userMessage);
     		map.put("success",true);
     	}else{

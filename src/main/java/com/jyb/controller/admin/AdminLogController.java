@@ -34,7 +34,7 @@ public class AdminLogController {
 	public   Map<String,Object> listPage(Log log,@RequestParam(value="page",required=false)Integer page,@RequestParam(value="limit",required=false)Integer limit){
 		Map<String,Object>   resultMap = new HashMap<String,Object>();
 		List<Log> logList =   logService.listPage(log, page, limit,Sort.Direction.DESC,"logCreationTime");
-		Long count = logService.getCount(null);
+		Long count = logService.getCount(log);
 		resultMap.put("code",0);
 		resultMap.put("count",count);
 		resultMap.put("data",JSONObject.toJSON(logList));
