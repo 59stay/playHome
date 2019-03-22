@@ -44,6 +44,12 @@ public interface InvalidLinkService {
 	   * @param id
 	   */
 	  public void delete(Integer id);
+	  /**
+	   * 根据资源id和大类别删除失效链接
+	   * @param resourceId
+	   * @param largeCategory
+	   */
+	  public void deleteInvalidLink(Integer resourceId,String largeCategory);
 	  
 	 
 }

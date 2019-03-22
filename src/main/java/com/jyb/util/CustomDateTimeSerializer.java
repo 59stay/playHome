@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * 自定义返回JSON 数据格式中日期格式化处理
- * @author java1234 小锋 老师
+ * @author jyb
  *
  */
 public class CustomDateTimeSerializer extends JsonSerializer<Date>{

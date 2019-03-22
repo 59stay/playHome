@@ -22,6 +22,7 @@ import com.jyb.entity.Software;
 import com.jyb.init.InitSystem;
 import com.jyb.lucene.SoftwareIndex;
 import com.jyb.service.DownloadRecordService;
+import com.jyb.service.InvalidLinkService;
 import com.jyb.service.SoftwareService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.util.FileUtil;
@@ -40,6 +41,9 @@ public class AdminSoftwareController {
 	
 	@Autowired
 	private SoftwareIndex softwareIndex;
+	
+	@Autowired
+	private InvalidLinkService  invalidLinkService;
 	
 	@Autowired
 	private RedisUtil<Software> redisUtil; 
@@ -90,12 +94,14 @@ public class AdminSoftwareController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		Software software =  softwareService.getId(Integer.parseInt(id));
 		software.setAuditStatus(2);//审核通过
+		software.setIsUseful(1);//有效
 		software.setReason("");
 		software.setAuditDate(new Date());
 		softwareService.save(software);
 		InitSystem.loadData(request.getServletContext());
 		softwareIndex.updateIndex(software); 
 		redisUtil.del("r_software_"+software.getId());
+		invalidLinkService.deleteInvalidLink(software.getId(),software.getLargeCategory());
 		map.put("success", true);
 		return map;
 	}
@@ -149,7 +155,8 @@ public class AdminSoftwareController {
 	@RequestMapping("/indexes")
 	@RequiresPermissions(value={"后台-生成资源索引"})
 	public Map<String,Object>  indexes (){
-	    FileUtil.deleteDir(new File("D://lucene2"));
+	    FileUtil.deleteDir(new File("D://home//lucene2"));
+	    //FileUtil.deleteDir(new File("/home/lucene2"));
 		List<Software> softwareList=softwareService.listAll(null,Sort.Direction.DESC, "browseFrequency");
   		for(Software software:softwareList){
   			softwareIndex.addIndex(software);

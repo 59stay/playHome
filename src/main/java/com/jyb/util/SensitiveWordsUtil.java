@@ -16,8 +16,8 @@ import java.util.Set;
  * @date 2019年3月21日12:20:17
  */
 public class SensitiveWordsUtil {
-	//public static String filePath = "D:\\dictionary.txt";//敏感词库文件路径
-	public static String filePath = "/home/dictionary.txt";
+	public static String filePath = "D:\\dictionary.txt";//敏感词库文件路径
+	//public static String filePath = "/home/dictionary.txt";
 	public static Set<String> words;
 	public static Map<String,String> wordMap;
 	public static int minMatchTYpe = 1;      //最小匹配规则
@@ -41,13 +41,10 @@ public class SensitiveWordsUtil {
         }
         BufferedReader reader=null;  
         String temp=null;  
-        //int line=1;  
         try{  
             reader=new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));  
             while((temp=reader.readLine())!=null){  
-                //System.out.println("line"+line+":"+temp);  
                 keyWordSet.add(temp);
-                //line++;  
             }  
         } catch(Exception e){  
             e.printStackTrace();  

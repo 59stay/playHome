@@ -340,7 +340,7 @@ public class UserInformationController {
 		HttpEntity entity = r.getEntity();
 		if(entity!=null){
 			body = EntityUtils.toString(entity, "utf-8");
-			System.out.println(body);
+			//System.out.println(body);
 		}
 		r.close();
 		httpClient.close();

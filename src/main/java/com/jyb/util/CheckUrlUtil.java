@@ -80,10 +80,10 @@ public class CheckUrlUtil {
         log.info("=======================总耗时"+(System.currentTimeMillis()-startTime)*0.001+"秒============================"); 
 		return flag;
     }
-	public static void main(String[] args) throws Exception {
-		//boolean a = CheckUrlUtil.checkUrl("http://ww.bai.com",3000);
-		//System.out.println(a);
-		//System.out.println(CheckUrlUtil.checkBDY("https://pan.baidu.com/s/1jHQas1w"));
-	}
+	/*public static void main(String[] args) throws Exception {
+		boolean a = CheckUrlUtil.checkUrl("http://ww.bai.com",3000);
+		System.out.println(a);
+		System.out.println(CheckUrlUtil.checkBDY("https://pan.baidu.com/s/1jHQas1w"));
+	}*/
 	
 }

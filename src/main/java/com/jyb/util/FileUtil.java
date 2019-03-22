@@ -12,8 +12,6 @@ public class FileUtil {
 	
 	 private static String fileName =  null;
 	 
-	 
-	 
 	 /**
 	  *  使用递归找出某目录("C:\\JavaProducts")下的所有子目录以及子文件
 	  * @param filePath
@@ -47,11 +45,11 @@ public class FileUtil {
 		for (int i = 0; i < fcList.length; i++) {
             if (fcList[i].isDirectory()) {
                  fileName = fcList[i].getName();
-                System.out.println("目录：" + fileName);        
+               // System.out.println("目录：" + fileName);        
             }
             if (fcList[i].isFile()) {
                 fileName = fcList[i].getName();
-                System.out.println("文件：" + fileName);                
+               // System.out.println("文件：" + fileName);                
             }
         }
 		return fileName;
@@ -66,7 +64,7 @@ public class FileUtil {
 		for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
                 fileName = fileList[i].getName();
-                System.out.println("文件：" + fileName);                
+              //  System.out.println("文件：" + fileName);                
             }
         }
 		return fileName;
@@ -82,7 +80,7 @@ public class FileUtil {
 		for (int i = 0; i < catalogList.length; i++) {
             if (catalogList[i].isFile()) {
             	fileName = catalogList[i].getName();
-                System.out.println("文件：" + fileName);                
+               // System.out.println("文件：" + fileName);                
             }
         }
 		return fileName;

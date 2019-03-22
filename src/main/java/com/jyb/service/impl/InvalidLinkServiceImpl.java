@@ -84,4 +84,10 @@ public class InvalidLinkServiceImpl implements InvalidLinkService{
 		invalidLinkRepositroy.delete(id);
 	}
 
+	@Override
+	public void deleteInvalidLink(Integer resourceId, String largeCategory) {
+		// TODO Auto-generated method stub
+		invalidLinkRepositroy.deleteInvalidLink(resourceId, largeCategory);
+	}
+
 }

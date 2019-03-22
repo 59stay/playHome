@@ -135,7 +135,7 @@ private Directory dir=null;
 		lock.lock();
 		try{
 			IndexWriter writer=getWriter();
-			System.out.println("删除前:"+writer.numDocs()+"个");
+			//System.out.println("删除前:"+writer.numDocs()+"个");
 			writer.deleteDocuments(new Term("id",id));
 			writer.forceMergeDeletes(); // 强制删除(合并删除的数据，数据量大时，需要在系统空闲的时间做删除处理【思路:写定时器删除】)
 			writer.commit();
@@ -202,7 +202,7 @@ private Directory dir=null;
 		long startDate = System.currentTimeMillis();
 		TopDocs hits=is.search(booleanQuery.build(), 100);//查询前100条数据
 		long endDate = System.currentTimeMillis();
-		System.out.println("匹配"+q+",总共花费"+(endDate-startDate)+"毫秒查询到"+hits.totalHits+"个记录");
+		//System.out.println("匹配"+q+",总共花费"+(endDate-startDate)+"毫秒查询到"+hits.totalHits+"个记录");
 		//设置内容片断(底层根据得分计算显示的)
 		QueryScorer scorer=new QueryScorer(query);  
 		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);  

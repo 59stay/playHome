@@ -111,7 +111,7 @@ public class DateUtil {
          return now.getTime();
      }
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		try {
 			 String s=DateUtil.toTimestamp("2017-03-23 10:57:57","yyyy-MM-dd");
 			 System.out.println(DateUtil.getTodayStartTime());
@@ -121,5 +121,5 @@ public class DateUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

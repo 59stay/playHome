@@ -26,9 +26,9 @@ public class MD5Util {
 	}
 	
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String password="123456";
 		System.out.println("Md5加密："+MD5Util.md5(password, Constant.SALT));
-	}
+	}*/
 	
 }

@@ -42,6 +42,7 @@ public class CheckLinkRunnable implements Runnable {
 						link.setUserName(game.getUserInformation().getUserName());
 						link.setCreationTime(new Date());
 						BeanUtil.beanUtil.invalidLinkService.save(link);
+						BeanUtil.beanUtil.gameIndex.deleteIndex(String.valueOf(game.getId()));
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -64,6 +65,7 @@ public class CheckLinkRunnable implements Runnable {
 						link.setUserName(game.getUserInformation().getUserName());
 						link.setCreationTime(new Date());
 						BeanUtil.beanUtil.invalidLinkService.save(link);
+						BeanUtil.beanUtil.gameIndex.deleteIndex(String.valueOf(game.getId()));
                }
     	   }
         }
@@ -87,6 +89,7 @@ public class CheckLinkRunnable implements Runnable {
 						link.setUserName(software.getUserInformation().getUserName());
 						link.setCreationTime(new Date());
 						BeanUtil.beanUtil.invalidLinkService.save(link);
+						BeanUtil.beanUtil.softwareIndex.deleteIndex(String.valueOf(software.getId()));
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -109,6 +112,7 @@ public class CheckLinkRunnable implements Runnable {
 						link.setUserName(software.getUserInformation().getUserName());
 						link.setCreationTime(new Date());
 						BeanUtil.beanUtil.invalidLinkService.save(link);
+						BeanUtil.beanUtil.softwareIndex.deleteIndex(String.valueOf(software.getId()));
                }
     	   }
   		}

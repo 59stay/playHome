@@ -27,6 +27,7 @@ import com.jyb.init.InitSystem;
 import com.jyb.lucene.GameIndex;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
+import com.jyb.service.InvalidLinkService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
@@ -46,6 +47,9 @@ public class AdminGameInformationController {
 	
 	@Autowired
 	private GameIndex gameIndex;
+	
+	@Autowired
+	private InvalidLinkService  invalidLinkService;
 	
 	@Autowired
 	private RedisUtil<GameInformation> redisUtil;
@@ -131,12 +135,14 @@ public class AdminGameInformationController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		GameInformation gameInformation =  gameInformationService.getId(Integer.parseInt(id));
 		gameInformation.setAuditStatus(2);//审核通过
+		gameInformation.setIsUseful(1);//有效
 		gameInformation.setReason("");
 		gameInformation.setAuditDate(new Date());
 		gameInformationService.save(gameInformation);
 		InitSystem.loadData(request.getServletContext());
 		gameIndex.updateIndex(gameInformation); 
 		redisUtil.del("r_game_"+gameInformation.getId());
+		invalidLinkService.deleteInvalidLink(gameInformation.getId(),gameInformation.getLargeCategory());
 		map.put("success", true);
 		return map;
 	}
@@ -179,7 +185,6 @@ public class AdminGameInformationController {
 			redisUtil.del("r_game_"+idsStr[i]);
 		}
 		InitSystem.loadData(request.getServletContext());
-		
 		Map<String, Object> map = new HashMap<>();
 		map.put("success", true);
 		return map;
@@ -193,10 +198,11 @@ public class AdminGameInformationController {
 	@RequestMapping("/indexes")
 	@RequiresPermissions(value={"后台-生成资源索引"})
 	public Map<String,Object>  indexes (){
-		FileUtil.deleteDir(new File("D://lucene1"));
+		 FileUtil.deleteDir(new File("D://home//lucene1"));
+		//FileUtil.deleteDir(new File("/home/lucene1"));
 		List<GameInformation> gameList=gameInformationService.listAll(null,Sort.Direction.DESC, "gameBrowseFrequency");
 		for(GameInformation game:gameList){
-				gameIndex.addIndex(game);
+		    gameIndex.addIndex(game);
 		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("success", true);
