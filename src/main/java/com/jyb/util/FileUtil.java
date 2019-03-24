@@ -2,6 +2,8 @@ package com.jyb.util;
 
 import java.io.File;
 import java.util.List;
+
+import com.jyb.specialEntity.Constant;
 /**
  * 目录文件操作工具类
  * @author jyb
@@ -105,6 +107,5 @@ public class FileUtil {
 	      }
 	      return dir.delete();
 	  }
-	
 	
 }

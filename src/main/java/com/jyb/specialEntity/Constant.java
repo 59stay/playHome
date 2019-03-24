@@ -27,4 +27,15 @@ public class Constant {
 	 */
 	public final static String USERINFO="userInfo"; 
 	
+	
+	/**
+	 * 索引生成路径 本地路径D://home//lucene1   linux路径 /home/lucene1
+	 */
+	public final static String LUCENE1="/home/lucene1"; 
+	
+	/**
+	 * 索引生成路径 本地路径D://home//lucene2   linux路径 /home/lucene2
+	 */
+	public final static String LUCENE2="/home/lucene2";  
+	
 }

@@ -133,7 +133,7 @@ public class RedisConfig {
      * 注入封装RedisTemplate
     * @Title: redisUtil 
     * @return RedisUtil
-    * @date 2017年12月21日
+    * @date 2018年12月21日
     * @throws
      */
     @Bean(name = "redisUtil")
