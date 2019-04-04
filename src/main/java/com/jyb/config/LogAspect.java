@@ -1,28 +1,24 @@
 package com.jyb.config;
 
-import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jyb.entity.Log;
 import com.jyb.entity.UserInformation;
 import com.jyb.service.LogService;
 import com.jyb.specialEntity.Constant;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 /**
  * 日志切面类
@@ -33,13 +29,13 @@ import com.jyb.specialEntity.Constant;
 @Component  //申明是个spring管理的bean
 public class LogAspect {
 	 private Logger log = LoggerFactory.getLogger(LogAspect.class);
-	 
+
 	 @Autowired
 	 private LogService logService;
-	 
-	 
+
+
 	   /**
-	    * 申明一个controller切点 
+	    * 申明一个controller切点
 	    * @Pointcut("execution(public * com.king.controller..*.*(..))")
 	    * execution(): 表达式主体
 		* 第一个public *号：表示返回类型， *号表示所有的类型。
@@ -55,24 +51,24 @@ public class LogAspect {
 	   		+ "|| execution(public * com.jyb.controller..*.check*(..))"
 	   		+ "|| execution(public * com.jyb.controller..*.update*(..))")
 	   private void controllerAspect(){}
-	   
-	   
-	   
-	   //引用一个ThreadLocal<Long>指定泛型的对象 
+
+
+
+	   //引用一个ThreadLocal<Long>指定泛型的对象
 	   ThreadLocal<Long>  startTime = new ThreadLocal<Long>();
-	   
-	   
+
+
 	   DecimalFormat myFormat = new DecimalFormat("000000.000");
-	  
+
 	   //请求method前打印内容
 	   @Before(value = "controllerAspect()")
 	   public void methodBefore(JoinPoint joinPoint) {
 		  log.info("===============请求内容开始===============");
 	      startTime.set(System.currentTimeMillis());//记录开始时间
-		  log.info("===============请求内容结束==============="); 
+		  log.info("===============请求内容结束===============");
 	   }
-	   
-	    
+
+
 	   //在方法执行完结后打印返回内容
 	   @AfterReturning(returning = "o", pointcut = "controllerAspect()")
 	   public void methodAfterReturing(JoinPoint joinPoint,Object o) {
@@ -81,7 +77,7 @@ public class LogAspect {
 	      HttpServletRequest request = requestAttributes.getRequest();
 	      UserInformation userInfo = (UserInformation)request.getSession().getAttribute(Constant.USERINFO);
 	      if(userInfo!=null){
-	    	  log.info("操作人:" +userInfo.getUserName()); 
+	    	  log.info("操作人:" +userInfo.getUserName());
 	      }
 	      log.info("请求地址:" + request.getRequestURL().toString());
 	      log.info("请求方式:" + request.getMethod());
@@ -104,16 +100,16 @@ public class LogAspect {
 	      logger.setLogCreationTime(new Date());
 	      logService.save(logger);
 	   }
-	   
+
 	    //异常通知
-	     @AfterThrowing(value="Pointcut()",throwing="e",pointcut = "controllerAspect()")
+	     @AfterThrowing(value="",throwing="e",pointcut = "controllerAspect()")
 	    public void afterReturningMethod(JoinPoint joinPoint, Exception e){
 	    	 log.info("===============异常通知开始===============");
 	    	 ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		      HttpServletRequest request = requestAttributes.getRequest();
 		      UserInformation userInfo = (UserInformation)request.getSession().getAttribute(Constant.USERINFO);
 		      if(userInfo!=null){
-		    	  log.info("操作人:" +userInfo.getUserName()); 
+		    	  log.info("操作人:" +userInfo.getUserName());
 		      }
 		      log.info("请求地址:" + request.getRequestURL().toString());
 		      log.info("请求方式:" + request.getMethod());
@@ -135,7 +131,7 @@ public class LogAspect {
 		      logger.setType(2);//异常
 		      logger.setLogCreationTime(new Date());
 		      logService.save(logger);
-	    
-	    }  
-	
+
+	    }
+
 }

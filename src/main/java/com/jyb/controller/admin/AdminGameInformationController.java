@@ -1,25 +1,5 @@
 package com.jyb.controller.admin;
 
-import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.DataDictionary;
 import com.jyb.entity.GameInformation;
@@ -31,6 +11,22 @@ import com.jyb.service.InvalidLinkService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("admin/gameInformation")
@@ -38,22 +34,22 @@ public class AdminGameInformationController {
 
 	@Autowired
 	private  GameInformationService 	gameInformationService;
-	
+
 	@Autowired
 	private UserReviewsService   userReviewsService;
-	
+
 	@Autowired
 	private DownloadRecordService downloadRecordService;
-	
+
 	@Autowired
 	private GameIndex gameIndex;
-	
+
 	@Autowired
 	private InvalidLinkService  invalidLinkService;
-	
+
 	@Autowired
 	private RedisUtil<GameInformation> redisUtil;
-	
+
     /**
      * 分页查询所有的游戏资源
      * @param page
@@ -85,13 +81,16 @@ public class AdminGameInformationController {
     	mv.setViewName("admin/game/page/gameDetails");
 		return mv;
 	}
-	
-	
+
+
+
 	/**
-	 * 修改游戏信息
-	 * @param article
-	 * @return
-	 * @throws Exception
+	 *@描述 修改游戏信息
+	 *@参数  [gameInfo, gameTypeId, session]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/3/29
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
@@ -112,7 +111,7 @@ public class AdminGameInformationController {
 		    dd.setId(Integer.parseInt(gameTypeId));
 		    gameInformation.setDataDictionary(dd);
 		    if(gameInformation.getAuditStatus()==2||gameInformation.getAuditStatus()==3){
-		      gameInformation.setAuditStatus(1);	
+		      gameInformation.setAuditStatus(1);
 		    }
 		    gameInformationService.save(gameInformation);
 		    redisUtil.del("r_game_"+gameInfo.getId());
@@ -122,7 +121,7 @@ public class AdminGameInformationController {
 		}
         return map;
 	}
-	
+
 	/**
 	 * 审核通过
 	 * @param id
@@ -140,7 +139,7 @@ public class AdminGameInformationController {
 		gameInformation.setAuditDate(new Date());
 		gameInformationService.save(gameInformation);
 		InitSystem.loadData(request.getServletContext());
-		gameIndex.updateIndex(gameInformation); 
+		gameIndex.updateIndex(gameInformation);
 		redisUtil.del("r_game_"+gameInformation.getId());
 		invalidLinkService.deleteInvalidLink(gameInformation.getId(),gameInformation.getLargeCategory());
 		map.put("success", true);
@@ -164,11 +163,11 @@ public class AdminGameInformationController {
 		map.put("success", true);
 		return map;
 	}
-	
+
 
 	/**
 	 * 批量删除游戏资源
-	 * @param id
+	 * @param ids
 	 * @return
 	 * @throws Exception
 	 */
@@ -189,7 +188,7 @@ public class AdminGameInformationController {
 		map.put("success", true);
 		return map;
 	}
-	
+
 	/**
 	 * 生成游戏资源索引
 	 * @return
@@ -208,6 +207,6 @@ public class AdminGameInformationController {
 		map.put("success", true);
 		return map;
 	}
-	
-	
+
+
 }
