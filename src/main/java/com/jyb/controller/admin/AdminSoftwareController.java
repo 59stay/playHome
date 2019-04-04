@@ -25,6 +25,7 @@ import com.jyb.service.DownloadRecordService;
 import com.jyb.service.InvalidLinkService;
 import com.jyb.service.SoftwareService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
 @Controller
@@ -155,8 +156,7 @@ public class AdminSoftwareController {
 	@RequestMapping("/indexes")
 	@RequiresPermissions(value={"后台-生成资源索引"})
 	public Map<String,Object>  indexes (){
-	    FileUtil.deleteDir(new File("D://home//lucene2"));
-	    //FileUtil.deleteDir(new File("/home/lucene2"));
+	    FileUtil.deleteDir(new File(Constant.LUCENE2));
 		List<Software> softwareList=softwareService.listAll(null,Sort.Direction.DESC, "browseFrequency");
   		for(Software software:softwareList){
   			softwareIndex.addIndex(software);

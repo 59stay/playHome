@@ -9,6 +9,7 @@ import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.InvalidLinkService;
 import com.jyb.service.UserReviewsService;
+import com.jyb.specialEntity.Constant;
 import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -197,8 +198,7 @@ public class AdminGameInformationController {
 	@RequestMapping("/indexes")
 	@RequiresPermissions(value={"后台-生成资源索引"})
 	public Map<String,Object>  indexes (){
-		 FileUtil.deleteDir(new File("D://home//lucene1"));
-		//FileUtil.deleteDir(new File("/home/lucene1"));
+	    FileUtil.deleteDir(new File(Constant.LUCENE1));
 		List<GameInformation> gameList=gameInformationService.listAll(null,Sort.Direction.DESC, "gameBrowseFrequency");
 		for(GameInformation game:gameList){
 		    gameIndex.addIndex(game);
