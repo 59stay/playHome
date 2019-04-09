@@ -1,15 +1,14 @@
 package com.jyb.controller.user;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.alibaba.fastjson.JSONObject;
+import com.jyb.entity.*;
+import com.jyb.init.InitSystem;
+import com.jyb.lucene.SoftwareIndex;
+import com.jyb.service.DownloadRecordService;
+import com.jyb.service.SoftwareService;
+import com.jyb.service.UserReviewsService;
+import com.jyb.specialEntity.Constant;
+import com.jyb.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -20,25 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jyb.entity.DataDictionary;
-import com.jyb.entity.DownloadRecord;
-import com.jyb.entity.GameInformation;
-import com.jyb.entity.Software;
-import com.jyb.entity.UserInformation;
-import com.jyb.entity.UserReviews;
-import com.jyb.init.InitSystem;
-import com.jyb.lucene.SoftwareIndex;
-import com.jyb.service.DownloadRecordService;
-import com.jyb.service.SoftwareService;
-import com.jyb.service.UserReviewsService;
-import com.jyb.specialEntity.Constant;
-import com.jyb.util.CommonMethodUtil;
-import com.jyb.util.CookiesUtil;
-import com.jyb.util.IpUtil;
-import com.jyb.util.PageUtil;
-import com.jyb.util.RedisUtil;
-import com.jyb.util.StringUtil;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user/software")
@@ -46,20 +34,20 @@ public class SoftwareController {
 
 	@Autowired
 	private SoftwareService softwareService;
-	
+
 	@Autowired
 	private RedisUtil<Software> redisUtil;
-	
+
 	@Autowired
 	private UserReviewsService userReviewsService;
-	
+
 	@Autowired
 	private  SoftwareIndex softwareIndex;
-	
+
 	@Autowired
 	private DownloadRecordService downloadRecordService;
-	
-	
+
+
 	/**
 	 * 软件主页面
 	 * @return
@@ -79,7 +67,7 @@ public class SoftwareController {
 	    	mv.setViewName("user/software/softwareIndex");
 	    	return mv;
 	 }
-	 
+
 	 /**
 	  * 软件主页分页查询
 	  * @param page
@@ -97,10 +85,10 @@ public class SoftwareController {
 			mv.addObject("title","宅着玩资源网站 - 宅软件 - "+gameDataDictionary.getDictionaryName()+" - 第"+page+"页");
 	        request.getSession().setAttribute("tMenu","t_"+typeId);
 		}
-	
+
     	List<Software> indexSoftwareList = softwareService.listPage(software, page, 20,Sort.Direction.DESC, "creationTime");
     	Long total = softwareService.getCount(software);
-    	
+
     	StringBuffer param=new StringBuffer();
 		if(typeId!=null){
 			param.append("?typeId="+typeId);
@@ -110,8 +98,8 @@ public class SoftwareController {
     	mv.setViewName("user/software/softwareIndex");
 		return mv;
 	}
-	
-	
+
+
 	/**
 	 * 查看游戏详细信息
 	 * @param id
@@ -140,8 +128,8 @@ public class SoftwareController {
 	    mv.setViewName("user/software/softwareDetails");
 		return mv;
 	}
-	
-	
+
+
 	/**
 	 * 用户发布软件信息
 	 * @param software
@@ -170,13 +158,14 @@ public class SoftwareController {
 	    map.put("success", true);
 	    return map;
 	}
-	 
-	
+
 	/**
-	 * 修改软件信息
-	 * @param article
-	 * @return
-	 * @throws Exception
+	 *@描述  修改软件信息
+	 *@参数  [u_software, request]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
@@ -194,7 +183,7 @@ public class SoftwareController {
 		software.setLinkPwd(u_software.getLinkPwd());
 		software.setDataDictionary(u_software.getDataDictionary());
 	    if(software.getAuditStatus()==2||software.getAuditStatus()==3){
-	    	software.setAuditStatus(1);	
+	    	software.setAuditStatus(1);
 	    }
 	    softwareService.save(software);
 	    List<UserReviews> userReviewsList = userReviewsService.ReviewsList(u_software.getId(),"B");
@@ -204,21 +193,21 @@ public class SoftwareController {
 		    	userReviewsService.save(ur);
 	    	}
 		}
-	    
+
 	    InitSystem.loadData(request.getServletContext());
 	    softwareIndex.updateIndex(software);
 	    redisUtil.del("r_software_"+software.getId());
 	    map.put("success",true);
         return map;
 	}
-	
+
 	/**
-	 * 根据条件分页查询用户发布的软件资源信息
-	 * @param s_gameInformation
-	 * @param page
-	 * @param limit
-	 * @return
-	 * @throws Exception
+	 *@描述  根据条件分页查询用户发布的软件资源信息
+	 *@参数  [s_software, session, page, limit]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/softwareList")
@@ -233,8 +222,8 @@ public class SoftwareController {
 		resultMap.put("data", JSONObject.toJSON(softwareList));
 		return resultMap;
 	}
-	
-	
+
+
 	/**
 	 * 关键字分词搜索
 	 * @param q
@@ -259,7 +248,7 @@ public class SoftwareController {
 		mav.setViewName("user/software/softwareIndexResult");
 		return mav;
 	}
-	
+
 	/**
 	 * 根据id删除软件资源
 	 * @param id

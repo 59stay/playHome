@@ -1,19 +1,5 @@
 package com.jyb.controller.user;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.InvalidLink;
 import com.jyb.entity.Software;
@@ -27,6 +13,18 @@ import com.jyb.service.SoftwareService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.CheckUrlUtil;
 import com.jyb.util.RedisUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("user/invalidLink")
@@ -34,26 +32,26 @@ public class InvalidLinkController {
 
 	@Autowired
 	private InvalidLinkService invalidLinkService;
-	
+
 	@Autowired
 	private GameInformationService gameInformationService;
-	
+
 	@Autowired
 	private SoftwareService softwareService;
-	
+
 	@Autowired
 	private GameIndex gameIndex;
-	
+
 	@Autowired
 	private  SoftwareIndex softwareIndex;
-	
+
 	@Autowired
 	private RedisUtil<GameInformation> redisUtilGame;
-	
+
 	@Autowired
 	private RedisUtil<Software> redisUtilSoftware;
-	
-	
+
+
 	/**
 	 * 根据条件分页查询失效链接资源信息
 	 * @param s_invalidLink
@@ -75,14 +73,15 @@ public class InvalidLinkController {
 		resultMap.put("data", invalidLinkList);
 		return resultMap;
 	}
-	
-	 /**
-     * 修改失效分享链接
-     * @param article
-     * @param session
-     * @return
-     * @throws Exception
-     */
+
+	/**
+	 *@描述   修改失效分享链接
+	 *@参数  [invalidLink, session, request]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
+	 */
     @ResponseBody
 	@RequestMapping("/modifyShareLink")
     public Map<String,Object> modifyShareLink(InvalidLink invalidLink,HttpSession session,HttpServletRequest request)throws Exception{
@@ -92,7 +91,7 @@ public class InvalidLinkController {
     	if(link.getDownloadType()==1){
     		if(!CheckUrlUtil.checkBDY(invalidLink.getDownloadAddress())){
     			resultMap.put("success", false);
-        		resultMap.put("errorInfo", "百度云分享链接已经失效 ，请重新修改链接");	
+        		resultMap.put("errorInfo", "百度云分享链接已经失效 ，请重新修改链接");
     		}else{
     			flag = true;
     		}
@@ -104,7 +103,7 @@ public class InvalidLinkController {
     			flag = true;
     		}
     	}
-    	
+
     	if(flag){
     		if(link.getLargeCategory().equals("A")){//游戏
         		GameInformation gm = gameInformationService.getId(link.getResourceId());
@@ -132,5 +131,5 @@ public class InvalidLinkController {
     	}
     	return resultMap;
     }
-	
+
 }

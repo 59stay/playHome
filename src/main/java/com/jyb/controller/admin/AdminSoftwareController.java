@@ -1,22 +1,5 @@
 package com.jyb.controller.admin;
 
-import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSONObject;
 import com.jyb.entity.Software;
 import com.jyb.init.InitSystem;
@@ -28,29 +11,44 @@ import com.jyb.service.UserReviewsService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.FileUtil;
 import com.jyb.util.RedisUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 @Controller
 @RequestMapping("admin/software")
 public class AdminSoftwareController {
 	@Autowired
 	private SoftwareService softwareService;
-	
+
 	@Autowired
 	private UserReviewsService   userReviewsService;
-	
+
 	@Autowired
 	private DownloadRecordService downloadRecordService;
-	
+
 	@Autowired
 	private SoftwareIndex softwareIndex;
-	
+
 	@Autowired
 	private InvalidLinkService  invalidLinkService;
-	
+
 	@Autowired
-	private RedisUtil<Software> redisUtil; 
-	
-	
-	
+	private RedisUtil<Software> redisUtil;
+
+
+
 	/**
      * 分页查询所有的软件资源
      * @param page
@@ -100,7 +98,7 @@ public class AdminSoftwareController {
 		software.setAuditDate(new Date());
 		softwareService.save(software);
 		InitSystem.loadData(request.getServletContext());
-		softwareIndex.updateIndex(software); 
+		softwareIndex.updateIndex(software);
 		redisUtil.del("r_software_"+software.getId());
 		invalidLinkService.deleteInvalidLink(software.getId(),software.getLargeCategory());
 		map.put("success", true);
@@ -125,10 +123,12 @@ public class AdminSoftwareController {
 		return map;
 	}
 	/**
-	 * 批量删除软件资源
-	 * @param id
-	 * @return
-	 * @throws Exception
+	 *@描述   批量删除软件资源
+	 *@参数  [ids, request]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping("/deleteMultiple")
@@ -147,7 +147,7 @@ public class AdminSoftwareController {
 		map.put("success", true);
 		return map;
 	}
-	
+
 	/**
 	 * 生成软件资源索引
 	 * @return
@@ -165,5 +165,5 @@ public class AdminSoftwareController {
 		map.put("success", true);
 		return map;
 	}
-	
+
 }

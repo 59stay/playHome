@@ -1,17 +1,14 @@
 package com.jyb.controller.user;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
+import com.google.gson.Gson;
+import com.jyb.entity.UserInformation;
+import com.jyb.service.UserInformationService;
+import com.jyb.specialEntity.Constant;
+import com.jyb.specialEntity.VaptchaMessage;
+import com.jyb.util.DateUtil;
+import com.jyb.util.IpUtil;
+import com.jyb.util.MD5Util;
+import com.jyb.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -36,15 +33,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.Gson;
-import com.jyb.entity.UserInformation;
-import com.jyb.service.UserInformationService;
-import com.jyb.specialEntity.Constant;
-import com.jyb.specialEntity.VaptchaMessage;
-import com.jyb.util.DateUtil;
-import com.jyb.util.IpUtil;
-import com.jyb.util.MD5Util;
-import com.jyb.util.StringUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.io.File;
+import java.util.*;
 /**
  * 用户信息控制层
  * @author jyb
@@ -53,22 +46,22 @@ import com.jyb.util.StringUtil;
 @Controller
 @RequestMapping("user/userInformation")
 public class UserInformationController {
-	
+
 	@Autowired
 	private UserInformationService userInformationService;
-	
+
 	@Autowired
 	private JavaMailSender mailSender;
-	
+
 	@Value("${userHeadFilePath}")
 	private String userHeadFilePath;
-	
+
 	/**
 	 * 用户登录
 	 * @param userInformation
 	 * @param session
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@RequestMapping("login")
 	@ResponseBody
@@ -107,7 +100,7 @@ public class UserInformationController {
 				map.put("errorInfo", "用户名或者密码错误！");
 			}
 		}
-		
+
 		return map;
 	}
 	/**
@@ -171,12 +164,14 @@ public class UserInformationController {
 		}
 		return map;
 	}
-	
+
 	/**
-	 * 发送邮件
-	 * @param user
-	 * @return
-	 * @throws Exception
+	 *@描述  发送邮件
+	 *@参数  [email, session, i]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/sendEmail")
@@ -205,7 +200,7 @@ public class UserInformationController {
         map.put("success", true);
 		return map;
 	}
-	
+
 	/**
 	 * 上传用户头像
 	 * @param file
@@ -233,12 +228,14 @@ public class UserInformationController {
 		}
 		return map;
 	}
-	
+
 	/**
-	 * 修改用户信息
-	 * @param password
-	 * @param session
-	 * @return
+	 *@描述  修改用户信息
+	 *@参数  [userInformation, session]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/modifyUserInfo")
@@ -250,10 +247,10 @@ public class UserInformationController {
 		  userInfo.setUserIdcard(userInformation.getUserIdcard());
 		  userInfo.setUserHead(userInformation.getUserHead());
 		  userInformationService.save(userInfo);
-		  map.put("success", true); 
+		  map.put("success", true);
 		  return  map;
 	}
-	
+
 	/**
 	 * 修改用户密码
 	 * @param password
@@ -270,21 +267,21 @@ public class UserInformationController {
 			  if(userInfo.getUserPassword().equals(md5)){
 				  userInfo.setUserPassword(MD5Util.md5(confirmPassword,Constant.SALT));
 				  userInformationService.save(userInfo);
-				  map.put("success", true); 
+				  map.put("success", true);
 			  }else{
-				  map.put("success", false); 
+				  map.put("success", false);
 				  map.put("errorInfo", "原密码错误");
-			  } 
+			  }
 		  }else if(!password.equals(confirmPassword)){
-			  map.put("success", false); 
+			  map.put("success", false);
 			  map.put("errorInfo", "两次新密码输入的不相同");
 		  }else{
-			  map.put("success", false); 
+			  map.put("success", false);
 			  map.put("errorInfo", "请输入密码");
 		  }
 		  return map;
 	}
-	
+
 	/**
 	 * 判断验证码,并重置密码
 	 * @param yzm
@@ -315,8 +312,8 @@ public class UserInformationController {
 		resultMap.put("success", true);
 		return resultMap;
 	}
-	
-	
+
+
 	/**
 	 * 人机验证结果判断
 	 * @param token
@@ -351,7 +348,7 @@ public class UserInformationController {
 		}else{
 			return false;
 		}
-				
+
 	}
-	
+
 }

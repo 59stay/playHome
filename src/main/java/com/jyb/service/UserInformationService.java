@@ -1,16 +1,15 @@
 package com.jyb.service;
 
-import java.util.List;
-
+import com.jyb.entity.UserInformation;
 import org.springframework.data.domain.Sort.Direction;
 
-import com.jyb.entity.UserInformation;
+import java.util.List;
 
 public interface UserInformationService {
-	
+
 	 /**
 	   * 根据条件分页查询用户信息
-	   * @param gameInfo
+	   * @param userInfo
 	   * @param page
 	   * @param pageSize
 	   * @param direction
@@ -18,16 +17,16 @@ public interface UserInformationService {
 	   * @return
 	   */
 	  public List<UserInformation>  listPage(UserInformation userInfo,Integer page,Integer pageSize,Direction direction,String...properties);
-	  
+
 	  /**
 	   * 根据条件查询所有用户总记录数
-	   * @param gameInfo
+	   * @param userInfo
 	   * @return
 	   */
 	  public Long getCount(UserInformation userInfo);
-	
-	
-	
+
+
+
     /**
      * 添加或者修改用户信息
      * @param userInformation
@@ -47,8 +46,8 @@ public interface UserInformationService {
 	 * @return
 	 */
 	public UserInformation findByEmail(String email);
-	
-	
+
+
 	/**
 	 * 根据id查找实体
 	 * @param id

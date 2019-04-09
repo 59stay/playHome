@@ -1,12 +1,12 @@
 package com.jyb.util;
 
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.CollectionUtils;
 
 /**
  * Redis工具类
@@ -129,7 +129,7 @@ public class RedisUtil<T> {
 	/**
 	 * 递增
 	 * @param key 键
-	 * @param by 要增加几(大于0)
+	 * @param delta
 	 * @return
 	 */
 	public long incr(String key, long delta) {
@@ -140,10 +140,12 @@ public class RedisUtil<T> {
 	}
 
 	/**
-	 * 递减
-	 * @param key 键
-	 * @param by 要减少几(小于0)
-	 * @return
+	 *@描述  递减
+	 *@参数  [key, delta]
+	 *@返回值  long
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public long decr(String key, long delta) {
 		if (delta < 0) {
@@ -432,11 +434,12 @@ public class RedisUtil<T> {
 	}
 
 	/**
-	 * 将list放入缓存
-	 * @param key  键
-	 * @param value  值
-	 * @param time   时间(秒)
-	 * @return
+	 *@描述  将list放入缓存
+	 *@参数  [key, value]
+	 *@返回值  boolean
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public boolean lSet(String key, T value) {
 		try {
@@ -466,13 +469,13 @@ public class RedisUtil<T> {
 			return false;
 		}
 	}
-
 	/**
-	 * 将list放入缓存
-	 * @param key  键
-	 * @param value 值
-	 * @param time 时间(秒)
-	 * @return
+	 *@描述  将list放入缓存
+	 *@参数  [key, value]
+	 *@返回值  boolean
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public boolean lSet(String key, List<T> value) {
 		try {

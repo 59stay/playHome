@@ -1,11 +1,8 @@
 package com.jyb.controller.admin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.jyb.entity.FriendshipLink;
+import com.jyb.init.InitSystem;
+import com.jyb.service.FriendshipLinkService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -13,19 +10,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jyb.entity.FriendshipLink;
-import com.jyb.init.InitSystem;
-import com.jyb.service.FriendshipLinkService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("admin/friendshipLink")
 public class AdminFriendshipLinkController {
   @Autowired
   private FriendshipLinkService friendshipLinkService;
-  /**
-   * 查询所有的友情链接信息
-   * @return
-   */
+	/**
+	 *@描述    查询所有的友情链接信息
+	 *@参数  []
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
+	 */
     @ResponseBody
 	@RequestMapping(value="listAll")
 	@RequiresPermissions(value={"后台-查询所有的友情链接信息"})
@@ -36,11 +38,14 @@ public class AdminFriendshipLinkController {
 		resultMap.put("data",friendshipLink);
 		return resultMap;
 	}
-    
-    /**
-	 * 保存友情链接信息
-	 * @param dataDictionary
-	 * @return
+
+	/**
+	 *@描述  保存友情链接信息
+	 *@参数  [friendshipLink, request]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping(value="saveFriendshipLink")
@@ -56,14 +61,15 @@ public class AdminFriendshipLinkController {
 		}
 		return map;
 	}
-	
-	
+
 	/**
-	 * 删除友情链接信息
-	 * @param id
-	 * @return
-	 * @throws Exception
-	 */
+	 *@描述  删除友情链接信息
+	 *@参数  [id, request]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
+     **/
 	@ResponseBody
 	@RequestMapping("/delete")
 	@RequiresPermissions(value={"后台-删除友情链接信息"})

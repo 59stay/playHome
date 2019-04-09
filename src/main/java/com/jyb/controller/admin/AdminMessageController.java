@@ -1,9 +1,10 @@
 package com.jyb.controller.admin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
+import com.jyb.entity.UserMessage;
+import com.jyb.service.UserInformationService;
+import com.jyb.service.UserMessageService;
+import com.jyb.util.StringUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,23 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.jyb.entity.UserMessage;
-import com.jyb.service.UserInformationService;
-import com.jyb.service.UserMessageService;
-import com.jyb.util.StringUtil;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("admin/userMessage")
 public class AdminMessageController {
 	@Autowired
 	private UserMessageService userMessageService;
-	
+
 	@Autowired
 	private UserInformationService userInformationService ;
-    
+
 	/**
      * 分页查询所有留言信息
      * @param page
@@ -48,12 +45,14 @@ public class AdminMessageController {
 		resultMap.put("data",obj);
 		return resultMap;
 	}
-	
+
 	/**
-	 * 删除留言信息
-	 * @param id
-	 * @return
-	 * @throws Exception
+	 *@描述  删除留言信息
+	 *@参数  [ids]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping("/deleteMultiple")
@@ -67,7 +66,7 @@ public class AdminMessageController {
 			}
 			map.put("success", true);
 		}else{
-			map.put("success", false);	
+			map.put("success", false);
 		}
 		return map;
 	}

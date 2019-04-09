@@ -1,26 +1,23 @@
 package com.jyb.service;
 
-import java.util.List;
-
+import com.jyb.entity.DataDictionary;
 import org.springframework.data.domain.Sort.Direction;
 
-import com.jyb.entity.DataDictionary;
-import com.jyb.entity.DownloadRecord;
-import com.jyb.entity.GameInformation;
+import java.util.List;
 
 public interface DataDictionaryService {
 	/**
-	 *  查询所有的集合数据 
+	 *  查询所有的集合数据
 	 * @param dataDictionary
 	 * @param direction
 	 * @param properties
 	 * @return
 	 */
    public List<DataDictionary> listAll(DataDictionary dataDictionary,Direction direction,String...properties);
-   
+
    /**
     * 根据条件查询所有类别记录信息，并分页
-    * @param downloadRecord
+    * @param dataDictionary
     * @param page
     * @param pageSize
     * @param direction
@@ -32,8 +29,8 @@ public interface DataDictionaryService {
 
 	/**
 	 * 根据条件查询所有集合记录总记录数
-	 * 
-	 * @param downloadRecord
+	 *
+	 * @param dataDictionary
 	 * @return
 	 */
 	public Long getCount(DataDictionary dataDictionary);
@@ -43,13 +40,13 @@ public interface DataDictionaryService {
 	 * @return
 	 */
 	public DataDictionary getId(Integer id);
-	  
+
 	  /**
 	   * 添加或者修改信息
-	   * @param gameInfo
+	   * @param dataDictionary
 	   */
 	  public void save(DataDictionary dataDictionary);
-	  
+
 	  /**
 	   * 删除信息
 	   * @param id

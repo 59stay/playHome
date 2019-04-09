@@ -1,9 +1,8 @@
 package com.jyb.controller.admin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
+import com.jyb.entity.Log;
+import com.jyb.service.LogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -12,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jyb.entity.Log;
-import com.jyb.service.LogService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("admin/log")
 public class AdminLogController {
 	@Autowired
 	private LogService logService;
-	
+
 	/**
      * 分页查询所有的日志信息
      * @param page
@@ -40,12 +39,14 @@ public class AdminLogController {
 		resultMap.put("data",JSONObject.toJSON(logList));
 		return resultMap;
 	}
-	
-	    /**
-		 * 保存日志信息
-		 * @param dataDictionary
-		 * @return
-		 */
+	/**
+	 *@描述  保存日志信息
+	 *@参数  [log]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
+	 */
 		@ResponseBody
 		@RequestMapping(value="saveLog")
 		@RequiresPermissions(value={"后台-保存日志信息"})
@@ -59,6 +60,6 @@ public class AdminLogController {
 			}
 			return map;
 		}
-	
-	
+
+
 }

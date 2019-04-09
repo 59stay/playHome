@@ -1,12 +1,10 @@
 package com.jyb.controller.admin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.jyb.entity.UserInformation;
+import com.jyb.service.UserInformationService;
+import com.jyb.specialEntity.Constant;
+import com.jyb.util.MD5Util;
+import com.jyb.util.StringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -14,34 +12,36 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.jyb.entity.UserInformation;
-import com.jyb.service.UserInformationService;
-import com.jyb.specialEntity.Constant;
-import com.jyb.util.MD5Util;
-import com.jyb.util.StringUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("admin/userInfor")
 public class AdminUserInformationController {
-	
+
 	@Autowired
 	private UserInformationService userInformationService;
-	
-	
+
+
 	@Autowired
 	private JavaMailSender mailSender;
 	/**
-	 * 管理员登录
-	 * @param userInformation
-	 * @param session
-	 * @return
+	 *@描述   管理员登录
+	 *@参数  [userInformation, code, request]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@RequestMapping("login")
 	@ResponseBody
@@ -75,12 +75,11 @@ public class AdminUserInformationController {
 				map.put("success", false);
 				map.put("errorInfo", "用户名或者密码错误！");
 			}
-			
 		}
 		return map;
 	}
-	
-	
+
+
 	 /**
      * 分页查询所有用户信息
      * @param page
@@ -99,7 +98,7 @@ public class AdminUserInformationController {
 		resultMap.put("data",userInformation);
 		return resultMap;
 	}
-	
+
 	/**
 	 * 设置账号是否禁用
 	 * @param userInfo
@@ -116,7 +115,7 @@ public class AdminUserInformationController {
 		map.put("success", true);
 		return map;
 	}
-	
+
 	/**
 	 * 充值积分
 	 * @param userInfo
@@ -133,7 +132,7 @@ public class AdminUserInformationController {
 		map.put("success", true);
 		return map;
 	}
-	
+
 	/**
 	 * 重置用户密码
 	 * @param userInfo
@@ -150,8 +149,8 @@ public class AdminUserInformationController {
 		map.put("success", true);
 		return map;
 	}
-	
-	
+
+
 	/**
 	 * 安全退出
 	 * @return
@@ -162,5 +161,5 @@ public class AdminUserInformationController {
 		SecurityUtils.getSubject().logout();
 		return "redirect:/adminLogin.html";
 	}
-	
+
 }

@@ -1,34 +1,22 @@
 package com.jyb.controller.user;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.alibaba.fastjson.JSONObject;
-import com.jyb.entity.GameInformation;
-import com.jyb.entity.InvalidLink;
 import com.jyb.entity.UserInformation;
 import com.jyb.entity.UserReviews;
-import com.jyb.service.GameInformationService;
 import com.jyb.service.UserReviewsService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.SensitiveWordsUtil;
 import com.jyb.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Controller
 @RequestMapping("user/userReviews")
@@ -36,14 +24,15 @@ public class UserReviewsController {
 
 	@Autowired
 	private UserReviewsService userReviewsService;
-	
-	
+
+
 	/**
-	 * 分页查询某个资源的评论信息
-	 * @param s_comment
-	 * @param page
-	 * @param rows
-	 * @return
+	 *@描述 分页查询某个资源的评论信息
+	 *@参数  [s_userReviews, page]
+	 *@返回值  java.util.List<com.jyb.entity.UserReviews>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@SuppressWarnings("unchecked")
 	@ResponseBody
@@ -52,7 +41,7 @@ public class UserReviewsController {
 		List<UserReviews> userReviewsList = (List<UserReviews>) JSONObject.toJSON(userReviewsService.listPage(s_userReviews, page, 6, Direction.DESC, "reviewsTime"));
 		return userReviewsList;
 	}
-	
+
 	@ResponseBody
     @PostMapping("/addUserReviews")
 	public Map<String,Object> addUserReviews(UserReviews userReviews,HttpSession session){
@@ -73,7 +62,7 @@ public class UserReviewsController {
 		    	if(i==0){
 		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(userReviews.getReviewsContent(),mgcArray[i]);
 		    	}else{
-		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(strMgc,mgcArray[i]);	
+		    		strMgc = SensitiveWordsUtil.filterSensitiveWords(strMgc,mgcArray[i]);
 		    	}
 			}
 	    	userReviews.setReviewsContent(strMgc);
@@ -82,15 +71,15 @@ public class UserReviewsController {
 		map.put("success", true);
 		return map;
 	}
-	
-	
+
+
 	/**
-	 * 根据条件分页查询用户评论信息
-	 * @param s_invalidLink
-	 * @param page
-	 * @param limit
-	 * @return
-	 * @throws Exception
+	 *@描述   根据条件分页查询用户评论信息
+	 *@参数  [s_userReviews, session, page, limit]
+	 *@返回值  java.util.Map<java.lang.String,java.lang.Object>
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/userReviewsList")
@@ -105,8 +94,8 @@ public class UserReviewsController {
 		resultMap.put("data", JSONObject.toJSON(userReviewsList));
 		return resultMap;
 	}
-	
-	
+
+
 	/**
 	 * 根据id删除评论
 	 * @param id
@@ -122,5 +111,5 @@ public class UserReviewsController {
 		return resultMap;
 	}
 
-	
+
 }

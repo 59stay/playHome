@@ -1,17 +1,14 @@
 package com.jyb.service;
 
-import java.util.List;
-
+import com.jyb.entity.FriendshipLink;
 import org.springframework.data.domain.Sort.Direction;
 
-import com.jyb.entity.DataDictionary;
-import com.jyb.entity.FriendshipLink;
-import com.jyb.entity.UserInformation;
+import java.util.List;
 
 public interface FriendshipLinkService {
 	/**
 	 * 查询所有信息
-	 * 
+	 *
 	 * @param direction
 	 * @param properties
 	 * @return
@@ -20,14 +17,14 @@ public interface FriendshipLinkService {
 
 	/**
 	 * 添加或者修改信息
-	 * 
-	 * @param userInformation
+	 *
+	 * @param friendshipLink
 	 */
 	public void save(FriendshipLink friendshipLink);
 
 	/**
 	 * 根据id查找实体
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
@@ -35,7 +32,7 @@ public interface FriendshipLinkService {
 
 	/**
 	 * 删除信息
-	 * 
+	 *
 	 * @param id
 	 */
 	public void delete(Integer id);

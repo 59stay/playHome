@@ -1,14 +1,9 @@
 package com.jyb.controller.admin;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-
+import com.jyb.entity.Timer;
+import com.jyb.service.TimerService;
+import com.jyb.timer.CheckLinkRunnable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.Trigger;
@@ -19,30 +14,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jyb.config.LogAspect;
-import com.jyb.entity.Timer;
-import com.jyb.service.TimerService;
-import com.jyb.timer.CheckLinkRunnable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
 
 @Controller
 @RequestMapping("/admin/timer")
 public class AdminTimerController {
-	
+
 	    @Autowired
 	    private TimerService timerService;
-	   
+
 	    @Autowired
 	    private ThreadPoolTaskScheduler threadPoolTaskScheduler;
-	 
+
 	    private ScheduledFuture<?> future1;
-	 
-	 
+
+
 	    @Bean
 	    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
 	        return new ThreadPoolTaskScheduler();
 	    }
-	    
-	    
+
+
 	    /**
 	     * 查询所有的定时任务信息
 	     * @return
@@ -57,11 +53,11 @@ public class AdminTimerController {
 	  		resultMap.put("data",timerLink);
 	  		return resultMap;
   	    }
-	    
-	    
+
+
 	    /**
 		 * 保存或修改定时任务
-		 * @param dataDictionary
+		 * @param timer
 		 * @return
 		 */
 		@ResponseBody
@@ -86,10 +82,10 @@ public class AdminTimerController {
 			}
 			return map;
 		}
-	    
+
 	    /**
 	     * 开启定时器
-	     * @param time
+	     * @param t
 	     * @return
 	     */
 	    @ResponseBody
@@ -108,7 +104,7 @@ public class AdminTimerController {
         	map.put("success", true);
         	return map;
 	    }
-	 
+
 	    /**
 	     * 关闭定时器
 	     * @return
@@ -122,12 +118,12 @@ public class AdminTimerController {
 	            future1.cancel(true);
 	        }
 	    	Timer timer =	timerService.getId(t.getId());
-        	timer.setTimerStatic(t.getTimerStatic()); 
+        	timer.setTimerStatic(t.getTimerStatic());
         	timerService.save(timer);
         	map.put("success", true);
         	return map;
 	    }
-	 
-	 
-	   
+
+
+
 }

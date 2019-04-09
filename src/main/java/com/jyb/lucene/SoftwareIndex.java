@@ -1,34 +1,18 @@
 package com.jyb.lucene;
 
-import java.io.StringReader;
-import java.nio.file.Paths;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
+import com.jyb.entity.Software;
+import com.jyb.util.DateUtil;
+import com.jyb.util.StringUtil;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.highlight.Fragmenter;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
+import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
@@ -36,11 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.jyb.config.LogAspect;
-import com.jyb.entity.GameInformation;
-import com.jyb.entity.Software;
-import com.jyb.util.DateUtil;
-import com.jyb.util.StringUtil;
+import java.io.StringReader;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 /**
  * 软件资源索引
  * @author jyb
@@ -49,11 +33,11 @@ import com.jyb.util.StringUtil;
 @Component("softwareIndex")
 public class SoftwareIndex {
 private Directory dir=null;
-    private Logger log = LoggerFactory.getLogger(SoftwareIndex.class);	
+    private Logger log = LoggerFactory.getLogger(SoftwareIndex.class);
 
 	@Value("${lucenePath2}")
 	private String lucenePath;
-	
+
 	/**
 	 * 获取IndexWriter实例
 	 * @return
@@ -71,10 +55,14 @@ private Directory dir=null;
 		log.info("写入了"+writer.numDocs()+"文档");
 		return writer;
 	}
-	
+
 	/**
-	 * 添加软件索引
-	 * @param blog
+	 *@描述   添加软件索引
+	 *@参数  [software]
+	 *@返回值  void
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public void addIndex(Software software){
 		ReentrantLock lock = new ReentrantLock();
@@ -83,8 +71,8 @@ private Directory dir=null;
 			IndexWriter writer=getWriter();
 			Document doc=new Document();//创建索引文档
 			doc.add(new StringField("id",String.valueOf(software.getId()),Field.Store.YES));//StringField不会进行分词的
-			doc.add(new StringField("auditStatus",String.valueOf(software.getAuditStatus()),Field.Store.YES)); 
-			doc.add(new StringField("isUseful",String.valueOf(software.getIsUseful()),Field.Store.YES)); 
+			doc.add(new StringField("auditStatus",String.valueOf(software.getAuditStatus()),Field.Store.YES));
+			doc.add(new StringField("isUseful",String.valueOf(software.getIsUseful()),Field.Store.YES));
 			doc.add(new StringField("picture",String.valueOf(software.getPicture()),Field.Store.YES));//StringField不会进行分词的
 			doc.add(new TextField("name",software.getName(),Field.Store.YES));//TextField会做分词处理
 			doc.add(new StringField("creationTime",DateUtil.formatDate(software.getCreationTime(), "yyyy-MM-dd"),Field.Store.YES));
@@ -97,11 +85,14 @@ private Directory dir=null;
 			lock.unlock();
 		}
 	}
-	
+
 	/**
-	 * 更新软件索引
-	 * @param article
-	 * @throws Exception
+	 *@描述    更新软件索引
+	 *@参数  [software]
+	 *@返回值  void
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public void updateIndex(Software software){
 		ReentrantLock lock = new ReentrantLock();
@@ -110,8 +101,8 @@ private Directory dir=null;
 			IndexWriter writer=getWriter();
 			Document doc=new Document();//创建索引文档
 			doc.add(new StringField("id",String.valueOf(software.getId()),Field.Store.YES));//StringField不会进行分词的
-			doc.add(new StringField("auditStatus",String.valueOf(software.getAuditStatus()),Field.Store.YES)); 
-			doc.add(new StringField("isUseful",String.valueOf(software.getIsUseful()),Field.Store.YES)); 
+			doc.add(new StringField("auditStatus",String.valueOf(software.getAuditStatus()),Field.Store.YES));
+			doc.add(new StringField("isUseful",String.valueOf(software.getIsUseful()),Field.Store.YES));
 			doc.add(new StringField("picture",String.valueOf(software.getPicture()),Field.Store.YES));//StringField不会进行分词的
 			doc.add(new TextField("name",software.getName(),Field.Store.YES));//TextField会做分词处理
 			doc.add(new StringField("creationTime",DateUtil.formatDate(software.getCreationTime(), "yyyy-MM-dd"),Field.Store.YES));
@@ -124,11 +115,14 @@ private Directory dir=null;
 			lock.unlock();
 		}
 	}
-	
+
 	/**
-	 * 删除软件资源索引
-	 * @param blogId
-	 * @throws Exception
+	 *@描述 删除软件资源索引
+	 *@参数  [id]
+	 *@返回值  void
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public void deleteIndex(String id){
 		ReentrantLock lock = new ReentrantLock();
@@ -147,7 +141,7 @@ private Directory dir=null;
 			lock.unlock();
 		}
 	}
-	
+
 	/**
 	 * 查询软件信息无高亮
 	 * @param q 查询关键字
@@ -164,7 +158,7 @@ private Directory dir=null;
 		Query query=parser.parse(q);
 		QueryParser parser2=new QueryParser("gameDescribe",analyzer);
 		Query query2=parser2.parse(q);
-		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or 
+		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or
 		booleanQuery.add(query2,BooleanClause.Occur.SHOULD);
 		TopDocs hits=is.search(booleanQuery.build(), 100);
 		List<GameInformation> gameList=new LinkedList<GameInformation>();
@@ -178,7 +172,7 @@ private Directory dir=null;
 		}
 		return gameList;
 	}*/
-	
+
 	/**
 	 * 查询软件信息
 	 * @param q 查询关键字
@@ -197,18 +191,18 @@ private Directory dir=null;
 		QueryParser parser2=new QueryParser("resourcesDescribe",analyzer);
 		String s_software_describe = parser.escape(q);
 		Query query2=parser2.parse(s_software_describe);
-		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or 
+		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or
 		booleanQuery.add(query2,BooleanClause.Occur.SHOULD);
 		long startDate = System.currentTimeMillis();
 		TopDocs hits=is.search(booleanQuery.build(), 100);//查询前100条数据
 		long endDate = System.currentTimeMillis();
 		//System.out.println("匹配"+q+",总共花费"+(endDate-startDate)+"毫秒查询到"+hits.totalHits+"个记录");
 		//设置内容片断(底层根据得分计算显示的)
-		QueryScorer scorer=new QueryScorer(query);  
-		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);  
+		QueryScorer scorer=new QueryScorer(query);
+		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
 		SimpleHTMLFormatter simpleHTMLFormatter=new SimpleHTMLFormatter("<b><font color='red'>","</font></b>");
 		Highlighter highlighter=new Highlighter(simpleHTMLFormatter, scorer);
-		highlighter.setTextFragmenter(fragmenter);  
+		highlighter.setTextFragmenter(fragmenter);
 		List<Software> softwareList=new LinkedList<Software>();
 		for(ScoreDoc scoreDoc:hits.scoreDocs){//通过ScoreDoc对象遍历TopDocs对象
 			Document doc=is.doc(scoreDoc.doc);//获得TopDocs对象
@@ -227,20 +221,20 @@ private Directory dir=null;
 					if(StringUtil.isEmpty(hName)){
 						software.setName(name);
 					}else{
-						software.setName(hName);					
+						software.setName(hName);
 					}
 				}
 				if(content!=null){
-					TokenStream tokenStream = analyzer.tokenStream("resourcesDescribe", new StringReader(content)); 
+					TokenStream tokenStream = analyzer.tokenStream("resourcesDescribe", new StringReader(content));
 					String hContent=highlighter.getBestFragment(tokenStream, content);
 					if(StringUtil.isEmpty(hContent)){
 						if(content.length()<=100){
 							software.setResourcesDescribe(content);
 						}else{
-							software.setResourcesDescribe(content.substring(0, 100));						
+							software.setResourcesDescribe(content.substring(0, 100));
 						}
 					}else{
-						software.setResourcesDescribe(hContent);					
+						software.setResourcesDescribe(hContent);
 					}
 				}
 				softwareList.add(software);

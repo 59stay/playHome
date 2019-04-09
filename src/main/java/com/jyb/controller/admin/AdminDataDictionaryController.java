@@ -1,11 +1,8 @@
 package com.jyb.controller.admin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.jyb.entity.DataDictionary;
+import com.jyb.init.InitSystem;
+import com.jyb.service.DataDictionaryService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jyb.entity.DataDictionary;
-import com.jyb.init.InitSystem;
-import com.jyb.service.DataDictionaryService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 后台-类别Controller
  * @author jyb
@@ -27,7 +25,7 @@ import com.jyb.service.DataDictionaryService;
 public class AdminDataDictionaryController {
 	@Autowired
 	private DataDictionaryService dataDictionaryService;
-	
+
 	/**
      * 分页查询所有的类别信息
      * @param page
@@ -46,8 +44,8 @@ public class AdminDataDictionaryController {
 		resultMap.put("data",ddList);
 		return resultMap;
 	}
-	
-	
+
+
 	/**
 	 * 根据id查找类别信息
 	 * @param id
@@ -65,7 +63,7 @@ public class AdminDataDictionaryController {
 	}
 	/**
 	 * 根据大类别获取类别名称
-	 * @param id
+	 * @param dictionaryType
 	 * @return
 	 */
 	@ResponseBody
@@ -109,7 +107,7 @@ public class AdminDataDictionaryController {
 		}
 		return map;
 	}
-	
+
 	/**
 	 * 删除类别信息
 	 * @param id
@@ -130,5 +128,5 @@ public class AdminDataDictionaryController {
 		}
 		return map;
 	}
-	
+
 }

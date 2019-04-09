@@ -1,43 +1,28 @@
 package com.jyb.lucene;
 
-import java.io.StringReader;
-import java.nio.file.Paths;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
-
+import com.jyb.entity.GameInformation;
+import com.jyb.util.DateUtil;
+import com.jyb.util.StringUtil;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.highlight.Fragmenter;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.search.highlight.SimpleSpanFragmenter;
+import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.jyb.entity.GameInformation;
-import com.jyb.util.DateUtil;
-import com.jyb.util.StringUtil;
+import java.io.StringReader;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -49,10 +34,10 @@ import com.jyb.util.StringUtil;
 public class GameIndex {
 
 	private Directory dir=null;
-	
+
 	@Value("${lucenePath1}")
 	private String lucenePath;
-	
+
 	/**
 	 * 获取IndexWriter实例
 	 * @return
@@ -70,10 +55,14 @@ public class GameIndex {
 	 	//System.out.println("写入了"+writer.numDocs()+"文档");
 		return writer;
 	}
-	
+
 	/**
-	 * 添加游戏索引
-	 * @param blog
+	 *@描述  添加游戏索引
+	 *@参数  [game]
+	 *@返回值  void
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public void addIndex(GameInformation game){
 		ReentrantLock lock = new ReentrantLock();
@@ -82,8 +71,8 @@ public class GameIndex {
 			IndexWriter writer=getWriter();
 			Document doc=new Document();//创建索引文档
 			doc.add(new StringField("id",String.valueOf(game.getId()),Field.Store.YES));//StringField不会进行分词的
-			doc.add(new StringField("auditStatus",String.valueOf(game.getAuditStatus()),Field.Store.YES)); 
-			doc.add(new StringField("isUseful",String.valueOf(game.getIsUseful()),Field.Store.YES)); 
+			doc.add(new StringField("auditStatus",String.valueOf(game.getAuditStatus()),Field.Store.YES));
+			doc.add(new StringField("isUseful",String.valueOf(game.getIsUseful()),Field.Store.YES));
 			doc.add(new StringField("gamePicture",String.valueOf(game.getGamePicture()),Field.Store.YES));//StringField不会进行分词的
 			doc.add(new TextField("gameName",game.getGameName(),Field.Store.YES));//TextField会做分词处理
 			doc.add(new StringField("gameCreationTime",DateUtil.formatDate(game.getGameCreationTime(), "yyyy-MM-dd"),Field.Store.YES));
@@ -96,11 +85,14 @@ public class GameIndex {
 			lock.unlock();
 		}
 	}
-	
+
 	/**
-	 * 更新游戏索引
-	 * @param article
-	 * @throws Exception
+	 *@描述   更新游戏索引
+	 *@参数  [game]
+	 *@返回值  void
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public void updateIndex(GameInformation game){
 		ReentrantLock lock = new ReentrantLock();
@@ -109,8 +101,8 @@ public class GameIndex {
 			IndexWriter writer=getWriter();
 			Document doc=new Document();//创建索引文档
 			doc.add(new StringField("id",String.valueOf(game.getId()),Field.Store.YES));//加yes指将信息存储到索引中，不加就不存
-			doc.add(new StringField("auditStatus",String.valueOf(game.getAuditStatus()),Field.Store.YES)); 
-			doc.add(new StringField("isUseful",String.valueOf(game.getIsUseful()),Field.Store.YES)); 
+			doc.add(new StringField("auditStatus",String.valueOf(game.getAuditStatus()),Field.Store.YES));
+			doc.add(new StringField("isUseful",String.valueOf(game.getIsUseful()),Field.Store.YES));
 			doc.add(new StringField("gamePicture",String.valueOf(game.getGamePicture()),Field.Store.YES));
 			doc.add(new TextField("gameName",game.getGameName(),Field.Store.YES));
 			doc.add(new StringField("gameCreationTime",DateUtil.formatDate(game.getGameCreationTime(), "yyyy-MM-dd"),Field.Store.YES));
@@ -123,11 +115,15 @@ public class GameIndex {
 			lock.unlock();
 		}
 	}
-	
+
+
 	/**
-	 * 删除游戏资源索引
-	 * @param blogId
-	 * @throws Exception
+	 *@描述    删除游戏资源索引
+	 *@参数  [id]
+	 *@返回值  void
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	public void deleteIndex(String id){
 		ReentrantLock lock = new ReentrantLock();
@@ -146,7 +142,7 @@ public class GameIndex {
 			lock.unlock();
 		}
 	}
-	
+
 	/**
 	 * 查询游戏信息无高亮
 	 * @param q 查询关键字
@@ -163,7 +159,7 @@ public class GameIndex {
 		Query query=parser.parse(q);
 		QueryParser parser2=new QueryParser("gameDescribe",analyzer);
 		Query query2=parser2.parse(q);
-		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or 
+		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or
 		booleanQuery.add(query2,BooleanClause.Occur.SHOULD);
 		TopDocs hits=is.search(booleanQuery.build(), 100);
 		List<GameInformation> gameList=new LinkedList<GameInformation>();
@@ -177,7 +173,7 @@ public class GameIndex {
 		}
 		return gameList;
 	}*/
-	
+
 	/**
 	 * 查询游戏信息
 	 * @param q 查询关键字
@@ -196,18 +192,18 @@ public class GameIndex {
 		QueryParser parser2=new QueryParser("gameDescribe",analyzer);
 		String s_game_describe = parser.escape(q);
 		Query query2=parser2.parse(s_game_describe);
-		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or 
+		booleanQuery.add(query,BooleanClause.Occur.SHOULD);//组合条件查询 or
 		booleanQuery.add(query2,BooleanClause.Occur.SHOULD);
 		long startDate = System.currentTimeMillis();
 		TopDocs hits=is.search(booleanQuery.build(), 100);//查询前100条数据
 		long endDate = System.currentTimeMillis();
 		//System.out.println("匹配"+q+",总共花费"+(endDate-startDate)+"毫秒查询到"+hits.totalHits+"个记录");
 		//设置内容片断(底层根据得分计算显示的)
-		QueryScorer scorer=new QueryScorer(query);  
-		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);  
+		QueryScorer scorer=new QueryScorer(query);
+		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
 		SimpleHTMLFormatter simpleHTMLFormatter=new SimpleHTMLFormatter("<b><font color='red'>","</font></b>");
 		Highlighter highlighter=new Highlighter(simpleHTMLFormatter, scorer);
-		highlighter.setTextFragmenter(fragmenter);  
+		highlighter.setTextFragmenter(fragmenter);
 		List<GameInformation> gameList=new LinkedList<GameInformation>();
 		for(ScoreDoc scoreDoc:hits.scoreDocs){//通过ScoreDoc对象遍历TopDocs对象
 			Document doc=is.doc(scoreDoc.doc);//获得TopDocs对象
@@ -226,20 +222,20 @@ public class GameIndex {
 					if(StringUtil.isEmpty(hName)){
 						game.setGameName(name);
 					}else{
-						game.setGameName(hName);					
+						game.setGameName(hName);
 					}
 				}
 				if(content!=null){
-					TokenStream tokenStream = analyzer.tokenStream("gameDescribe", new StringReader(content)); 
+					TokenStream tokenStream = analyzer.tokenStream("gameDescribe", new StringReader(content));
 					String hContent=highlighter.getBestFragment(tokenStream, content);
 					if(StringUtil.isEmpty(hContent)){
 						if(content.length()<=100){
 							game.setGameDescribe(content);
 						}else{
-							game.setGameDescribe(content.substring(0,100));						
+							game.setGameDescribe(content.substring(0,100));
 						}
 					}else{
-							game.setGameDescribe(hContent);	
+							game.setGameDescribe(hContent);
 					}
 				}
 				gameList.add(game);
