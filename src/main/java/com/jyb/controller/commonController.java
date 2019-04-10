@@ -52,7 +52,7 @@ public class commonController {
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
-			map2.put("title", newFileName);
+			map2.put("title", fileName);
 			map2.put("src", "/coverImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
@@ -82,15 +82,12 @@ public class commonController {
 			map.put("code", 0);
 			map.put("msg", "上传成功");
 			Map<String,Object> map2=new HashMap<String,Object>();
-			map2.put("title", newFileName);
+			map2.put("title", fileName);
 			map2.put("src", "/contentImage/"+userInformation.getEmail()+"/"+newFileName);
 			map.put("data", map2);
 		}
 		return map;
 	}
 
-	public static void main(String[] args) {
-
-	}
 
 }
