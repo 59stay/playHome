@@ -44,7 +44,7 @@ public class CheckUrlUtil {
 			result = EntityUtils.toString(entity, "utf-8");
 		} catch (IOException e) {
 			return false;
-		}    //webkit
+		}
 		if(result.contains("请输入提取码")||result.contains("分享无限制")||result.contains("给您加密分享了文件")||result.contains("永久有效")){
 			return true;
 		}else{
@@ -81,10 +81,10 @@ public class CheckUrlUtil {
         log.info("=======================链接访问总耗时"+(System.currentTimeMillis()-startTime)*0.001+"秒============================");
 		return flag;
     }
-	public static void main(String[] args) throws Exception {
-		//boolean a = CheckUrlUtil.checkUrl("http://ww.bai.com",3000);
-		//System.out.println(a);
-		//System.out.println(CheckUrlUtil.checkBDY("https://pan.baidu.com/s/1jHDYShK#list/path=%2F"));
-	}
+	/*public static void main(String[] args) throws Exception {
+		boolean a = CheckUrlUtil.checkUrl("http://ww.bai.com",3000);
+		System.out.println(a);
+		System.out.println(CheckUrlUtil.checkBDY("https://pan.baidu.com/s/1jHDYShK#list/path=%2F"));
+	}*/
 
 }

@@ -1,35 +1,28 @@
 package com.jyb.controller.user;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.jyb.entity.DownloadRecord;
 import com.jyb.entity.GameInformation;
 import com.jyb.entity.Software;
 import com.jyb.entity.UserInformation;
-import com.jyb.init.InitSystem;
 import com.jyb.service.DownloadRecordService;
 import com.jyb.service.GameInformationService;
 import com.jyb.service.SoftwareService;
 import com.jyb.service.UserInformationService;
 import com.jyb.specialEntity.Constant;
 import com.jyb.util.PageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("user/downloadRecord")
@@ -89,11 +82,12 @@ public class DownloadRecordController {
 		}
 	}
 	/**
-	 * 判断用户积分是否足够
-	 * @param userIntegral
-	 * @param session
-	 * @return
-	 * @throws Exception
+	 *@描述   判断用户积分是否足够
+	 *@参数  [integral, session]
+	 *@返回值  boolean
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping("/isIntegralEnough")
@@ -106,11 +100,12 @@ public class DownloadRecordController {
 		}
 	}
 	/**
-	 * 记录用户下载的资源
-	 * @param id
-	 * @param type  1.表示用户查看自己发布的资源 2.表示用户已下载过该资源 3.表示其他用户查看别人发布的资源
-	 * @param session
-	 * @return
+	 *@描述   记录用户下载的资源
+	 *@参数  [id, type, largeCategory, request]
+	 *@返回值  org.springframework.web.servlet.ModelAndView
+	 *@创建人  jyb
+	 *@创建时间  2019/4/9
+	 *@修改人和其它信息
 	 */
 	@ResponseBody
 	@RequestMapping("/saveDownloadResources/{id}/{largeCategory}/{type}")

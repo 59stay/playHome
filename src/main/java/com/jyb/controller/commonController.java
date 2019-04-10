@@ -1,11 +1,8 @@
 package com.jyb.controller;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
+import com.jyb.entity.UserInformation;
+import com.jyb.specialEntity.Constant;
+import com.jyb.util.DateUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -13,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.jyb.entity.UserInformation;
-import com.jyb.specialEntity.Constant;
-import com.jyb.util.DateUtil;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * 前后台共用的方法都写在这个控制层中
  * @author jyb
@@ -24,10 +22,10 @@ import com.jyb.util.DateUtil;
 @Controller
 @RequestMapping("common")
 public class commonController {
-	
+
 	@Value("${contentImageFilePath}")
 	private String contentImageFilePath;  //文本内容图片路径
-	
+
 
 	@Value("${coverImageFilePath}")
 	private String coverImageFilePath;  //封面图片路径
@@ -60,9 +58,9 @@ public class commonController {
 		}
 		return map;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Layui编辑器图片上传处理
 	 * @param file
@@ -90,7 +88,9 @@ public class commonController {
 		}
 		return map;
 	}
-	
-	
-	
+
+	public static void main(String[] args) {
+
+	}
+
 }
