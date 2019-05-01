@@ -21,7 +21,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Redis配置类
- * 
+ *
  * @author Administrator
  *
  */
@@ -52,7 +52,7 @@ public class RedisConfig {
 
 	/**
 	 * JedisPoolConfig 连接池
-	 * 
+	 *
 	 * @return
 	 */
 	@Bean
@@ -105,7 +105,7 @@ public class RedisConfig {
          redisTemplate.setKeySerializer(new StringRedisSerializer());  // 设置键（key）的序列化采用StringRedisSerializer
          redisTemplate.setKeySerializer(fastJsonRedisSerializer());
          redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-         redisTemplate.setHashKeySerializer(fastJsonRedisSerializer()); 
+         redisTemplate.setHashKeySerializer(fastJsonRedisSerializer());
          redisTemplate.setValueSerializer(new StringRedisSerializer());
          redisTemplate.setValueSerializer(fastJsonRedisSerializer());
          redisTemplate.setHashValueSerializer(new StringRedisSerializer());
@@ -122,7 +122,7 @@ public class RedisConfig {
 	    FastJsonConfig fastJsonConfig = new FastJsonConfig();
 	    fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
 	    fastConverter.setFastJsonConfig(fastJsonConfig);
-	    //必须加否则会报com.alibaba.fastjson.JSONException: autoType is not sup这个错        
+	    //必须加否则会报com.alibaba.fastjson.JSONException: autoType is not sup这个错
 	    ParserConfig.getGlobalInstance().addAccept("com.jyb.entity");
 	    HttpMessageConverter<?> converter = fastConverter;
 	    return new HttpMessageConverters(converter);
@@ -131,7 +131,7 @@ public class RedisConfig {
 	
 	/**
      * 注入封装RedisTemplate
-    * @Title: redisUtil 
+    * @Title: redisUtil
     * @return RedisUtil
     * @date 2018年12月21日
     * @throws

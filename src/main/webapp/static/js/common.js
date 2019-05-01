@@ -5,7 +5,7 @@ function showLogin(){
 	  title: '用户登录',
 	  area: ['340px', '360px'],
 	  content: '/user/userLogin.html' //iframe的url
-	}); 
+	});
 }
 
 /**用户注册事件*/
@@ -15,7 +15,7 @@ function showRegister(){
 		  title: '用户注册',
 		  area: ['400px', '430px'],
 		  content: '/user/userRegister.html' //iframe的url
-		}); 
+		});
 }
 /**
  * 找回密码
@@ -27,7 +27,7 @@ function showFindPassword(){
 		  title: '找回用户密码',
 		  area: ['300px', '300px'],//宽度，长度
 		  content: '/user/findPassword.html' //iframe的url
-		}); 
+		});
 }
 /**
  * 修改密码
@@ -38,7 +38,7 @@ function showModifyPassword(){
 		  title: '修改用户密码',
 		  area: ['400px', '330px'],
 		  content: '/user/modifyPassword.html' //iframe的url
-		}); 
+		});
 }
 
 /**分享规则*/
@@ -48,7 +48,7 @@ function sharingRule(){
 		  title: '分享规则',
 		  area: ['400px', '400px'],
 		  content: '/user/sharingRule.html' //iframe的url
-		}); 
+		});
 }
 /**发布资源规范*/
 function standard(){
@@ -57,7 +57,7 @@ function standard(){
 		  title: '发布资源规范',
 		  area: ['330px', '200px'],
 		  content: '/user/standard.html' //iframe的url
-		}); 
+		});
 }
 
 
@@ -91,7 +91,7 @@ function cancel(type){
 	}else{
 		 window.location.href="/personalCenter/toSoftwareManagement";
 	}
-}	
+}
 
 
 
